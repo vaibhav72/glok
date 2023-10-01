@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
+import 'package:glok/utils/meta_colors.dart';
 
 class CustomButton extends StatelessWidget {
   CustomButton(
@@ -37,6 +38,34 @@ class CustomButton extends StatelessWidget {
       ),
     );
   }
+}class CustomButtonWithChild extends StatelessWidget {
+  CustomButtonWithChild(
+      {super.key,
+      required this.child,
+      required this.onPressed,
+      this.loading = false});
+
+  final Widget child;
+  void Function()? onPressed;
+  bool? loading;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: loading! ? null : onPressed,
+      child: Container(
+        height: 52,
+        decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.circular(80)),
+        child: Center(
+          child: loading!
+              ? const CircularProgressIndicator()
+              : child,
+        ),
+      ),
+    );
+  }
 }
 
 InputDecoration formDecoration(String label, String hintText) {
@@ -66,4 +95,21 @@ InputDecoration formDecoration(String label, String hintText) {
     ),
     errorStyle: TextStyle(color: Colors.red),
   );
+}
+
+class DashedLinePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    double dashWidth = 9, dashSpace = 5, startX = 0;
+    final paint = Paint()
+      ..color =MetaColors.dividerColor
+      ..strokeWidth = 1;
+    while (startX < size.width) {
+      canvas.drawLine(Offset(startX, 0), Offset(startX + dashWidth, 0), paint);
+      startX += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

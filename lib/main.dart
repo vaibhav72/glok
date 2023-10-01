@@ -9,6 +9,8 @@ import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'modules/personas/end_user/home/binding.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -28,6 +30,9 @@ class MyApp extends StatelessWidget {
         primaryColor: MetaColors.primary,
         dividerColor: MetaColors.dividerColor,
         secondaryHeaderColor: MetaColors.secondaryText,
+        colorScheme: Theme.of(context)
+            .colorScheme
+            .copyWith(secondary: MetaColors.tertiaryText),
         primaryTextTheme: GoogleFonts.poppinsTextTheme().apply(
             bodyColor: MetaColors.primaryText,
             displayColor: MetaColors.primaryText),
@@ -52,6 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Get.put(HiveController());
     AuthBinding().dependencies();
+    EndUserHomeBinding().dependencies();
     Future.delayed(Duration(seconds: 3), () {
       setState(() {
         splash = false;
@@ -67,7 +73,6 @@ class _SplashScreenState extends State<SplashScreen> {
             height: double.maxFinite,
             width: double.maxFinite,
             decoration: BoxDecoration(
-            
                 gradient: LinearGradient(colors: [
               Get.theme.primaryColor,
               Get.theme.primaryColor.withOpacity(0.9)
