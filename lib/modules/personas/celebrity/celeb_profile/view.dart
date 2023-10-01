@@ -291,41 +291,48 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                         height: 10,
                       ),
                       RichText(
+                          textScaleFactor:
+                              MediaQuery.of(context).textScaleFactor,
                           text: TextSpan(
                               text: "Born: ",
                               style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
-                                  color: MetaColors.tertiaryText),
+                                  color: MetaColors.primaryText),
                               children: [
-                            TextSpan(
-                                text: "6 February 1992 (age 31 years), Toronto",
-                                style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w400))
-                          ])),
+                                TextSpan(
+                                    text:
+                                        "6 February 1992 (age 31 years), Toronto",
+                                    style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w400))
+                              ])),
                       RichText(
+                          textScaleFactor:
+                              MediaQuery.of(context).textScaleFactor,
                           text: TextSpan(
                               text: "Nationality: ",
                               style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
-                                  color: MetaColors.tertiaryText),
+                                  color: MetaColors.primaryText),
                               children: [
-                            TextSpan(
-                                text: "Canadian",
-                                style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w400))
-                          ])),
+                                TextSpan(
+                                    text: "Canadian",
+                                    style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w400))
+                              ])),
                       RichText(
+                          textScaleFactor:
+                              MediaQuery.of(context).textScaleFactor,
                           text: TextSpan(
                               text: "Siblings: ",
                               style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w600,
-                                  color: MetaColors.tertiaryText),
+                                  color: MetaColors.primaryText),
                               children: [
-                            TextSpan(
-                                text: "Omar Fatehi",
-                                style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w400))
-                          ]))
+                                TextSpan(
+                                    text: "Omar Fatehi",
+                                    style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w400))
+                              ]))
                     ],
                   ),
                 ),

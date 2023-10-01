@@ -22,13 +22,12 @@ class MetaAssets {
   static const String carouselImage = 'assets/carousel_image.png';
   static const String dummyCeleb = 'assets/dummy_celeb.png';
 
-
   //wallet
 
-  static const String transactionSuccess='assets/success.svg';
-  static const String transactionHelp='assets/help.svg';
-  static const String transactionSent='assets/sent.svg';
-  static const String transactionReceived='assets/received.svg';
-  
+  static const String transactionSuccess = 'assets/success.svg';
+  static const String transactionHelp = 'assets/help.svg';
+  static const String transactionSent = 'assets/sent.svg';
+  static const String transactionReceived = 'assets/received.svg';
 
+  static const String filterIcon = 'assets/filter.svg';
 }

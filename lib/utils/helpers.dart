@@ -38,7 +38,9 @@ class CustomButton extends StatelessWidget {
       ),
     );
   }
-}class CustomButtonWithChild extends StatelessWidget {
+}
+
+class CustomButtonWithChild extends StatelessWidget {
   CustomButtonWithChild(
       {super.key,
       required this.child,
@@ -59,9 +61,7 @@ class CustomButton extends StatelessWidget {
             color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(80)),
         child: Center(
-          child: loading!
-              ? const CircularProgressIndicator()
-              : child,
+          child: loading! ? const CircularProgressIndicator() : child,
         ),
       ),
     );
@@ -97,12 +97,51 @@ InputDecoration formDecoration(String label, String hintText) {
   );
 }
 
+InputDecoration searchFormDecoration(String label, String hintText,
+    {Widget? prefix, bool isLight = false}) {
+  return InputDecoration(
+    hintText: hintText,
+    hintStyle: TextStyle(color: Get.theme.dividerColor),
+    prefixIcon: Padding(
+      padding: const EdgeInsets.all(3.0).copyWith(left: 12),
+      child: prefix,
+    ),
+    contentPadding: EdgeInsets.zero,
+
+    prefixIconConstraints: BoxConstraints.tight(Size(32, 32)),
+    labelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+    // labelText: label,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(80),
+      borderSide: BorderSide(color: Get.theme.dividerColor),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(80),
+      borderSide: BorderSide(color: Get.theme.dividerColor),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(80),
+      borderSide: BorderSide(
+          color: isLight ? Get.theme.primaryColor : Get.theme.dividerColor),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(80),
+      borderSide: BorderSide(color: Colors.red),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(80),
+      borderSide: BorderSide(color: Colors.red),
+    ),
+    errorStyle: TextStyle(color: Colors.red),
+  );
+}
+
 class DashedLinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     double dashWidth = 9, dashSpace = 5, startX = 0;
     final paint = Paint()
-      ..color =MetaColors.dividerColor
+      ..color = MetaColors.dividerColor
       ..strokeWidth = 1;
     while (startX < size.width) {
       canvas.drawLine(Offset(startX, 0), Offset(startX + dashWidth, 0), paint);
