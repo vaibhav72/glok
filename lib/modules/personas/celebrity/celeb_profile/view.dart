@@ -37,11 +37,16 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  CircleAvatar(
-                                    backgroundColor: Colors.black12,
-                                    child: Icon(
-                                      Icons.arrow_back,
-                                      color: Colors.white,
+                                  InkWell(
+                                    onTap: () {
+                                      Get.back();
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.black12,
+                                      child: Icon(
+                                        Icons.arrow_back,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                   Spacer(),

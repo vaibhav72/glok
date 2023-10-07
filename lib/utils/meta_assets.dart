@@ -30,4 +30,15 @@ class MetaAssets {
   static const String transactionReceived = 'assets/received.svg';
 
   static const String filterIcon = 'assets/filter.svg';
+
+  static const String tickMark = 'assets/tick_mark.svg';
+
+  //more_icons
+  static const String profileIconNew = 'assets/profile_icon_new.svg';
+  static const String notificationIconNew = 'assets/notification_icon_new.svg';
+  static const String documentIcon = 'assets/document_icon.svg';
+  static const String inviteIcon = 'assets/invite_icon.svg';
+  static const String bankIcon = 'assets/bank_icon.svg';
+  static const String logout = 'assets/logout.svg';
+  static const String moreProceed = 'assets/more_proceed.svg';
 }

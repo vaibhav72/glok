@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:glok/modules/personas/celebrity/celeb_profile/binding.dart';
 import 'package:glok/modules/personas/end_user/browse/view.dart';
 import 'package:glok/modules/personas/end_user/home/controller.dart';
+import 'package:glok/modules/personas/end_user/more/view.dart';
 import 'package:glok/modules/wallet/view.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:glok/utils/meta_assets.dart';
@@ -163,7 +164,9 @@ class EndUserHomeView extends GetView<EndUserHomeController> {
                   ),
                   controller.bottomNav.currentIndex.value != 0
                       ? controller.bottomNav.currentIndex.value != 1
-                          ? BrowseView()
+                          ? controller.bottomNav.currentIndex.value != 2
+                              ? EndUserMoreView()
+                              : BrowseView()
                           : WalletView()
                       : Padding(
                           padding: MediaQuery.of(context).padding,

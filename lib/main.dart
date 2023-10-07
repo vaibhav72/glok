@@ -7,6 +7,7 @@ import 'package:glok/modules/auth_module/binding.dart';
 import 'package:glok/modules/auth_module/controller.dart';
 import 'package:glok/modules/auth_module/view.dart';
 import 'package:glok/modules/personas/end_user/browse/binding.dart';
+import 'package:glok/modules/personas/end_user/more/bindings.dart';
 import 'package:glok/modules/wallet/binding.dart';
 import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
@@ -63,6 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
     EndUserHomeBinding().dependencies();
     WalletBinding().dependencies();
     BrowseBinding().dependencies();
+    EndUserMoreBinding().dependencies();
     Get.put(BottomNavigationController());
     Future.delayed(Duration(seconds: 3), () {
       setState(() {

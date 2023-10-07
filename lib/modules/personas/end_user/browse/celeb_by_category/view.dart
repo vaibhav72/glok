@@ -41,6 +41,55 @@ class CelebByCategoryView extends GetView<CelebByCategoryController> {
                   isLight: true),
             ),
           ),
+          Obx(() => Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: controller.selectedFilters.value!
+                          .map((element) => Padding(
+                                padding: const EdgeInsets.only(right: 8),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(60),
+                                      color: MetaColors.secondaryPurple
+                                          .withOpacity(.2)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 6),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          element.toString(),
+                                          style: TextStyle(
+                                              color: Get.theme.primaryColor,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            controller.removeFilter(element);
+                                          },
+                                          child: Icon(
+                                            Icons.close,
+                                            color: Get.theme.primaryColor,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                ),
+              )),
           Expanded(
               child: Padding(
             padding: const EdgeInsets.only(left: 16),
