@@ -41,4 +41,15 @@ class MetaAssets {
   static const String bankIcon = 'assets/bank_icon.svg';
   static const String logout = 'assets/logout.svg';
   static const String moreProceed = 'assets/more_proceed.svg';
+
+  //apply icons
+
+  static const String addPhoto = 'assets/add_photo.svg';
+  static const String addCoverImage = 'assets/add_cover_image.svg';
+  static const String dummyDoc = 'assets/dummy_doc.png';
+  static const String congratsMobile = 'assets/congrats_mobile.svg';
+  static const String congratsBackground = 'assets/congrats_background.png';
+  static const String placeHolderProfile = 'assets/placeholder_profile.svg';
+
+  static const String coverPlaceHolder = 'assets/cover_placeholder.png';
 }

@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:glok/modules/personas/end_user/apply_glocker/view.dart';
 import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
 
 import '../../../../utils/helpers.dart';
+import '../apply_glocker/binding.dart';
 import 'controller.dart';
 
 class EndUserMoreView extends GetView<EndUserMoreController> {
@@ -108,7 +110,10 @@ class EndUserMoreView extends GetView<EndUserMoreController> {
                   _MoreTile(
                     title: "Apply as Glocker",
                     icon: MetaAssets.profileIconNew,
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(ApplyToGlockerView(),
+                          binding: ApplyToGlockerBinding());
+                    },
                   ),
                   Divider(),
                   _MoreTile(
