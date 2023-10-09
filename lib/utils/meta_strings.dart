@@ -1,4 +1,6 @@
 class MetaStrings {
+  static const String baseUrl = 'http://dev.mindstack.in:3030/';
+
   ///registration Urls
   static const String userRegistrationUrl = '/user/new';
   static const String verifyMobile = '/user/verifyMobile';
