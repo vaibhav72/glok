@@ -12,20 +12,19 @@ class AuthView extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:EndUserHomeView(),
-      
-      
-      
-      //  Obx(
-      //   () => Center(
-      //     child: !controller.walkthroughDone.value!
-      //         ? WalkthroughView()
-      //         : PageView(
-      //             controller: controller.pageController,
-      //             children: [SignInView(), OTPView(), UserDetailsView()],
-      //           ),
-      //   ),
-      // ),
+      body: Obx(
+        () => Center(
+          child: !controller.walkthroughDone.value!
+              ? WalkthroughView()
+              : controller.user.value != null
+                  ? EndUserHomeView()
+                  : PageView(
+                      physics: NeverScrollableScrollPhysics(),
+                      controller: controller.pageController,
+                      children: [SignInView(), OTPView(), UserDetailsView()],
+                    ),
+        ),
+      ),
     );
   }
 }

@@ -4,6 +4,7 @@ class MetaStrings {
   ///registration Urls
   static const String userRegistrationUrl = '/user/new';
   static const String verifyMobile = '/user/verifyMobile';
+  static const String getCurrentuser = 'user/currentbyuser';
 
   static const String generateOtp = '/auth/generateOtp';
   static const String loginVerifyOTP = '/auth/verifyOtp';
@@ -22,8 +23,9 @@ class MetaStrings {
   static const String updateAadharFile = '/glocker/updateaadharphoto';
   static const String updateAadhaar = 'glocker/updateaadhaar';
   static const String updateVideKYC = '/glocker/updatevideokyc';
+  //glocker list sort
   static const String getGlocker = '/glocker/';
-
+  static const String getGlockerSort = '/glocker/sort';
 //bank
 
   static const String updatebank = '/bank';

@@ -45,6 +45,8 @@ dependencies:
   image_picker: ^1.0.4
   carousel_slider: ^4.2.1
   http: ^0.13.3
+  dio: ^4.0.0
+  sms_autofill: ^2.0.0
 
 
 dev_dependencies:

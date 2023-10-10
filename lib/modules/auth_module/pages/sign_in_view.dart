@@ -101,7 +101,7 @@ class SignInView extends GetView<AuthController> {
                 SliverToBoxAdapter(
                     child: CustomButton(
                   onPressed: () {
-                    controller.handleSendOTP();
+                    controller.handleLoginOTP();
                   },
                   title: "Continue",
                 )),

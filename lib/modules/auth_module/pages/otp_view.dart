@@ -8,9 +8,9 @@ class OTPView extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){
-          controller.pageController.previousPage(
-                duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+      onWillPop: () {
+        controller.pageController.previousPage(
+            duration: Duration(milliseconds: 500), curve: Curves.easeIn);
         return Future.value(false);
       },
       child: Scaffold(
@@ -55,8 +55,8 @@ class OTPView extends GetView<AuthController> {
                       Text(
                         "+91-${controller.numberController.text}",
                         textAlign: TextAlign.center,
-                        style:
-                            TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
@@ -94,7 +94,11 @@ class OTPView extends GetView<AuthController> {
                   SizedBox(
                     height: 20,
                   ),
-                  CustomButton(title: "Continue", onPressed: () {})
+                  CustomButton(
+                      title: "Continue",
+                      onPressed: () {
+                        controller.handleVerifyOTP();
+                      })
                 ],
               ),
             ),

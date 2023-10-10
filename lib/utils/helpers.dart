@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:glok/utils/meta_colors.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CustomButton extends StatelessWidget {
   CustomButton(
@@ -151,4 +152,57 @@ class DashedLinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+showSnackBar({required String message, String? title, bool isError = true}) {
+  Get.snackbar(title ?? '', message,
+      backgroundColor: isError ? Colors.red : Colors.green);
+}
+
+Future<ImageSource?> showImageSourceSelector() async {
+  ImageSource? value = await Get.bottomSheet<ImageSource>(
+    Container(
+      height: 150,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+      ),
+      child: Column(
+        children: [
+          ListTile(
+            leading: Icon(Icons.camera_alt),
+            title: Text('Camera'),
+            onTap: () {
+              Get.back(result: ImageSource.camera);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.photo),
+            title: Text('Gallery'),
+            onTap: () {
+              Get.back(result: ImageSource.gallery);
+            },
+          ),
+        ],
+      ),
+    ),
+    backgroundColor: Colors.transparent,
+  );
+  return value;
+}
+
+//email validator
+String? validateEmail(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Please enter email';
+  }
+  final RegExp nameExp = RegExp(
+      r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$'); //r'^[A-Za-z ]+$'
+  if (!nameExp.hasMatch(value)) {
+    return 'Please enter valid email';
+  }
+  return null;
 }
