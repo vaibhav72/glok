@@ -15,7 +15,7 @@ class MetaStrings {
   static const String updateNotification = '/user-notification/update';
 
   //glocker
-
+  static const String getCurrentGlocker = '/glocker/';
   static const String glockerNew = '/glocker/new';
   static const String glockerUpdate = '/glocker/update';
   static const String updateGlockerPhoto = '/glocker/updateprofilephoto';
@@ -25,6 +25,13 @@ class MetaStrings {
   //glocker list sort
   static const String getGlocker = '/glocker/';
   static const String getGlockerSort = '/glocker/sort';
+  static const String getFilteredGlocker = '/glocker';
+
+  static const String model = 'Model';
+  static const String influencer = 'Influencer';
+  static const String movieStar = 'MovieStar';
+  static const String internationalStar = 'InternationalStar';
+
 //bank
 
   static const String updatebank = '/bank';
@@ -32,8 +39,8 @@ class MetaStrings {
 
   static const String updateGalleryPhoto = '/gallery/photo';
   static const String updateGalleryVideo = '/gallery/video';
-  static const String getGalleryVideo = 'gallery/video';
-  static const String getGalleryPhoto = 'gallery/photo';
+  static const String getMyGallery = '/gallery';
+  static const String getGlockerGallery = '/gallery/user/';
 
   //favorites
   static const String getFavorites = '/favorite';

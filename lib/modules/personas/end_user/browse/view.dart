@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:glok/modules/personas/end_user/browse/celeb_by_category/binding.dart';
 import 'package:glok/modules/personas/end_user/browse/celeb_by_category/view.dart';
 import 'package:glok/modules/personas/end_user/browse/controller.dart';
+import 'package:glok/modules/personas/end_user/glocker_list_controller.dart';
 import 'package:glok/modules/personas/end_user/home/view.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:glok/utils/meta_assets.dart';
@@ -81,14 +82,20 @@ class BrowseView extends GetView<BrowseController> {
                           ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0)
-                            .copyWith(right: 0, top: 0),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children:
-                                List.generate(10, (index) => CelebrityTile()),
+                      Obx(
+                        () => Padding(
+                          padding: const EdgeInsets.all(16.0)
+                              .copyWith(right: 0, top: 0),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: List.generate(
+                                  GlockerListController
+                                      .to.trendingGlockers.value!.length,
+                                  (index) => CelebrityTile(
+                                      data: GlockerListController
+                                          .to.trendingGlockers.value![index])),
+                            ),
                           ),
                         ),
                       ),
@@ -118,10 +125,12 @@ class BrowseView extends GetView<BrowseController> {
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3),
-                          itemCount: 10,
+                          itemCount: pageTitleList.length,
                           itemBuilder: ((context, index) {
                             return InkWell(
                               onTap: () {
+                                GlockerListController.to
+                                    .changeCategory(pageTitleList[index]);
                                 Get.to(CelebByCategoryView(),
                                     binding: CelebByCategoryBiding());
                               },
@@ -142,7 +151,7 @@ class BrowseView extends GetView<BrowseController> {
                                       height: 8,
                                     ),
                                     Text(
-                                      "Movie Star",
+                                      "${pageTitleList[index]}",
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600),

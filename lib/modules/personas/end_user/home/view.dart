@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:glok/data/models/glocker_model.dart';
 import 'package:glok/modules/personas/celebrity/celeb_profile/binding.dart';
 import 'package:glok/modules/personas/end_user/browse/view.dart';
+import 'package:glok/modules/personas/end_user/glocker_list_controller.dart';
 import 'package:glok/modules/personas/end_user/home/controller.dart';
 import 'package:glok/modules/personas/end_user/more/view.dart';
 import 'package:glok/modules/wallet/view.dart';
@@ -307,8 +309,18 @@ class EndUserHomeView extends GetView<EndUserHomeController> {
                                             child: SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
                                               child: Row(
-                                                children: List.generate(10,
-                                                    (index) => CelebrityTile()),
+                                                children: List.generate(
+                                                    GlockerListController
+                                                        .to
+                                                        .trendingGlockers
+                                                        .value!
+                                                        .length,
+                                                    (index) => CelebrityTile(
+                                                          data: GlockerListController
+                                                              .to
+                                                              .trendingGlockers
+                                                              .value![index],
+                                                        )),
                                               ),
                                             ),
                                           ),
@@ -354,8 +366,17 @@ class EndUserHomeView extends GetView<EndUserHomeController> {
                                             child: SingleChildScrollView(
                                               scrollDirection: Axis.horizontal,
                                               child: Row(
-                                                children: List.generate(10,
-                                                    (index) => CelebrityTile()),
+                                                children: List.generate(
+                                                    GlockerListController
+                                                        .to
+                                                        .trendingGlockers
+                                                        .value!
+                                                        .length,
+                                                    (index) => CelebrityTile(
+                                                        data: GlockerListController
+                                                            .to
+                                                            .trendingGlockers
+                                                            .value![index])),
                                               ),
                                             ),
                                           )
@@ -375,17 +396,17 @@ class EndUserHomeView extends GetView<EndUserHomeController> {
 }
 
 class CelebrityTile extends StatelessWidget {
-  const CelebrityTile({
-    super.key,
-  });
-
+  CelebrityTile({super.key, required this.data});
+  GlockerModel data;
+  void Function()? handler;
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Get.to(() => CelebrityProfileView(),
-            binding: CelebrityProfileBinding());
-      },
+      onTap: handler ??
+          () {
+            Get.to(() => CelebrityProfileView(),
+                binding: CelebrityProfileBinding());
+          },
       child: Padding(
         padding: const EdgeInsets.only(right: 16),
         child: Container(
@@ -438,7 +459,7 @@ class CelebrityTile extends StatelessWidget {
                                     fontWeight: FontWeight.w600),
                                 children: [
                                   TextSpan(
-                                      text: " 499/min",
+                                      text: " ${data.price}/min",
                                       style: GoogleFonts.poppins(
                                           fontSize: 12,
                                           color: Colors.white,
@@ -462,7 +483,7 @@ class CelebrityTile extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "Nora Fatehi",
+                      "${data.name}",
                       style: Get.theme.textTheme.bodyLarge!.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Get.theme.colorScheme.secondary),
@@ -472,7 +493,7 @@ class CelebrityTile extends StatelessWidget {
                 SizedBox(
                   height: 2,
                 ),
-                Text("Movie Star",
+                Text("${data.category}",
                     style: GoogleFonts.newsreader(
                         color: MetaColors.secondaryText,
                         fontStyle: FontStyle.italic)),
@@ -566,13 +587,16 @@ class CustomAppBar extends GetView<EndUserHomeController> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: List.generate(
-                      controller.pageTitleList.length,
+                      pageTitleList.length,
                       (index) => PageSelectorTile(
                           ontap: () {
-                            controller.changePage(index);
+                            // controller.changePage(index);
+                            GlockerListController.to
+                                .changeCategory(pageTitleList[index]);
                           },
-                          selected: controller.selectedPage == index,
-                          title: controller.pageTitleList[index])),
+                          selected: pageTitleList[index] ==
+                              GlockerListController.to.currentCategory.value,
+                          title: pageTitleList[index])),
                 ),
               ),
             ),

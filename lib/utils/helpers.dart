@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:image_picker/image_picker.dart';
 
+List<String> pageTitleList = ["Movie Star", "TV Star", "Music", "Influencer"];
+
 class CustomButton extends StatelessWidget {
   CustomButton(
       {super.key,

@@ -2,23 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:glok/modules/personas/end_user/glocker_list_controller.dart';
 import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CelebByCategoryController extends GetxController {
-  RxList<String> filtersList = RxList.empty();
-  Rxn<bool> showOnline = Rxn(false);
-  List<String> sortBy = ["Popular", "Lowest Price", "Highest Price"];
-  Rxn<List<String>> selectedFilters = Rxn([]);
-  List<String> priceList = [
-    "Below \u20b9 499",
-    "\u20b9 999 - \u20b9 1999",
-    "\u20b9 1999 - \u20b9 2999",
-    "\u20b9 2999 - \u20b9 3999",
-    "\u20b9 1999 - \u20b9 4999",
-    "Above \u20b9 4999"
-  ];
+  GlockerListController get glockerListController => GlockerListController.to;
 
   showFilters() {
     Get.bottomSheet(
@@ -74,12 +64,13 @@ class CelebByCategoryController extends GetxController {
                         Obx(() => CupertinoSwitch(
                             activeColor:
                                 MetaColors.transactionSuccess.withOpacity(0.2),
-                            thumbColor: showOnline.value!
+                            thumbColor: glockerListController.showOnline.value!
                                 ? MetaColors.transactionSuccess
                                 : Colors.white,
-                            value: showOnline.value!,
+                            value: glockerListController.showOnline.value!,
                             onChanged: (value) {
-                              showOnline.value = value;
+                              glockerListController.showOnline.value = value;
+                              glockerListController.getGlockerList();
                             }))
                       ],
                     ),
@@ -101,21 +92,12 @@ class CelebByCategoryController extends GetxController {
                       padding: const EdgeInsets.all(24).copyWith(top: 8),
                       child: Column(
                         children: List.generate(
-                            sortBy.length,
+                            glockerListController.sortByList.length,
                             (index) => InkWell(
                                   onTap: () {
-                                    sortBy.forEach(
-                                      (element) {
-                                        if (selectedFilters.value!
-                                                .contains(element) &&
-                                            element != sortBy[index]) {
-                                          selectedFilters.value!
-                                              .remove(element);
-                                        }
-                                      },
-                                    );
-
-                                    handleFilter(sortBy[index]);
+                                    glockerListController.sortBy.value =
+                                        glockerListController.sortByList[index];
+                                    glockerListController.getGlockerList();
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(bottom: 12),
@@ -123,9 +105,10 @@ class CelebByCategoryController extends GetxController {
                                       children: [
                                         CircleAvatar(
                                           radius: 10,
-                                          backgroundColor: selectedFilters
-                                                  .value!
-                                                  .contains(sortBy[index])
+                                          backgroundColor: glockerListController
+                                                      .sortByList[index] ==
+                                                  glockerListController
+                                                      .sortBy.value
                                               ? Get.theme.primaryColor
                                               : Colors.white,
                                           child: CircleAvatar(
@@ -137,7 +120,8 @@ class CelebByCategoryController extends GetxController {
                                           width: 8,
                                         ),
                                         Text(
-                                          sortBy[index],
+                                          glockerListController
+                                              .sortByList[index],
                                           style: TextStyle(fontSize: 16),
                                         )
                                       ],
@@ -164,10 +148,11 @@ class CelebByCategoryController extends GetxController {
                       padding: const EdgeInsets.all(24).copyWith(top: 8),
                       child: Column(
                         children: List.generate(
-                            priceList.length,
+                            glockerListController.priceList.length,
                             (index) => InkWell(
                                   onTap: () {
-                                    handleFilter(priceList[index]);
+                                    handleFilter(
+                                        glockerListController.priceList[index]);
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(bottom: 12),
@@ -177,19 +162,22 @@ class CelebByCategoryController extends GetxController {
                                           height: 22,
                                           width: 22,
                                           decoration: BoxDecoration(
-                                              color: selectedFilters.value!
+                                              color: glockerListController
+                                                      .selectedFilters.value!
                                                       .contains(
-                                                          priceList[index])
+                                                          glockerListController
+                                                              .priceList[index])
                                                   ? Get.theme.primaryColor
                                                   : Colors.white,
                                               border: Border.all(
-                                                  color: selectedFilters.value!
-                                                          .contains(
-                                                              priceList[index])
+                                                  color: glockerListController
+                                                          .selectedFilters
+                                                          .value!
+                                                          .contains(glockerListController
+                                                              .priceList[index])
                                                       ? Get.theme.primaryColor
                                                       : Get.theme.dividerColor),
-                                              borderRadius:
-                                                  BorderRadius.circular(4)),
+                                              borderRadius: BorderRadius.circular(4)),
                                           child: Padding(
                                             padding: const EdgeInsets.all(1.0),
                                             child: SvgPicture.asset(
@@ -200,7 +188,8 @@ class CelebByCategoryController extends GetxController {
                                           width: 8,
                                         ),
                                         Text(
-                                          priceList[index],
+                                          glockerListController
+                                              .priceList[index],
                                           style: TextStyle(fontSize: 16),
                                         )
                                       ],
@@ -219,20 +208,21 @@ class CelebByCategoryController extends GetxController {
   }
 
   void removeFilter(String element) {
-    selectedFilters.value!.remove(element);
-    selectedFilters.refresh();
+    glockerListController.selectedFilters.value!.remove(element);
+    glockerListController.selectedFilters.refresh();
   }
 
   void addFilter(String element) {
-    selectedFilters.value!.add(element);
-    selectedFilters.refresh();
+    glockerListController.selectedFilters.value!.add(element);
+    glockerListController.selectedFilters.refresh();
   }
 
   void handleFilter(String element) {
-    if (selectedFilters.value!.contains(element)) {
+    if (glockerListController.selectedFilters.value!.contains(element)) {
       removeFilter(element);
     } else {
       addFilter(element);
     }
+    glockerListController.getGlockerList();
   }
 }

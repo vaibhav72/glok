@@ -20,6 +20,74 @@ class GlockerRepository {
     };
   }
 
+  Future<GlockerModel> getGlockerDetails() async {
+    try {
+      var headers = await getHeaders();
+      final response = await http.get(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.getCurrentGlocker),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return GlockerModel.fromJson(jsonDecode(response.body)["glocker"]);
+      } else {
+        throw Exception('Failed to load user');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<GlockerModel> getGlockerDetailsById(int id) async {
+    try {
+      var headers = await getHeaders();
+      final response = await http.get(
+          Uri.parse(MetaStrings.baseUrl +
+              MetaStrings.getCurrentGlocker +
+              id.toString()),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return GlockerModel.fromJson(jsonDecode(response.body));
+      } else {
+        throw Exception('Failed to load user');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<GlockerModel>> getGlockerList({
+    String? filters,
+    int? index,
+  }) async {
+    var headers = await getHeaders();
+    String url = MetaStrings.baseUrl +
+        (MetaStrings.getFilteredGlocker) +
+        (filters != null ? "?$filters" : '');
+    final response = await http.get(Uri.parse(url), headers: headers);
+    if (response.statusCode == 200) {
+      return (jsonDecode(response.body) as List)
+          .map((e) => GlockerModel.fromJson(e))
+          .toList();
+    } else {
+      throw Exception('Failed to load user');
+    }
+  }
+
+  Future<List<GlockerModel>> getTrendingGlockerList({
+    int? index,
+  }) async {
+    var headers = await getHeaders();
+    String url =
+        MetaStrings.baseUrl + (MetaStrings.getFilteredGlocker) + ("/trending");
+    final response = await http.get(Uri.parse(url), headers: headers);
+    if (response.statusCode == 200) {
+      return (jsonDecode(response.body) as List)
+          .map((e) => GlockerModel.fromJson(e))
+          .toList();
+    } else {
+      throw Exception('Failed to load user');
+    }
+  }
+
   Future<bool> applyAsGlocker(
       {required Map<String, String> params,
       required XFile coverImage,
