@@ -7,17 +7,19 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
 class AuthRepository {
-  Future<bool> registerUser(var params, XFile file) async {
+  var headers = {"Content-type": "application/json"};
+  Future<bool> registerUser(Map<String, String> params, XFile file) async {
     try {
       String url = MetaStrings.baseUrl + MetaStrings.userRegistrationUrl;
       var request = http.MultipartRequest('POST', Uri.parse(url));
       request.fields.addAll(params);
       request.files.add(await http.MultipartFile.fromPath('photo', file.path));
       var response = await request.send();
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return true;
       } else {
-        var responseBody = jsonDecode(response.stream.toString());
+        var parsedResponse = await http.Response.fromStream(response);
+        var responseBody = jsonDecode(parsedResponse.body);
         throw responseBody['error'] ?? "Failed to register user";
       }
     } catch (e) {
@@ -29,7 +31,7 @@ class AuthRepository {
     try {
       String url = MetaStrings.baseUrl + MetaStrings.generateOtp;
       var response = await http.post(Uri.parse(url),
-          body: jsonEncode({'mobile_number': phone}));
+          headers: headers, body: jsonEncode({'mobile_number': phone}));
       if (response.statusCode == 200) {
         return true;
       } else if (response.statusCode == 400) {
@@ -47,6 +49,7 @@ class AuthRepository {
     try {
       String url = MetaStrings.baseUrl + MetaStrings.loginVerifyOTP;
       var response = await http.post(Uri.parse(url),
+          headers: headers,
           body: jsonEncode({'mobile_number': phone, 'otp': otp}));
       if (response.statusCode == 200) {
         UserModel data = userModelFromJson(response.body);

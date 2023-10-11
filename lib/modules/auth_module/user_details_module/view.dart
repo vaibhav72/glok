@@ -47,16 +47,11 @@ class UserDetailsView extends GetView<UserDetailsController> {
                       children: [
                         CircleAvatar(
                           radius: 60,
+                          backgroundImage: controller.image.value != null
+                              ? FileImage(File(controller.image.value!.path))
+                              : AssetImage(MetaAssets.dummyProfile)
+                                  as ImageProvider<Object>?,
                           backgroundColor: Get.theme.dividerColor,
-                          child: controller.image.value != null
-                              ? Image.file(
-                                  File(controller.image.value!.path),
-                                  height: 48,
-                                )
-                              : Image.asset(
-                                  MetaAssets.dummyProfile,
-                                  height: 48,
-                                ),
                         ),
                         SizedBox(
                           height: 16,
@@ -86,6 +81,7 @@ class UserDetailsView extends GetView<UserDetailsController> {
                               ),
                             ),
                             TextFormField(
+                              controller: controller.nameController,
                               decoration:
                                   formDecoration("Name", "Enter your name"),
                             ),
@@ -232,33 +228,39 @@ class UserDetailsView extends GetView<UserDetailsController> {
                         SizedBox(
                           height: 20,
                         ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.all(8.0).copyWith(left: 0),
-                              child: Container(
-                                height: 22,
-                                width: 22,
-                                decoration: BoxDecoration(
-                                    color: controller.agreement.value!
-                                        ? Get.theme.primaryColor
-                                        : Colors.white,
-                                    border: Border.all(
-                                        color: Get.theme.primaryColor),
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: 15,
+                        InkWell(
+                          onTap: () {
+                            controller.agreement.value =
+                                !controller.agreement.value!;
+                          },
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.all(8.0).copyWith(left: 0),
+                                child: Container(
+                                  height: 22,
+                                  width: 22,
+                                  decoration: BoxDecoration(
+                                      color: controller.agreement.value!
+                                          ? Get.theme.primaryColor
+                                          : Colors.white,
+                                      border: Border.all(
+                                          color: Get.theme.primaryColor),
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 15,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              child: Text(
-                                  "I hereby acknowledge and agree to the terms and conditions."),
-                            ),
-                          ],
+                              Expanded(
+                                child: Text(
+                                    "I hereby acknowledge and agree to the terms and conditions."),
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(
                           height: 20,

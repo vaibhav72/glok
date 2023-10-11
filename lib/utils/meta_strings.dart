@@ -1,11 +1,11 @@
 class MetaStrings {
-  static const String baseUrl = 'http://dev.mindstack.in:3030/';
+  static const String baseUrl = 'http://dev.mindstack.in:3030';
 
   ///registration Urls
   static const String userRegistrationUrl = '/user/new';
   static const String verifyMobile = '/user/verifyMobile';
-  static const String getCurrentuser = 'user/currentbyuser';
-
+  static const String getCurrentuser = '/user/currentbyuser';
+  static const String updateUser = '/user';
   static const String generateOtp = '/auth/generateOtp';
   static const String loginVerifyOTP = '/auth/verifyOtp';
 
@@ -20,8 +20,7 @@ class MetaStrings {
   static const String glockerUpdate = '/glocker/update';
   static const String updateGlockerPhoto = '/glocker/updateprofilephoto';
   static const String updateGlockerCoverPhoto = '/glocker/updatecoverphoto';
-  static const String updateAadharFile = '/glocker/updateaadharphoto';
-  static const String updateAadhaar = 'glocker/updateaadhaar';
+  static const String updateAadharFile = '/glocker/updateaadharfile';
   static const String updateVideKYC = '/glocker/updatevideokyc';
   //glocker list sort
   static const String getGlocker = '/glocker/';

@@ -25,7 +25,7 @@ class AuthController extends GetxController with CodeAutoFill {
   Rxn<String> phoneNumber = Rxn<String>();
   Rxn<bool> get walkthroughDone =>
       Rxn((getWalkthroughStatus() ?? false) || showWalkthrough.value!);
-  Rxn<bool> get isLoggedIn => getToken();
+  Rxn<bool> get isLoggedIn => Rxn((getToken() != null));
   getWalkthroughStatus() {
     return hiveController.readData('walkthrough');
   }
@@ -64,7 +64,7 @@ class AuthController extends GetxController with CodeAutoFill {
     }
   }
 
-  handleRegister(var params, XFile file) async {
+  handleRegister(Map<String, String> params, XFile file) async {
     try {
       authLoading.value = true;
       bool response = await authRepository.registerUser(params, file);
@@ -82,7 +82,7 @@ class AuthController extends GetxController with CodeAutoFill {
   }
 
   handleVerifyOTP() async {
-    if (otpController.text.length == 6) {
+    if (otpController.text.length == 5) {
       try {
         authLoading.value = true;
         UserModel response = await authRepository.verifyOtp(

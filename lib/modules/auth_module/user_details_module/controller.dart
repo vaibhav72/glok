@@ -27,14 +27,21 @@ class UserDetailsController extends GetxController {
   }
 
   register() {
-    if (!formKey.currentState!.validate())
+    if (!formKey.currentState!.validate()) return;
+    if (image.value == null) {
+      showSnackBar(message: "Please select and Image");
       return;
-    else {
+    }
+    if (!agreement.value!) {
+      showSnackBar(
+          message: "Please agree to the terms and conditions to proceed");
+      return;
+    } else {
       authController.phoneNumber.value = numberController.text;
       authController.handleRegister({
         "name": nameController.text.trim(),
         "email": emailController.text.trim(),
-        "gender": gender.value,
+        "gender": gender.value!,
         "mobile_number": numberController.text.trim(),
       }, image.value!);
     }
