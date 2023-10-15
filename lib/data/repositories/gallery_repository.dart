@@ -49,7 +49,7 @@ class GalleryRepository {
       var headers = await getHeaders();
       final response = await http.get(
           Uri.parse(
-              "${MetaStrings.baseUrl}${MetaStrings.getGlockerGallery}?page=$page&limit=10&category=$category"),
+              "${MetaStrings.baseUrl}${MetaStrings.getGlockerGallery}?id=$glockerId&page=$page&limit=10&category=$category"),
           headers: headers);
       if (response.statusCode == 200) {
         return (jsonDecode(response.body) as Map).values.map((e) {

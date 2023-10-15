@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
 import '../models/user_model.dart';
+import '../models/wallet_model.dart';
 
 class UserRepository {
   Future<String> getToken() async {
@@ -68,6 +69,18 @@ class UserRepository {
       }
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<WalletModel> getMyWallet() async {
+    var headers = await getHeaders();
+    final response = await http.get(
+        Uri.parse(MetaStrings.baseUrl + MetaStrings.getWalletDetails),
+        headers: headers);
+    if (response.statusCode == 200) {
+      return WalletModel.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load user');
     }
   }
 }

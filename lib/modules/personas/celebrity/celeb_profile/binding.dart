@@ -5,6 +5,6 @@ import 'controller.dart';
 class CelebrityProfileBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<CelebrityProfileController>(() => CelebrityProfileController());
+    Get.put<CelebrityProfileController>(CelebrityProfileController());
   }
 }

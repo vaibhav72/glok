@@ -70,7 +70,6 @@ class CelebByCategoryController extends GetxController {
                             value: glockerListController.showOnline.value!,
                             onChanged: (value) {
                               glockerListController.showOnline.value = value;
-                              glockerListController.getGlockerList();
                             }))
                       ],
                     ),
@@ -97,7 +96,6 @@ class CelebByCategoryController extends GetxController {
                                   onTap: () {
                                     glockerListController.sortBy.value =
                                         glockerListController.sortByList[index];
-                                    glockerListController.getGlockerList();
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(bottom: 12),
@@ -147,58 +145,164 @@ class CelebByCategoryController extends GetxController {
                     () => Padding(
                       padding: const EdgeInsets.all(24).copyWith(top: 8),
                       child: Column(
-                        children: List.generate(
-                            glockerListController.priceList.length,
-                            (index) => InkWell(
-                                  onTap: () {
-                                    handleFilter(
-                                        glockerListController.priceList[index]);
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 12),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          height: 22,
-                                          width: 22,
-                                          decoration: BoxDecoration(
-                                              color: glockerListController
-                                                      .selectedFilters.value!
-                                                      .contains(
-                                                          glockerListController
-                                                              .priceList[index])
-                                                  ? Get.theme.primaryColor
-                                                  : Colors.white,
-                                              border: Border.all(
-                                                  color: glockerListController
-                                                          .selectedFilters
-                                                          .value!
-                                                          .contains(glockerListController
-                                                              .priceList[index])
-                                                      ? Get.theme.primaryColor
-                                                      : Get.theme.dividerColor),
-                                              borderRadius: BorderRadius.circular(4)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(1.0),
-                                            child: SvgPicture.asset(
-                                                MetaAssets.tickMark),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Text(
-                                          glockerListController
-                                              .priceList[index],
-                                          style: TextStyle(fontSize: 16),
-                                        )
-                                      ],
-                                    ),
-                                  ),
+                        children: [
+                          RangeSlider(
+                            min: 499,
+                            max: 4999,
+                            labels: RangeLabels(
+                                "\u20b9 ${glockerListController.minPrice.value!}",
+                                "\u20b9 ${glockerListController.maxPrice.value!}"),
+                            values: RangeValues(
+                                glockerListController.minPrice.value!,
+                                glockerListController.maxPrice.value!),
+                            onChanged: (value) {
+                              glockerListController.minPrice.value =
+                                  value.start;
+                              glockerListController.maxPrice.value = value.end;
+                            },
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "\u20b9 499",
+                                style: TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.w500),
+                              ),
+                              Expanded(
+                                child: Center(
+                                    child: Text(
+                                  "\u20b9 ${glockerListController.minPrice.value!.toInt()} - \u20b9 ${glockerListController.maxPrice.value!.toInt()}",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600),
                                 )),
+                              ),
+                              Text(
+                                "\u20b9 4999",
+                                style: TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.w500),
+                              )
+                            ],
+                          )
+                        ],
                       ),
+                      // child: Column(
+                      //   children: List.generate(
+                      //       glockerListController.priceList.length,
+                      //       (index) => InkWell(
+                      //             onTap: () {
+                      //               handleFilter(
+                      //                   glockerListController.priceList[index]);
+                      //             },
+                      //             child: Padding(
+                      //               padding: const EdgeInsets.only(bottom: 12),
+                      //               child: Row(
+                      //                 children: [
+                      //                   Container(
+                      //                     height: 22,
+                      //                     width: 22,
+                      //                     decoration: BoxDecoration(
+                      //                         color: glockerListController
+                      //                                 .selectedFilters.value!
+                      //                                 .contains(
+                      //                                     glockerListController
+                      //                                         .priceList[index])
+                      //                             ? Get.theme.primaryColor
+                      //                             : Colors.white,
+                      //                         border: Border.all(
+                      //                             color: glockerListController
+                      //                                     .selectedFilters
+                      //                                     .value!
+                      //                                     .contains(glockerListController
+                      //                                         .priceList[index])
+                      //                                 ? Get.theme.primaryColor
+                      //                                 : Get.theme.dividerColor),
+                      //                         borderRadius: BorderRadius.circular(4)),
+                      //                     child: Padding(
+                      //                       padding: const EdgeInsets.all(1.0),
+                      //                       child: SvgPicture.asset(
+                      //                           MetaAssets.tickMark),
+                      //                     ),
+                      //                   ),
+                      //                   SizedBox(
+                      //                     width: 8,
+                      //                   ),
+                      //                   Text(
+                      //                     glockerListController
+                      //                         .priceList[index],
+                      //                     style: TextStyle(fontSize: 16),
+                      //                   )
+                      //                 ],
+                      //               ),
+                      //             ),
+                      //           )),
+                      // ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              glockerListController.clearFilters();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Get.theme.primaryColor),
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "Clear Filters",
+                                      style: TextStyle(
+                                          color: Get.theme.primaryColor,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              glockerListController.applyFilters();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Get.theme.primaryColor,
+                                    border: Border.all(
+                                        color: Get.theme.primaryColor),
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "Apply Filters",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
@@ -212,17 +316,14 @@ class CelebByCategoryController extends GetxController {
     glockerListController.selectedFilters.refresh();
   }
 
+  void removeAppliedFilter(String element) {
+    glockerListController.appliedFilters.value!.remove(element);
+    glockerListController.appliedFilters.refresh();
+    removeFilter(element);
+  }
+
   void addFilter(String element) {
     glockerListController.selectedFilters.value!.add(element);
     glockerListController.selectedFilters.refresh();
-  }
-
-  void handleFilter(String element) {
-    if (glockerListController.selectedFilters.value!.contains(element)) {
-      removeFilter(element);
-    } else {
-      addFilter(element);
-    }
-    glockerListController.getGlockerList();
   }
 }

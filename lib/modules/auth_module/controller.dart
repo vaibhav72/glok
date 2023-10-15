@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../controllers/hive_controller.dart';
+import '../../data/models/wallet_model.dart';
 import '../../data/repositories/auth_repository.dart';
 
 class AuthController extends GetxController with CodeAutoFill {
@@ -18,6 +19,7 @@ class AuthController extends GetxController with CodeAutoFill {
   final hiveController = HiveController.to;
   final formKey = GlobalKey<FormState>();
   Rxn<UserModel> user = Rxn<UserModel>();
+  Rxn<WalletModel> wallet = Rxn<WalletModel>();
   TextEditingController numberController = TextEditingController();
   TextEditingController otpController = TextEditingController();
   PageController pageController = PageController();
@@ -100,6 +102,8 @@ class AuthController extends GetxController with CodeAutoFill {
       loading.value = true;
       UserModel response = await userRepository.getUserDetails();
       user.value = response;
+      WalletModel walletResponse = await userRepository.getMyWallet();
+      wallet.value = walletResponse;
       loading.value = false;
     } catch (e) {
       loading.value = false;

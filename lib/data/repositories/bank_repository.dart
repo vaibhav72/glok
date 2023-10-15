@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import '../../utils/meta_strings.dart';
 import '../models/bank_model.dart';
+import '../models/wallet_model.dart';
 
 class BankRepository {
   Future<String> getToken() async {
@@ -32,16 +33,20 @@ class BankRepository {
   }
 
   Future<List<TransactionModel>> getAlltransactions() async {
-    var headers = await getHeaders();
-    final response = await http.get(
-        Uri.parse(MetaStrings.baseUrl + MetaStrings.getAllTransactions),
-        headers: headers);
-    if (response.statusCode == 200) {
-      return (jsonDecode(response.body) as List)
-          .map((e) => TransactionModel.fromJson(e))
-          .toList();
-    } else {
-      throw Exception('Failed to load user');
+    try {
+      var headers = await getHeaders();
+      final response = await http.get(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.getAllTransactions),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return (jsonDecode(response.body) as List)
+            .map((e) => TransactionModel.fromJson(e))
+            .toList();
+      } else {
+        return [];
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 

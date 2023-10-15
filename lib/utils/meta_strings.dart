@@ -7,7 +7,7 @@ class MetaStrings {
   static const String getCurrentuser = '/user/currentbyuser';
   static const String updateUser = '/user';
   static const String generateOtp = '/auth/generateOtp';
-  static const String loginVerifyOTP = '/auth/verifyOtp';
+  static const String loginVerifyOTP = '/auth/verifymobileotp';
 
   static const String updateUserPhoto = '/user/photo';
   static const String changeuserType = '/user/updateisglocker';
@@ -54,6 +54,7 @@ class MetaStrings {
   static const String addFunds = '/money/addfund';
   static const String withdrawFunds = '/money/withdraw';
   static const String getAllTransactions = '/money';
+  static const String getWalletDetails = '/wallet/currentwallet';
 
   //video call
   static const String getVideoCall = '/videocall';

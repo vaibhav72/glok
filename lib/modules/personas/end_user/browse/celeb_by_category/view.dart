@@ -55,7 +55,8 @@ class CelebByCategoryView extends GetView<CelebByCategoryController> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        if (controller.glockerListController.showOnline.value!)
+                        if (controller
+                            .glockerListController.appliedShowOnline.value!)
                           Padding(
                             padding: const EdgeInsets.only(right: 8),
                             child: Container(
@@ -80,6 +81,8 @@ class CelebByCategoryView extends GetView<CelebByCategoryController> {
                                     InkWell(
                                       onTap: () {
                                         controller.glockerListController
+                                            .appliedShowOnline.value = false;
+                                        controller.glockerListController
                                             .showOnline.value = false;
                                         controller.glockerListController
                                             .getGlockerList();
@@ -94,7 +97,8 @@ class CelebByCategoryView extends GetView<CelebByCategoryController> {
                               ),
                             ),
                           ),
-                        if (controller.glockerListController.sortBy.value!
+                        if (controller
+                            .glockerListController.appliedSortBy.value!
                             .trim()
                             .isNotEmpty)
                           Padding(
@@ -110,8 +114,8 @@ class CelebByCategoryView extends GetView<CelebByCategoryController> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      controller
-                                          .glockerListController.sortBy.value!
+                                      controller.glockerListController
+                                          .appliedSortBy.value!
                                           .toString(),
                                       style: TextStyle(
                                           color: Get.theme.primaryColor,
@@ -122,6 +126,8 @@ class CelebByCategoryView extends GetView<CelebByCategoryController> {
                                     ),
                                     InkWell(
                                       onTap: () {
+                                        controller.glockerListController
+                                            .appliedSortBy.value = '';
                                         controller.glockerListController.sortBy
                                             .value = '';
                                         controller.glockerListController
@@ -137,8 +143,55 @@ class CelebByCategoryView extends GetView<CelebByCategoryController> {
                               ),
                             ),
                           ),
+                        if (controller.glockerListController.appliedMinPrice
+                                    .value !=
+                                null &&
+                            controller.glockerListController.appliedMinPrice
+                                    .value !=
+                                null)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(60),
+                                  color: MetaColors.secondaryPurple
+                                      .withOpacity(.2)),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 6),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "₹ ${controller.glockerListController.appliedMinPrice.value!.toInt()} - ₹ ${controller.glockerListController.appliedMaxPrice.value!.toInt()}"
+                                          .toString(),
+                                      style: TextStyle(
+                                          color: Get.theme.primaryColor,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        controller.glockerListController
+                                            .appliedMinPrice.value = null;
+                                        controller.glockerListController
+                                            .appliedMaxPrice.value = null;
+                                        controller.glockerListController
+                                            .getGlockerList();
+                                      },
+                                      child: Icon(
+                                        Icons.close,
+                                        color: Get.theme.primaryColor,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         ...controller
-                            .glockerListController.selectedFilters.value!
+                            .glockerListController.appliedFilters.value!
                             .map((element) => Padding(
                                   padding: const EdgeInsets.only(right: 8),
                                   child: Container(
@@ -162,7 +215,8 @@ class CelebByCategoryView extends GetView<CelebByCategoryController> {
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              controller.removeFilter(element);
+                                              controller
+                                                  .removeAppliedFilter(element);
                                             },
                                             child: Icon(
                                               Icons.close,

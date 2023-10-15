@@ -404,8 +404,7 @@ class CelebrityTile extends StatelessWidget {
     return InkWell(
       onTap: handler ??
           () {
-            Get.to(() => CelebrityProfileView(),
-                binding: CelebrityProfileBinding());
+            GlockerListController.to.viewGlocker(data);
           },
       child: Padding(
         padding: const EdgeInsets.only(right: 16),
