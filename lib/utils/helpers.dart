@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -194,6 +196,116 @@ Future<ImageSource?> showImageSourceSelector() async {
     backgroundColor: Colors.transparent,
   );
   return value;
+}
+
+Future<bool?> selectVideoOrPhoto() async {
+  bool? isVideo = await Get.bottomSheet<bool>(
+    Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          InkWell(
+            onTap: () {
+              Get.back();
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Container(
+                  height: 6,
+                  width: 60,
+                  decoration: BoxDecoration(
+                      color: Get.theme.dividerColor,
+                      borderRadius: BorderRadius.circular(40)),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Upload",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                // SizedBox(
+                //   height: 16,
+                // ),
+                Divider(),
+                SizedBox(
+                  height: 16,
+                ),
+                InkWell(
+                  onTap: () {
+                    Get.back(result: false);
+                  },
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        MetaAssets.photosIcon,
+                        // height: 28,
+                        // width: 28,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        "New Photo",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                InkWell(
+                  onTap: () {
+                    Get.back(result: true);
+                  },
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        MetaAssets.videoIcon,
+                        // height: 28,
+                        // width: 28,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "New Video",
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 16,
+          ),
+        ],
+      ),
+    ),
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+  );
+  return isVideo;
 }
 
 //email validator

@@ -24,34 +24,40 @@ class EndUserMoreView extends GetView<EndUserMoreController> {
           padding: MediaQuery.of(context).padding,
           child: Padding(
             padding: const EdgeInsets.all(24),
-            child: Container(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 16,
-                  ),
-                  CircleAvatar(
-                    radius: 44,
-                    backgroundImage: AssetImage(MetaAssets.dummyCeleb),
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Text(
-                    "Priya Paterl",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        color: Colors.white),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    "+91-720474747",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
+            child: Obx(
+              () => Container(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 16,
+                    ),
+                    CircleAvatar(
+                      radius: 44,
+                      backgroundImage: controller.user.value!.photo != null
+                          ? CachedNetworkImageProvider(
+                              controller.user.value!.photo!)
+                          : AssetImage(MetaAssets.dummyProfile)
+                              as ImageProvider,
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    Text(
+                      controller.user.value!.name!,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                          color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      controller.user.value!.mobileNumber!,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -228,255 +234,271 @@ class _MoreTile extends StatelessWidget {
 class _MyProfile extends GetView<EndUserMoreController> {
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Container(
-        child: Scaffold(
-          appBar: AppBar(
-            elevation: 1,
-            leading: IconButton(
-                onPressed: () {
-                  Get.back();
-                },
-                icon: Icon(Icons.arrow_back)),
-            title: Text(
-              "My Profile",
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black),
-            ),
+    return Container(
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 1,
+          leading: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: Icon(Icons.arrow_back)),
+          title: Text(
+            "My Profile",
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),
           ),
-          backgroundColor: Colors.white,
-          body: Container(
-            color: Colors.white,
-            width: double.maxFinite,
-            height: Get.height,
-            child: Form(
-              key: controller.profileFormKey,
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              backgroundColor:
-                                  MetaColors.secondaryPurple.withOpacity(0.2),
-                              radius: 60,
-                              child: CircleAvatar(
-                                radius: 56,
-                                backgroundImage: controller
-                                            .profileImage.value !=
-                                        null
-                                    ? FileImage(File(
-                                        controller.profileImage.value!.path))
-                                    : controller.user.value!.photo != null
-                                        ? CachedNetworkImageProvider(
-                                            controller.user.value!.photo!)
-                                        : AssetImage(MetaAssets.dummyCeleb)
-                                            as ImageProvider,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                controller.pickProfileImage();
-                              },
-                              child: Text(
-                                "Change Photo",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Get.theme.primaryColor),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 24,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 6),
-                                  child: Text(
-                                    "Name",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 15),
+        ),
+        backgroundColor: Colors.white,
+        body: Container(
+          color: Colors.white,
+          width: double.maxFinite,
+          height: Get.height,
+          child: Obx(
+            () => controller.isLoading.value!
+                ? Center(
+                    child: Loader(),
+                  )
+                : Form(
+                    key: controller.profileFormKey,
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  CircleAvatar(
+                                    backgroundColor: MetaColors.secondaryPurple
+                                        .withOpacity(0.2),
+                                    radius: 60,
+                                    child: CircleAvatar(
+                                      radius: 56,
+                                      backgroundImage: controller
+                                                  .profileImage.value !=
+                                              null
+                                          ? FileImage(File(controller
+                                              .profileImage.value!.path))
+                                          : controller.user.value!.photo != null
+                                              ? CachedNetworkImageProvider(
+                                                  controller.user.value!.photo!)
+                                              : AssetImage(
+                                                      MetaAssets.dummyCeleb)
+                                                  as ImageProvider,
+                                    ),
                                   ),
-                                ),
-                                TextFormField(
-                                  controller: controller.nameController,
-                                  decoration:
-                                      formDecoration("Name", "Enter your name"),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 6),
-                                  child: Text(
-                                    "Gender",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 15),
+                                  SizedBox(
+                                    height: 16,
                                   ),
-                                ),
-                                Row(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        controller.gender.value = "male";
-                                      },
-                                      child: Row(
+                                  InkWell(
+                                    onTap: () {
+                                      controller.pickProfileImage();
+                                    },
+                                    child: Text(
+                                      "Change Photo",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Get.theme.primaryColor),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 24,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 6),
+                                        child: Text(
+                                          "Name",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 15),
+                                        ),
+                                      ),
+                                      TextFormField(
+                                        controller: controller.nameController,
+                                        decoration: formDecoration(
+                                            "Name", "Enter your name"),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 6),
+                                        child: Text(
+                                          "Gender",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 15),
+                                        ),
+                                      ),
+                                      Row(
                                         children: [
-                                          CircleAvatar(
-                                            radius: 11,
-                                            backgroundColor:
-                                                MetaColors.tertiaryText,
-                                            child: CircleAvatar(
-                                              backgroundColor:
-                                                  controller.gender.value ==
-                                                          "male"
-                                                      ? Get.theme.primaryColor
-                                                      : Colors.white,
-                                              radius: 10,
-                                              child: CircleAvatar(
-                                                backgroundColor: Colors.white,
-                                                radius: 5,
-                                              ),
+                                          InkWell(
+                                            onTap: () {
+                                              controller.gender.value = "male";
+                                            },
+                                            child: Row(
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 11,
+                                                  backgroundColor:
+                                                      MetaColors.tertiaryText,
+                                                  child: CircleAvatar(
+                                                    backgroundColor: controller
+                                                                .gender.value ==
+                                                            "male"
+                                                        ? Get.theme.primaryColor
+                                                        : Colors.white,
+                                                    radius: 10,
+                                                    child: CircleAvatar(
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      radius: 5,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text("Male")
+                                              ],
                                             ),
                                           ),
                                           SizedBox(
-                                            width: 10,
+                                            width: 40,
                                           ),
-                                          Text("Male")
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 40,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        controller.gender.value = "female";
-                                      },
-                                      child: Row(
-                                        children: [
-                                          CircleAvatar(
-                                            radius: 11,
-                                            backgroundColor:
-                                                MetaColors.tertiaryText,
-                                            child: CircleAvatar(
-                                              backgroundColor:
-                                                  controller.gender.value ==
-                                                          "female"
-                                                      ? Get.theme.primaryColor
-                                                      : Colors.white,
-                                              radius: 10,
-                                              child: CircleAvatar(
-                                                backgroundColor: Colors.white,
-                                                radius: 5,
-                                              ),
+                                          InkWell(
+                                            onTap: () {
+                                              controller.gender.value =
+                                                  "female";
+                                            },
+                                            child: Row(
+                                              children: [
+                                                CircleAvatar(
+                                                  radius: 11,
+                                                  backgroundColor:
+                                                      MetaColors.tertiaryText,
+                                                  child: CircleAvatar(
+                                                    backgroundColor: controller
+                                                                .gender.value ==
+                                                            "female"
+                                                        ? Get.theme.primaryColor
+                                                        : Colors.white,
+                                                    radius: 10,
+                                                    child: CircleAvatar(
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      radius: 5,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text("Female")
+                                              ],
                                             ),
                                           ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text("Female")
                                         ],
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 6),
+                                        child: Text(
+                                          "Mobile Number",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 15),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 6),
-                                  child: Text(
-                                    "Mobile Number",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 15),
+                                      TextFormField(
+                                        controller: controller.phoneController,
+                                        validator: (value) {
+                                          if (value!.trim().length != 10) {
+                                            return "Enter a valid mobile number";
+                                          }
+                                          return null;
+                                        },
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(10),
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
+                                        keyboardType: const TextInputType
+                                                .numberWithOptions(
+                                            signed: true, decimal: true),
+                                        decoration: formDecoration(
+                                            "Mobile Number",
+                                            "Enter Mobile Number"),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                TextFormField(
-                                  controller: controller.phoneController,
-                                  validator: (value) {
-                                    if (value!.trim().length != 10) {
-                                      return "Enter a valid mobile number";
-                                    }
-                                    return null;
-                                  },
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(10),
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  keyboardType:
-                                      const TextInputType.numberWithOptions(
-                                          signed: true, decimal: true),
-                                  decoration: formDecoration(
-                                      "Mobile Number", "Enter Mobile Number"),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 6),
-                                  child: Text(
-                                    "Email Address",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 15),
+                                  SizedBox(
+                                    height: 20,
                                   ),
-                                ),
-                                TextFormField(
-                                  controller: controller.emailController,
-                                  validator: validateEmail,
-                                  decoration: formDecoration(
-                                      "Email Address", "Enter email address"),
-                                ),
-                              ],
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 6),
+                                        child: Text(
+                                          "Email Address",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 15),
+                                        ),
+                                      ),
+                                      TextFormField(
+                                        controller: controller.emailController,
+                                        validator: validateEmail,
+                                        decoration: formDecoration(
+                                            "Email Address",
+                                            "Enter email address"),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              ),
                             ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                          ],
-                        ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CustomButton(
+                                title: "Save Changes",
+                                onPressed: () {
+                                  controller.updateProfileData();
+                                }),
+                          )
+                        ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CustomButton(
-                          title: "Save Changes",
-                          onPressed: () {
-                            controller.updateProfileData();
-                          }),
-                    )
-                  ],
-                ),
-              ),
-            ),
+                  ),
           ),
         ),
       ),
@@ -494,187 +516,210 @@ class _BankAccountWidget extends GetView<EndUserMoreController> {
       child: Form(
         key: controller.bankDetailsFormKey,
         child: Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              InkWell(
-                onTap: () {
-                  Get.back();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Container(
-                      height: 6,
-                      width: 60,
-                      decoration: BoxDecoration(
-                          color: Get.theme.dividerColor,
-                          borderRadius: BorderRadius.circular(40)),
+          height: 500,
+          child: Obx(
+            () => controller.isLoading.value!
+                ? Center(child: Loader())
+                : Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Get.back();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Container(
+                                  height: 6,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                      color: Get.theme.dividerColor,
+                                      borderRadius: BorderRadius.circular(40)),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.all(16.0).copyWith(bottom: 24),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Bank Account Details",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Spacer(),
+                                  ],
+                                ),
+                                Divider(),
+                                Text(
+                                  "Please enter the bank account details where you want to withdraw funds from your Glock wallet.",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: MetaColors.tertiaryText),
+                                ),
+                                SizedBox(
+                                  height: 24,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 6),
+                                      child: Text(
+                                        "Account Holder Name",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 15),
+                                      ),
+                                    ),
+                                    TextFormField(
+                                      controller: controller
+                                          .accountHolderNameController,
+                                      validator: (value) {
+                                        if (value!.trim().length < 3) {
+                                          return "Enter a valid name";
+                                        }
+                                        return null;
+                                      },
+                                      decoration: formDecoration(
+                                          "Name", "Enter your name"),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 6),
+                                      child: Text(
+                                        "Account Number",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 15),
+                                      ),
+                                    ),
+                                    TextFormField(
+                                      controller:
+                                          controller.accountNumberController,
+                                      validator: (value) {
+                                        if (value!.trim().length < 6) {
+                                          return "Enter a valid account number";
+                                        }
+                                        return null;
+                                      },
+                                      inputFormatters: [
+                                        // LengthLimitingTextInputFormatter(10),
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      keyboardType:
+                                          const TextInputType.numberWithOptions(
+                                              signed: true, decimal: true),
+                                      decoration: formDecoration(
+                                          "Account Number",
+                                          "Enter Account Number"),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 6),
+                                      child: Text(
+                                        "Re-enter Account Number",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 15),
+                                      ),
+                                    ),
+                                    TextFormField(
+                                      controller: controller
+                                          .reenterAccountNumberController,
+                                      validator: (value) {
+                                        if (value!.trim() !=
+                                            controller
+                                                .accountNumberController.text
+                                                .trim()) {
+                                          return "Account number does not match";
+                                        }
+                                        return null;
+                                      },
+                                      inputFormatters: [
+                                        // LengthLimitingTextInputFormatter(10),
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      keyboardType:
+                                          const TextInputType.numberWithOptions(
+                                              signed: true, decimal: true),
+                                      decoration: formDecoration(
+                                          "Account Number",
+                                          "Enter Account Number"),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 6),
+                                      child: Text(
+                                        "IFSC Code",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 15),
+                                      ),
+                                    ),
+                                    TextFormField(
+                                      controller: controller.ifscController,
+                                      validator: (value) {
+                                        if (RegExp(r'^[A-Z]{4}0[A-Z0-9]{6}$')
+                                                .hasMatch(value!) ==
+                                            false) {
+                                          return "Enter a valid IFSC Code";
+                                        }
+                                        return null;
+                                      },
+                                      inputFormatters: [
+                                        LengthLimitingTextInputFormatter(11),
+                                      ],
+                                      decoration: formDecoration(
+                                          "IFSC Code", "Enter IFSC Code"),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                CustomButton(
+                                    title: "Submit",
+                                    onPressed: () {
+                                      controller.addBankDetais();
+                                    })
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0).copyWith(bottom: 24),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          "Bank Account Details",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
-                        ),
-                        Spacer(),
-                      ],
-                    ),
-                    Divider(),
-                    Text(
-                      "Please enter the bank account details where you want to withdraw funds from your Glock wallet.",
-                      style: TextStyle(
-                          fontSize: 16, color: MetaColors.tertiaryText),
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 6),
-                          child: Text(
-                            "Account Holder Name",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 15),
-                          ),
-                        ),
-                        TextFormField(
-                          controller: controller.accountHolderNameController,
-                          validator: (value) {
-                            if (value!.trim().length < 3) {
-                              return "Enter a valid name";
-                            }
-                            return null;
-                          },
-                          decoration: formDecoration("Name", "Enter your name"),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 6),
-                          child: Text(
-                            "Account Number",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 15),
-                          ),
-                        ),
-                        TextFormField(
-                          controller: controller.accountNumberController,
-                          validator: (value) {
-                            if (value!.trim().length < 6) {
-                              return "Enter a valid account number";
-                            }
-                            return null;
-                          },
-                          inputFormatters: [
-                            // LengthLimitingTextInputFormatter(10),
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          keyboardType: const TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
-                          decoration: formDecoration(
-                              "Account Number", "Enter Account Number"),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 6),
-                          child: Text(
-                            "Re-enter Account Number",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 15),
-                          ),
-                        ),
-                        TextFormField(
-                          controller: controller.reenterAccountNumberController,
-                          validator: (value) {
-                            if (value!.trim() !=
-                                controller.accountNumberController.text
-                                    .trim()) {
-                              return "Account number does not match";
-                            }
-                            return null;
-                          },
-                          inputFormatters: [
-                            // LengthLimitingTextInputFormatter(10),
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          keyboardType: const TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
-                          decoration: formDecoration(
-                              "Account Number", "Enter Account Number"),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 6),
-                          child: Text(
-                            "IFSC Code",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 15),
-                          ),
-                        ),
-                        TextFormField(
-                          controller: controller.ifscController,
-                          validator: (value) {
-                            if (RegExp(r'^[A-Z]{4}0[A-Z0-9]{6}$')
-                                    .hasMatch(value!) ==
-                                false) {
-                              return "Enter a valid IFSC Code";
-                            }
-                            return null;
-                          },
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(10),
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          keyboardType: const TextInputType.numberWithOptions(
-                              signed: true, decimal: true),
-                          decoration:
-                              formDecoration("IFSC Code", "Enter IFSC Code"),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    CustomButton(
-                        title: "Submit",
-                        onPressed: () {
-                          controller.addBankDetais();
-                        })
-                  ],
-                ),
-              )
-            ],
           ),
         ),
       ),

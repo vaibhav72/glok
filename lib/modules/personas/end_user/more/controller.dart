@@ -22,12 +22,14 @@ class EndUserMoreController extends GetxController {
   Rxn<String> gender = Rxn();
   ImagePicker picker = ImagePicker();
   bool get isChanged {
-    return nameController.text != user()!.name ||
-        emailController.text != user()!.email! ||
-        phoneController.text != user()!.mobileNumber! ||
-        gender.value != user()!.gender! ||
-        profileImage.value != null;
+    return isDataChanged || profileImage.value != null;
   }
+
+  bool get isDataChanged =>
+      nameController.text != user()!.name ||
+      emailController.text != user()!.email! ||
+      phoneController.text != user()!.mobileNumber! ||
+      gender.value != user()!.gender!;
 
   //bank
   BankRepository bankRepository = BankRepository();
@@ -54,16 +56,19 @@ class EndUserMoreController extends GetxController {
       }
       if (profileFormKey.currentState!.validate()) {
         isLoading.value = true;
-        await userRepository.updateUserDetails(user.value!.copyWith(
-          name: nameController.text,
-          email: emailController.text,
-          gender: gender.value,
-          mobileNumber: gender.value,
-        ));
+        if (isDataChanged)
+          await userRepository.updateUserDetails(user.value!.copyWith(
+            name: nameController.text,
+            email: emailController.text,
+            gender: gender.value,
+            mobileNumber: phoneController.text,
+          ));
         if (profileImage.value != null) {
           await userRepository.updateUserPhoto(profileImage.value!);
           isLoading.value = false;
+          profileImage.value = null;
         }
+        await AuthController.to.getUserDetails();
         isLoading.value = false;
         showSnackBar(message: "User Details updated", isError: false);
         return;

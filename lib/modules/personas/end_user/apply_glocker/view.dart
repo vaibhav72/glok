@@ -26,7 +26,7 @@ class ApplyToGlockerView extends GetView<ApplyToGlockerController> {
           ],
           if (controller.glocker.value?.aadharFront == null)
             _AadhaarInfoWidget(),
-          _VideoKYCWidget(),
+          if (controller.glocker.value?.videoKyc == null) _VideoKYCWidget(),
           _CongratulationsView()
         ],
       ),
@@ -78,7 +78,11 @@ class _CongratulationsView extends StatelessWidget {
                     ),
                   ),
                 ),
-                CustomButton(title: "Continue", onPressed: () {})
+                CustomButton(
+                    title: "Continue",
+                    onPressed: () {
+                      Get.back();
+                    })
               ],
             )
           ],
@@ -104,7 +108,15 @@ class _VideoKYCWidget extends GetView<ApplyToGlockerController> {
             icon: Icon(
               Icons.arrow_back,
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (controller.glocker.value?.aadharFront == null) {
+                controller.pageController.previousPage(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeIn);
+              } else {
+                Get.back();
+              }
+            },
           ),
           title: Text(
             "Video KYC",
@@ -299,7 +311,15 @@ class _AadhaarInfoWidget extends GetView<ApplyToGlockerController> {
             icon: Icon(
               Icons.arrow_back,
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (controller.glocker.value?.panNumber == null) {
+                controller.pageController.previousPage(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeIn);
+              } else {
+                Get.back();
+              }
+            },
           ),
           title: Text(
             "Aadhaar Details",
@@ -527,7 +547,10 @@ class _TaxInfoWidget extends GetView<ApplyToGlockerController> {
             icon: Icon(
               Icons.arrow_back,
             ),
-            onPressed: () {},
+            onPressed: () {
+              controller.pageController.previousPage(
+                  duration: Duration(milliseconds: 100), curve: Curves.easeIn);
+            },
           ),
           title: Text(
             "Tax Information",

@@ -47,10 +47,9 @@ class GalleryRepository {
       required String category}) async {
     try {
       var headers = await getHeaders();
-      final response = await http.get(
-          Uri.parse(
-              "${MetaStrings.baseUrl}${MetaStrings.getGlockerGallery}?id=$glockerId&page=$page&limit=10&category=$category"),
-          headers: headers);
+      String url =
+          "${MetaStrings.baseUrl}${MetaStrings.getGlockerGallery}?id=$glockerId&page=$page&limit=10&category=$category";
+      final response = await http.get(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
         return (jsonDecode(response.body) as Map).values.map((e) {
           if (e is Map<String, dynamic>) return GalleryItem.fromJson(e);
@@ -72,7 +71,7 @@ class GalleryRepository {
       request.headers.addAll(headers);
       request.files.add(await http.MultipartFile.fromPath('photo', file.path));
       var response = await request.send();
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return true;
       } else {
         var parsedResponse = await http.Response.fromStream(response);
@@ -92,12 +91,28 @@ class GalleryRepository {
       request.headers.addAll(headers);
       request.files.add(await http.MultipartFile.fromPath('vidoe', file.path));
       var response = await request.send();
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return true;
       } else {
         var parsedResponse = await http.Response.fromStream(response);
         var responseBody = jsonDecode(parsedResponse.body);
         throw responseBody['error'] ?? "Failed to upload photo";
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  deleteGalleryItem(String i) async {
+    try {
+      var headers = await getHeaders();
+      String url = MetaStrings.baseUrl + MetaStrings.getMyGallery + "/$i";
+      final response = await http.delete(Uri.parse(url), headers: headers);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        var responseBody = jsonDecode(response.body);
+        throw responseBody['error'] ?? "Failed to delete item";
       }
     } catch (e) {
       rethrow;

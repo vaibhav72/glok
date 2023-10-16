@@ -54,7 +54,7 @@ class MetaStrings {
   //money
   static const String addFunds = '/money/addfund';
   static const String withdrawFunds = '/money/withdraw';
-  static const String getAllTransactions = '/money';
+  static const String getAllTransactions = '/money/';
   static const String getWalletDetails = '/wallet/currentwallet';
 
   //video call

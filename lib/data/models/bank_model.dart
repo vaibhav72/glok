@@ -11,8 +11,8 @@ String bankModelToJson(BankModel data) => json.encode(data.toJson());
 class BankModel {
   int? status;
   String? accountHolderName;
-  double? accountNumber;
-  double? reenterAccountNumber;
+  String? accountNumber;
+  String? reenterAccountNumber;
   String? ifscCode;
   int? id;
 
@@ -28,8 +28,8 @@ class BankModel {
   BankModel copyWith({
     int? status,
     String? accountHolderName,
-    double? accountNumber,
-    double? reenterAccountNumber,
+    String? accountNumber,
+    String? reenterAccountNumber,
     String? ifscCode,
     int? id,
   }) =>
@@ -45,8 +45,8 @@ class BankModel {
   factory BankModel.fromJson(Map<String, dynamic> json) => BankModel(
         status: json["status"],
         accountHolderName: json["account_holder_name"],
-        accountNumber: json["account_number"]?.toDouble(),
-        reenterAccountNumber: json["reenter_account_number"]?.toDouble(),
+        accountNumber: json["account_number"],
+        reenterAccountNumber: json["reenter_account_number"],
         ifscCode: json["ifsc_code"],
         id: json["id"],
       );

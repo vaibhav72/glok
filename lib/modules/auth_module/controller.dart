@@ -106,8 +106,7 @@ class AuthController extends GetxController with CodeAutoFill {
       loading.value = true;
       UserModel response = await userRepository.getUserDetails();
       user.value = response;
-      WalletModel walletResponse = await userRepository.getMyWallet();
-      wallet.value = walletResponse;
+      await getWalletDetails();
       await getGlockerDetails();
       loading.value = false;
     } catch (e) {
@@ -123,8 +122,17 @@ class AuthController extends GetxController with CodeAutoFill {
       glocker.value = response;
       // loading.value = false;
     } catch (e) {
-      loading.value = false;
+      // loading.value = false;
       showSnackBar(message: e.toString());
+    }
+  }
+
+  getWalletDetails() async {
+    try {
+      WalletModel walletResponse = await userRepository.getMyWallet();
+      wallet.value = walletResponse;
+    } catch (e) {
+      // showSnackBar(message: e.toString());
     }
   }
 

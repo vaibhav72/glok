@@ -11,31 +11,60 @@ import '../../data/models/transaction_model.dart';
 
 class WalletController extends GetxController {
   static WalletController get to => Get.find<WalletController>();
+  ScrollController scrollController = ScrollController();
   List<double> prefilledTransactions = [500, 1000, 1500, 200];
+  AuthController authController = AuthController.to;
   TextEditingController addFundController = TextEditingController();
   TextEditingController withDrawFundController = TextEditingController();
   BankRepository bankRepository = BankRepository();
   final addFundFormKey = GlobalKey<FormState>();
   final withDrawFundFormKey = GlobalKey<FormState>();
   Rxn<bool> isLoading = Rxn(false);
+  Rxn<bool> isFetchingNext = Rxn(false);
+  Rxn<bool> lastPage = Rxn(false);
   double get balance =>
       double.parse(AuthController.to.wallet.value?.balance ?? "0");
-
+  Rxn<int> page = Rxn(0);
   Rxn<List<TransactionModel>> transactions = Rxn([]);
   @override
   void onInit() {
     super.onInit();
     getTransactions();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 30) {
+        if (!isFetchingNext.value!) getNextTransactions();
+      }
+    });
   }
 
   getTransactions() async {
     try {
+      page.value = 1;
+      lastPage.value = false;
       isLoading.value = true;
-      transactions.value = await bankRepository.getAlltransactions();
+      transactions.value = await bankRepository.getAlltransactions(page: 1);
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;
-      // showSnackBar(message: "$e");
+    }
+  }
+
+  getNextTransactions() async {
+    try {
+      if (lastPage.value!) return;
+      isFetchingNext.value = true;
+      page.value = page.value! + 1;
+      List<TransactionModel> newTransactions =
+          await bankRepository.getAlltransactions(page: page.value!);
+      if (newTransactions.isNotEmpty) {
+        transactions.value!.addAll(newTransactions);
+      } else {
+        lastPage.value = true;
+      }
+      isFetchingNext.value = false;
+    } catch (e) {
+      isFetchingNext.value = false;
     }
   }
 
@@ -47,7 +76,11 @@ class WalletController extends GetxController {
       isLoading.value = true;
       await bankRepository
           .addFunds(double.parse(addFundController.text.trim()));
+      await authController.getWalletDetails();
+      await getTransactions();
       isLoading.value = false;
+      Get.back();
+      showSnackBar(message: "Fund added successfully", isError: false);
       // successDialog();
     } catch (e) {
       isLoading.value = false;
@@ -62,8 +95,11 @@ class WalletController extends GetxController {
       isLoading.value = true;
       await bankRepository
           .withdrawFunds(double.parse(withDrawFundController.text.trim()));
+      await authController.getWalletDetails();
+      await getTransactions();
       isLoading.value = false;
-      // successDialog();
+      Get.back();
+      successDialog();
     } catch (e) {
       isLoading.value = false;
     }

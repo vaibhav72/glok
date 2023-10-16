@@ -48,7 +48,10 @@ class UserRepository {
     if (response.statusCode == 200) {
       return UserModel.fromJson(jsonDecode(response.body)["user"]);
     } else {
-      throw Exception('Failed to load user');
+      var parsedResponse = jsonDecode(response.body);
+      throw parsedResponse["error"] ??
+          parsedResponse["message"] ??
+          "Failed to update user";
     }
   }
 

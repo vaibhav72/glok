@@ -18,6 +18,7 @@ class MetaAssets {
   static const String spentIcon = 'assets/spent_icon.svg';
   static const String likeFilledIcon = 'assets/like_filled.svg';
   static const String likeOutlineIcon = 'assets/like_outline.svg';
+  static const String addGallery = 'assets/add_gallery.svg';
 
   static const String carouselImage = 'assets/carousel_image.png';
   static const String dummyCeleb = 'assets/dummy_celeb.png';

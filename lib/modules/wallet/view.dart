@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:glok/modules/personas/end_user/apply_glocker/view.dart';
 import 'package:glok/modules/wallet/add_fund_view.dart';
 import 'package:glok/modules/wallet/controller.dart';
 import 'package:glok/modules/wallet/withdraw_fund_view.dart';
@@ -100,49 +101,59 @@ class WalletView extends GetView<WalletController> {
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20))),
               width: double.maxFinite,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Container(
-                          height: 6,
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Get.theme.dividerColor,
-                              borderRadius: BorderRadius.circular(40)),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0).copyWith(bottom: 8),
-                      child: Row(
+              child: controller.isLoading.value!
+                  ? Center(
+                      child: Loader(),
+                    )
+                  : SingleChildScrollView(
+                      controller: controller.scrollController,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "All Activity",
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: Get.theme.colorScheme.secondary,
-                                fontWeight: FontWeight.w600),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Container(
+                                height: 6,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    color: Get.theme.dividerColor,
+                                    borderRadius: BorderRadius.circular(40)),
+                              ),
+                            ),
                           ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.all(16.0).copyWith(bottom: 8),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "All Activity",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Get.theme.colorScheme.secondary,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            children: controller.transactions.value!
+                                .map((e) => e.type == "add"
+                                    ? CreditTile(
+                                        transaction: e,
+                                      )
+                                    : DebitTile(
+                                        transaction: e,
+                                      ))
+                                .toList(),
+                          ),
+                          if (controller.isFetchingNext.value! &&
+                              controller.transactions.value!.length == 0)
+                            Loader(),
                         ],
                       ),
                     ),
-                    Column(
-                        children: controller.transactions.value!
-                            .map((e) => e.type == "add"
-                                ? CreditTile(
-                                    transaction: e,
-                                  )
-                                : DebitTile(
-                                    transaction: e,
-                                  ))
-                            .toList())
-                  ],
-                ),
-              ),
             ),
           ),
         ]),
@@ -204,7 +215,7 @@ class CreditTile extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                "Nora Fatehi",
+                                "${transaction.description}",
                                 style: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.w500),
                               ),
@@ -214,7 +225,7 @@ class CreditTile extends StatelessWidget {
                                   NumberFormat.currency(
                                     locale: "en_IN",
                                     symbol: "",
-                                  ).format(1000),
+                                  ).format(double.parse(transaction.amount!)),
                               style: TextStyle(
                                   fontSize: 15,
                                   color: MetaColors.transactionSuccess,
@@ -230,14 +241,15 @@ class CreditTile extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 DateFormat('MMM dd,yyyy hh:mm a')
-                                    .format(DateTime.now()),
+                                    .format(transaction.createdAt!),
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: MetaColors.subTextColor),
                               ),
                             ),
                             Text(
-                              DateFormat('hh:mm a').format(DateTime.now()),
+                              DateFormat('hh:mm a')
+                                  .format(transaction.createdAt!),
                               style: TextStyle(
                                   fontSize: 12, color: MetaColors.subTextColor),
                             ),
@@ -283,7 +295,7 @@ class DebitTile extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                "Nora Fatehi",
+                                "${transaction.description}",
                                 style: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.w500),
                               ),
@@ -293,7 +305,7 @@ class DebitTile extends StatelessWidget {
                                   NumberFormat.currency(
                                     locale: "en_IN",
                                     symbol: "",
-                                  ).format(1000),
+                                  ).format(double.parse(transaction.amount!)),
                               style: TextStyle(
                                   fontSize: 15,
                                   color: MetaColors.transactionFailed,
@@ -309,14 +321,15 @@ class DebitTile extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 DateFormat('MMM dd,yyyy hh:mm a')
-                                    .format(DateTime.now()),
+                                    .format(transaction.createdAt!),
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: MetaColors.subTextColor),
                               ),
                             ),
                             Text(
-                              DateFormat('hh:mm a').format(DateTime.now()),
+                              DateFormat('hh:mm a')
+                                  .format(transaction.createdAt!),
                               style: TextStyle(
                                   fontSize: 12, color: MetaColors.subTextColor),
                             ),

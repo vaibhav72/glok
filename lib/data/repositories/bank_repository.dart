@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:glok/data/models/transaction_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -32,14 +33,20 @@ class BankRepository {
     }
   }
 
-  Future<List<TransactionModel>> getAlltransactions() async {
+  Future<List<TransactionModel>> getAlltransactions({
+    required int page,
+  }) async {
     try {
       var headers = await getHeaders();
       final response = await http.get(
-          Uri.parse(MetaStrings.baseUrl + MetaStrings.getAllTransactions),
+          Uri.parse(MetaStrings.baseUrl +
+              MetaStrings.getAllTransactions +
+              "?page=$page&limit=10"),
           headers: headers);
       if (response.statusCode == 200) {
-        return (jsonDecode(response.body) as List)
+        return (jsonDecode(response.body) as Map)
+            .values
+            .where((element) => element is Map)
             .map((e) => TransactionModel.fromJson(e))
             .toList();
       } else {

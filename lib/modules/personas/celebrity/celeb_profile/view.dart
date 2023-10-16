@@ -51,11 +51,21 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                                     ),
                                   ),
                                   Spacer(),
-                                  CircleAvatar(
-                                    backgroundColor: Colors.black12,
-                                    child: SvgPicture.asset(
-                                        MetaAssets.likeOutlineIcon),
-                                  )
+                                  controller.isCurrentGlocker
+                                      ? InkWell(
+                                          onTap: () {
+                                            controller.addGalleryItem();
+                                          },
+                                          child: CircleAvatar(
+                                              backgroundColor: Colors.black12,
+                                              child: SvgPicture.asset(
+                                                  MetaAssets.addGallery)),
+                                        )
+                                      : CircleAvatar(
+                                          backgroundColor: Colors.black12,
+                                          child: SvgPicture.asset(
+                                              MetaAssets.likeOutlineIcon),
+                                        )
                                 ],
                               ),
                             ),
@@ -217,6 +227,7 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                                       ),
                                       Container(
                                         child: TabBar(
+                                            isScrollable: true,
                                             indicatorSize:
                                                 TabBarIndicatorSize.label,
                                             labelStyle: GoogleFonts.poppins(
@@ -354,12 +365,20 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                 child: Obx(
                   () => GridView.count(
                     crossAxisCount: 3,
-                    padding: EdgeInsets.all(3),
                     children: List.generate(
                         controller.galleryPhotos.value!.length,
-                        (index) => Image.asset(
-                              MetaAssets.dummyCeleb,
-                              fit: BoxFit.cover,
+                        (index) => Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: InkWell(
+                                onTap: () {
+                                  controller.viewGalleryItem(
+                                      controller.galleryPhotos.value![index]!);
+                                },
+                                child: Image.asset(
+                                  MetaAssets.dummyCeleb,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             )),
                   ),
                 ),
@@ -370,9 +389,15 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                   padding: EdgeInsets.all(3),
                   children: List.generate(
                       controller.galleryVideos.value!.length,
-                      (index) => Image.asset(
-                            MetaAssets.carouselImage,
-                            fit: BoxFit.cover,
+                      (index) => InkWell(
+                            onTap: () {
+                              controller.viewGalleryItem(
+                                  controller.galleryPhotos.value![index]!);
+                            },
+                            child: Image.asset(
+                              MetaAssets.carouselImage,
+                              fit: BoxFit.cover,
+                            ),
                           )),
                 ),
               ),
