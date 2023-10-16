@@ -111,7 +111,7 @@ class UserModel {
             ? null
             : DateTime.parse(json["updated_at"]),
         roles: json["roles"],
-        glockerId: json["glocker_id"],
+        glockerId: json["glocker_id"].toString(),
         accessToken: json["access_token"],
       );
 

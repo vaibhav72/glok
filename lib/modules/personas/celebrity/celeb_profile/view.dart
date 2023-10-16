@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,8 +25,8 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                       children: [
                         Container(
                           height: Get.height * .35,
-                          child: Image.asset(
-                            MetaAssets.dummyCeleb,
+                          child: CachedNetworkImage(
+                            imageUrl: controller.glocker?.coverPhoto ?? '',
                             fit: BoxFit.fill,
                             width: double.maxFinite,
                           ),
@@ -83,8 +84,11 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                                             children: [
                                               CircleAvatar(
                                                 radius: 48,
-                                                backgroundImage: AssetImage(
-                                                    MetaAssets.dummyCeleb),
+                                                backgroundImage:
+                                                    CachedNetworkImageProvider(
+                                                        controller.glocker
+                                                                ?.profilePhoto ??
+                                                            ''),
                                               ),
                                               SizedBox(
                                                 width: 20,
@@ -98,7 +102,9 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                        "Nora Fatehi",
+                                                        controller.glocker
+                                                                ?.name ??
+                                                            '',
                                                         style: Get
                                                             .theme
                                                             .textTheme
@@ -118,7 +124,10 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                                                   SizedBox(
                                                     height: 2,
                                                   ),
-                                                  Text("Movie Star",
+                                                  Text(
+                                                      controller.glocker
+                                                              ?.category ??
+                                                          '',
                                                       style: GoogleFonts
                                                           .newsreader(
                                                               color: MetaColors
@@ -189,7 +198,7 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                                                           children: [
                                                             TextSpan(
                                                                 text:
-                                                                    " 499/min",
+                                                                    " ${controller.glocker?.price ?? "0"}/min",
                                                                 style: GoogleFonts.poppins(
                                                                     fontSize:
                                                                         15,
@@ -290,55 +299,68 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                          "Nora Fatehi is a Canadian actress, model, dancer, singer, and producer known for her work in the Indian film industry. She has appeared in Hindi, Telugu, Tamil and Malayalam films. Fatehi made her acting debut with the Hindi film Roar: Tigers of the Sundarbans."),
+                      Text(controller.glocker?.aboutMe ?? ''),
                       SizedBox(
                         height: 10,
                       ),
-                      RichText(
-                          textScaleFactor:
-                              MediaQuery.of(context).textScaleFactor,
-                          text: TextSpan(
-                              text: "Born: ",
-                              style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
-                                  color: MetaColors.primaryText),
-                              children: [
-                                TextSpan(
-                                    text:
-                                        "6 February 1992 (age 31 years), Toronto",
-                                    style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w400))
-                              ])),
-                      RichText(
-                          textScaleFactor:
-                              MediaQuery.of(context).textScaleFactor,
-                          text: TextSpan(
-                              text: "Nationality: ",
-                              style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
-                                  color: MetaColors.primaryText),
-                              children: [
-                                TextSpan(
-                                    text: "Canadian",
-                                    style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w400))
-                              ])),
-                      RichText(
-                          textScaleFactor:
-                              MediaQuery.of(context).textScaleFactor,
-                          text: TextSpan(
-                              text: "Siblings: ",
-                              style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
-                                  color: MetaColors.primaryText),
-                              children: [
-                                TextSpan(
-                                    text: "Omar Fatehi",
-                                    style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w400))
-                              ]))
+                      // RichText(
+                      //     textScaleFactor:
+                      //         MediaQuery.of(context).textScaleFactor,
+                      //     text: TextSpan(
+                      //         text: "Born: ",
+                      //         style: GoogleFonts.poppins(
+                      //             fontWeight: FontWeight.w600,
+                      //             color: MetaColors.primaryText),
+                      //         children: [
+                      //           TextSpan(
+                      //               text:
+                      //                   "6 February 1992 (age 31 years), Toronto",
+                      //               style: GoogleFonts.poppins(
+                      //                   fontWeight: FontWeight.w400))
+                      //         ])),
+                      // RichText(
+                      //     textScaleFactor:
+                      //         MediaQuery.of(context).textScaleFactor,
+                      //     text: TextSpan(
+                      //         text: "Nationality: ",
+                      //         style: GoogleFonts.poppins(
+                      //             fontWeight: FontWeight.w600,
+                      //             color: MetaColors.primaryText),
+                      //         children: [
+                      //           TextSpan(
+                      //               text: "Canadian",
+                      //               style: GoogleFonts.poppins(
+                      //                   fontWeight: FontWeight.w400))
+                      //         ])),
+                      // RichText(
+                      //     textScaleFactor:
+                      //         MediaQuery.of(context).textScaleFactor,
+                      //     text: TextSpan(
+                      //         text: "Siblings: ",
+                      //         style: GoogleFonts.poppins(
+                      //             fontWeight: FontWeight.w600,
+                      //             color: MetaColors.primaryText),
+                      //         children: [
+                      //           TextSpan(
+                      //               text: "Omar Fatehi",
+                      //               style: GoogleFonts.poppins(
+                      //                   fontWeight: FontWeight.w400))
+                      //         ]))
                     ],
+                  ),
+                ),
+              ),
+              Container(
+                child: Obx(
+                  () => GridView.count(
+                    crossAxisCount: 3,
+                    padding: EdgeInsets.all(3),
+                    children: List.generate(
+                        controller.galleryPhotos.value!.length,
+                        (index) => Image.asset(
+                              MetaAssets.dummyCeleb,
+                              fit: BoxFit.cover,
+                            )),
                   ),
                 ),
               ),
@@ -347,19 +369,7 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                   crossAxisCount: 3,
                   padding: EdgeInsets.all(3),
                   children: List.generate(
-                      9,
-                      (index) => Image.asset(
-                            MetaAssets.dummyCeleb,
-                            fit: BoxFit.cover,
-                          )),
-                ),
-              ),
-              Container(
-                child: GridView.count(
-                  crossAxisCount: 3,
-                  padding: EdgeInsets.all(3),
-                  children: List.generate(
-                      9,
+                      controller.galleryVideos.value!.length,
                       (index) => Image.asset(
                             MetaAssets.carouselImage,
                             fit: BoxFit.cover,

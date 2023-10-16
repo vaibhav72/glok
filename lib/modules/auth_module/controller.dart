@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:glok/data/models/user_model.dart';
+import 'package:glok/data/repositories/glocker_repository.dart';
 import 'package:glok/data/repositories/user_repository.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../controllers/hive_controller.dart';
+import '../../data/models/glocker_model.dart';
 import '../../data/models/wallet_model.dart';
 import '../../data/repositories/auth_repository.dart';
 
@@ -16,10 +18,12 @@ class AuthController extends GetxController with CodeAutoFill {
   static AuthController get to => Get.find<AuthController>();
   AuthRepository authRepository = AuthRepository();
   UserRepository userRepository = UserRepository();
+  GlockerRepository glockerRepository = GlockerRepository();
   final hiveController = HiveController.to;
   final formKey = GlobalKey<FormState>();
   Rxn<UserModel> user = Rxn<UserModel>();
   Rxn<WalletModel> wallet = Rxn<WalletModel>();
+  Rxn<GlockerModel> glocker = Rxn<GlockerModel>();
   TextEditingController numberController = TextEditingController();
   TextEditingController otpController = TextEditingController();
   PageController pageController = PageController();
@@ -104,7 +108,20 @@ class AuthController extends GetxController with CodeAutoFill {
       user.value = response;
       WalletModel walletResponse = await userRepository.getMyWallet();
       wallet.value = walletResponse;
+      await getGlockerDetails();
       loading.value = false;
+    } catch (e) {
+      loading.value = false;
+      showSnackBar(message: e.toString());
+    }
+  }
+
+  getGlockerDetails() async {
+    try {
+      // loading.value = true;
+      GlockerModel response = await glockerRepository.getGlockerDetails();
+      glocker.value = response;
+      // loading.value = false;
     } catch (e) {
       loading.value = false;
       showSnackBar(message: e.toString());

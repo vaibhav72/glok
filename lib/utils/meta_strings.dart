@@ -15,7 +15,8 @@ class MetaStrings {
   static const String updateNotification = '/user-notification/update';
 
   //glocker
-  static const String getCurrentGlocker = '/glocker/';
+
+  static const String getCurrentGlocker = '/glocker/currentglocker';
   static const String glockerNew = '/glocker/new';
   static const String glockerUpdate = '/glocker/update';
   static const String updateGlockerPhoto = '/glocker/updateprofilephoto';

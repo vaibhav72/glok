@@ -5,7 +5,8 @@ import 'package:glok/utils/meta_strings.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-
+import 'package:http_parser/http_parser.dart';
+import '../../utils/helpers.dart';
 import '../models/user_model.dart';
 
 class GlockerRepository {
@@ -27,7 +28,7 @@ class GlockerRepository {
           Uri.parse(MetaStrings.baseUrl + MetaStrings.getCurrentGlocker),
           headers: headers);
       if (response.statusCode == 200) {
-        return GlockerModel.fromJson(jsonDecode(response.body)["glocker"]);
+        return glockerModelFromJson(response.body);
       } else {
         throw Exception('Failed to load user');
       }
@@ -40,9 +41,8 @@ class GlockerRepository {
     try {
       var headers = await getHeaders();
       final response = await http.get(
-          Uri.parse(MetaStrings.baseUrl +
-              MetaStrings.getCurrentGlocker +
-              id.toString()),
+          Uri.parse(
+              MetaStrings.baseUrl + MetaStrings.getGlocker + id.toString()),
           headers: headers);
       if (response.statusCode == 200) {
         return GlockerModel.fromJson(jsonDecode(response.body));
@@ -60,10 +60,8 @@ class GlockerRepository {
   }) async {
     var headers = await getHeaders();
     print(headers);
-    String url = MetaStrings.baseUrl +
-        (MetaStrings.getFilteredGlocker) +
-        (filters != null ? "?$filters" : '') +
-        "&page=$index&limit=10";
+    String url =
+        "${MetaStrings.baseUrl}${MetaStrings.getFilteredGlocker}${filters != null ? "?$filters" : ''}&page=$index&limit=10";
     final response = await http.get(Uri.parse(url.trim()), headers: headers);
     if (response.statusCode == 200) {
       return (jsonDecode(response.body) as List)
@@ -95,8 +93,10 @@ class GlockerRepository {
       required XFile coverImage,
       required XFile profileImage}) async {
     Map<String, String> headers = await getHeaders(isForm: true);
+    print(headers);
     try {
       String url = MetaStrings.baseUrl + MetaStrings.glockerNew;
+
       var request = http.MultipartRequest('POST', Uri.parse(url));
       request.headers.addAll(headers);
       request.fields.addAll(params);
@@ -204,12 +204,20 @@ class GlockerRepository {
 
   Future<bool> updateGlockerVideoKYC({required XFile video}) async {
     try {
+      var fileExtension = getFileExtension(video.path);
+      if (fileExtension.isEmpty) {
+        throw "Invalid file extension";
+      }
       var headers = await getHeaders(isForm: true);
       String url = MetaStrings.baseUrl + MetaStrings.updateVideKYC;
-      var request = http.MultipartRequest('PATCH', Uri.parse(url));
+      var request = http.MultipartRequest(
+        'PATCH',
+        Uri.parse(url),
+      );
       request.headers.addAll(headers);
-      request.files
-          .add(await http.MultipartFile.fromPath('video_kyc', video.path));
+      request.files.add(await http.MultipartFile.fromPath(
+          'video_kyc', video.path,
+          contentType: MediaType('application', fileExtension.toLowerCase())));
       var response = await request.send();
       if (response.statusCode == 200) {
         return true;

@@ -43,7 +43,7 @@ class GlockerListController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getGlockerList();
+    // getGlockerList();
     // getGlockerTrendingList();
   }
 

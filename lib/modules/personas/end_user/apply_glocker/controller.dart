@@ -2,14 +2,18 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:glok/data/models/glocker_model.dart';
 import 'package:glok/data/repositories/glocker_repository.dart';
+import 'package:glok/modules/auth_module/controller.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
 class ApplyToGlockerController extends GetxController {
   PageController pageController = PageController();
+  AuthController get authController => AuthController.to;
   GlockerRepository _glockerRepository = GlockerRepository();
+  Rxn<GlockerModel> get glocker => authController.glocker;
   TextEditingController nameController = TextEditingController();
   TextEditingController rateController = TextEditingController();
   TextEditingController aboutMeController = TextEditingController();
@@ -18,7 +22,7 @@ class ApplyToGlockerController extends GetxController {
   Rxn<XFile?> coverImage = Rxn<XFile?>();
   final basicDetailsFormKey = GlobalKey<FormState>();
   final taxDetailsFormKey = GlobalKey<FormState>();
-
+  Rxn<bool> isVideoPlaying = Rxn(false);
   //Tax info
   TextEditingController panController = TextEditingController();
   TextEditingController gstController = TextEditingController();
@@ -155,11 +159,17 @@ class ApplyToGlockerController extends GetxController {
 
   updateVideoKYC() async {
     try {
+      if (videoKyc.value == null) {
+        showSnackBar(message: "Please select video");
+        return;
+      }
       isLoading.value = true;
       await _glockerRepository.updateGlockerVideoKYC(
         video: videoKyc.value!,
       );
       isLoading.value = false;
+      pageController.nextPage(
+          duration: Duration(milliseconds: 100), curve: Curves.easeIn);
     } catch (e) {
       isLoading.value = false;
       showSnackBar(message: "${e}");
@@ -169,5 +179,15 @@ class ApplyToGlockerController extends GetxController {
   void refreshVideo() {
     videoController.dispose();
     videoKyc.value = null;
+  }
+
+  void playPauseVideo() {
+    if (videoController.value.isPlaying) {
+      isVideoPlaying.value = false;
+      videoController.pause();
+    } else {
+      isVideoPlaying.value = true;
+      videoController.play();
+    }
   }
 }

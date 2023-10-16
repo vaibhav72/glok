@@ -69,7 +69,7 @@ class EndUserMoreController extends GetxController {
         return;
       }
     } catch (e) {
-      isLoading..value = false;
+      isLoading.value = false;
       showSnackBar(message: "$e");
     }
   }

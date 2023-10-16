@@ -35,7 +35,7 @@ class WalletController extends GetxController {
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;
-      showSnackBar(message: "$e");
+      // showSnackBar(message: "$e");
     }
   }
 

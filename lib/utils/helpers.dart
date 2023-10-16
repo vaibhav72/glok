@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:image_picker/image_picker.dart';
 
-List<String> pageTitleList = ["Movie Star", "TV Star", "Music", "Influencer"];
+List<String> pageTitleList = ["Movie Star", "TV Star", "Singer", "Influencer"];
 
 class CustomButton extends StatelessWidget {
   CustomButton(
@@ -207,4 +207,13 @@ String? validateEmail(String? value) {
     return 'Please enter valid email';
   }
   return null;
+}
+
+String getFileExtension(String filePath) {
+  try {
+    int index = filePath.lastIndexOf('.');
+    return filePath.substring(index + 1);
+  } catch (e) {
+    return '';
+  }
 }
