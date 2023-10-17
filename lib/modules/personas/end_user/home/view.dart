@@ -247,140 +247,158 @@ class EndUserHomeView extends GetView<EndUserHomeController> {
                                     SizedBox(
                                       height: 13,
                                     ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20))),
-                                      width: double.maxFinite,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Center(
-                                              child: Container(
-                                                height: 6,
-                                                width: 60,
-                                                decoration: BoxDecoration(
-                                                    color:
-                                                        Get.theme.dividerColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            40)),
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(16.0)
-                                                .copyWith(bottom: 8),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "Trending",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
+                                    Obx(
+                                      () => Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20))),
+                                        width: double.maxFinite,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Center(
+                                                child: Container(
+                                                  height: 6,
+                                                  width: 60,
+                                                  decoration: BoxDecoration(
                                                       color: Get
-                                                          .theme
-                                                          .colorScheme
-                                                          .secondary,
-                                                      fontWeight:
-                                                          FontWeight.w600),
+                                                          .theme.dividerColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              40)),
                                                 ),
-                                                Spacer(),
-                                                Text(
-                                                  "View All",
-                                                  style: Get.theme.textTheme
-                                                      .bodyMedium
-                                                      ?.copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Get.theme
-                                                              .primaryColor),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(16.0)
-                                                .copyWith(right: 0, top: 0),
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Row(
-                                                children: List.generate(
-                                                    GlockerListController
-                                                        .to
-                                                        .trendingGlockers
-                                                        .value!
-                                                        .length,
-                                                    (index) => CelebrityTile(
-                                                          data: GlockerListController
-                                                              .to
-                                                              .trendingGlockers
-                                                              .value![index],
-                                                        )),
                                               ),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: double.maxFinite,
-                                            child: CustomPaint(
-                                              painter: DashedLinePainter(),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(16.0)
-                                                .copyWith(bottom: 8),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "My Favorites",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      color: Get
-                                                          .theme
-                                                          .colorScheme
-                                                          .secondary,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                                Spacer(),
-                                                Text(
-                                                  "View All",
-                                                  style: Get.theme.textTheme
-                                                      .bodyMedium
-                                                      ?.copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Get.theme
-                                                              .primaryColor),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(16.0)
-                                                .copyWith(right: 0, top: 0),
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0)
+                                                      .copyWith(bottom: 8),
                                               child: Row(
-                                                children: List.generate(
-                                                    GlockerListController
-                                                        .to
-                                                        .trendingGlockers
-                                                        .value!
-                                                        .length,
-                                                    (index) => CelebrityTile(
-                                                        data: GlockerListController
-                                                            .to
-                                                            .trendingGlockers
-                                                            .value![index])),
+                                                children: [
+                                                  Text(
+                                                    "Trending",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Get
+                                                            .theme
+                                                            .colorScheme
+                                                            .secondary,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                  Spacer(),
+                                                  Text(
+                                                    "View All",
+                                                    style: Get.theme.textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: Get.theme
+                                                                .primaryColor),
+                                                  )
+                                                ],
                                               ),
                                             ),
-                                          )
-                                        ],
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0)
+                                                      .copyWith(
+                                                          right: 0, top: 0),
+                                              child: SingleChildScrollView(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                child: Row(
+                                                  children: List.generate(
+                                                      GlockerListController
+                                                          .to
+                                                          .trendingGlockers
+                                                          .value!
+                                                          .length,
+                                                      (index) => GlockerTile(
+                                                            data: GlockerListController
+                                                                .to
+                                                                .trendingGlockers
+                                                                .value![index],
+                                                            resfreshEnum:
+                                                                RefreshEnum
+                                                                    .refreshTrendingGlockers,
+                                                          )),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: double.maxFinite,
+                                              child: CustomPaint(
+                                                painter: DashedLinePainter(),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0)
+                                                      .copyWith(bottom: 8),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "My Favorites",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Get
+                                                            .theme
+                                                            .colorScheme
+                                                            .secondary,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                  Spacer(),
+                                                  Text(
+                                                    "View All",
+                                                    style: Get.theme.textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: Get.theme
+                                                                .primaryColor),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0)
+                                                      .copyWith(
+                                                          right: 0, top: 0),
+                                              child: SingleChildScrollView(
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                child: Row(
+                                                  children: List.generate(
+                                                      GlockerListController
+                                                          .to
+                                                          .trendingGlockers
+                                                          .value!
+                                                          .length,
+                                                      (index) => GlockerTile(
+                                                            data: GlockerListController
+                                                                .to
+                                                                .trendingGlockers
+                                                                .value![index],
+                                                            resfreshEnum:
+                                                                RefreshEnum
+                                                                    .refreshTrendingGlockers,
+                                                          )),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -395,10 +413,14 @@ class EndUserHomeView extends GetView<EndUserHomeController> {
   }
 }
 
-class CelebrityTile extends StatelessWidget {
-  CelebrityTile({super.key, required this.data});
+class GlockerTile extends GetView<GlockerListController> {
+  GlockerTile({super.key, required this.data, required this.resfreshEnum})
+      : glockerModel = Rxn(data);
   GlockerModel data;
+  RefreshEnum resfreshEnum;
   void Function()? handler;
+  Rxn<GlockerModel> glockerModel;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -406,99 +428,119 @@ class CelebrityTile extends StatelessWidget {
           () {
             GlockerListController.to.viewGlocker(data);
           },
-      child: Padding(
-        padding: const EdgeInsets.only(right: 16),
-        child: Container(
-          width: 160,
-          height: 234,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Column(children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      MetaAssets.dummyCeleb,
-                      fit: BoxFit.fill,
-                      width: double.maxFinite,
-                      height: double.maxFinite,
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CircleAvatar(
-                        radius: 12,
-                        backgroundColor: Colors.black12,
-                        child: SvgPicture.asset(MetaAssets.likeOutlineIcon),
+      child: Obx(
+        () => Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: Container(
+            width: 160,
+            height: 234,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(children: [
+              Expanded(
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.asset(
+                        MetaAssets.dummyCeleb,
+                        fit: BoxFit.fill,
+                        width: double.maxFinite,
+                        height: double.maxFinite,
                       ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(48),
-                            color: Colors.black.withOpacity(0.6)),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: InkWell(
+                        onTap: () {
+                          if (glockerModel.value?.isFavourite ?? false) {
+                            glockerModel.value!.isFavourite = false;
+                          } else {
+                            glockerModel.value!.isFavourite = true;
+                          }
+                          glockerModel.refresh();
+                          GlockerListController.to
+                              .handleFavourite(data, resfreshEnum);
+                        },
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 3, horizontal: 8),
-                          child: RichText(
-                            text: TextSpan(
-                                text: "\u20b9",
-                                style: GoogleFonts.inter(
-                                    fontSize: 12,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600),
-                                children: [
-                                  TextSpan(
-                                      text: " ${data.price}/min",
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 12,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500))
-                                ]),
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            radius: 12,
+                            backgroundColor: Colors.black12,
+                            child: (glockerModel.value?.isFavourite ?? false)
+                                ? SvgPicture.asset(
+                                    MetaAssets.likeOutlineIcon,
+                                    colorFilter: ColorFilter.mode(
+                                        Colors.green, BlendMode.srcIn),
+                                  )
+                                : SvgPicture.asset(MetaAssets.likeOutlineIcon),
                           ),
                         ),
                       ),
                     ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 6,
-            ),
-            Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "${data.name}",
-                      style: Get.theme.textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Get.theme.colorScheme.secondary),
-                    ),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(48),
+                              color: Colors.black.withOpacity(0.6)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 3, horizontal: 8),
+                            child: RichText(
+                              text: TextSpan(
+                                  text: "\u20b9",
+                                  style: GoogleFonts.inter(
+                                      fontSize: 12,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600),
+                                  children: [
+                                    TextSpan(
+                                        text: " ${data.price}/min",
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 12,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500))
+                                  ]),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
-                SizedBox(
-                  height: 2,
-                ),
-                Text("${data.category}",
-                    style: GoogleFonts.newsreader(
-                        color: MetaColors.secondaryText,
-                        fontStyle: FontStyle.italic)),
-              ],
-            ))
-          ]),
+              ),
+              SizedBox(
+                height: 6,
+              ),
+              Container(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        "${data.name}",
+                        style: Get.theme.textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: Get.theme.colorScheme.secondary),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 2,
+                  ),
+                  Text("${data.category}",
+                      style: GoogleFonts.newsreader(
+                          color: MetaColors.secondaryText,
+                          fontStyle: FontStyle.italic)),
+                ],
+              ))
+            ]),
+          ),
         ),
       ),
     );

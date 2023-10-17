@@ -92,9 +92,12 @@ class BrowseView extends GetView<BrowseController> {
                               children: List.generate(
                                   GlockerListController
                                       .to.trendingGlockers.value!.length,
-                                  (index) => CelebrityTile(
-                                      data: GlockerListController
-                                          .to.trendingGlockers.value![index])),
+                                  (index) => GlockerTile(
+                                        data: GlockerListController
+                                            .to.trendingGlockers.value![index],
+                                        resfreshEnum:
+                                            RefreshEnum.refreshTrendingGlockers,
+                                      )),
                             ),
                           ),
                         ),

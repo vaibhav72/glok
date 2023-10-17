@@ -17,7 +17,7 @@ class CelebrityProfileController extends GetxController {
   static CelebrityProfileController get to =>
       Get.find<CelebrityProfileController>();
   GlockerListController get glockerListController => GlockerListController.to;
-  GlockerModel? get glocker => glockerListController.selectedGlocker.value;
+  Rxn<GlockerModel>? get glocker => glockerListController.selectedGlocker;
   bool get isCurrentGlocker =>
       glockerListController.selectedGlocker.value?.id ==
       AuthController.to.glocker.value?.id;
@@ -81,9 +81,9 @@ class CelebrityProfileController extends GetxController {
     try {
       galleryLoading.value = true;
       galleryPhotos.value = await galleryRepository.getGlockerGallery(
-          glockerId: glocker!.id!, category: "photo", page: 1);
+          glockerId: glocker!.value!.id!, category: "photo", page: 1);
       galleryVideos.value = await galleryRepository.getGlockerGallery(
-          glockerId: glocker!.id!, category: "video", page: 1);
+          glockerId: glocker!.value!.id!, category: "video", page: 1);
       galleryLoading.value = false;
     } catch (e) {
       showSnackBar(message: "Could not load gallery");
@@ -144,7 +144,7 @@ class CelebrityProfileController extends GetxController {
     try {
       loading.value = true;
       await galleryRepository
-          .deleteGalleryItem(selectedGalleryItem.value!.file!);
+          .deleteGalleryItem(selectedGalleryItem.value!.id!.toString());
       await getGallery();
       loading.value = false;
       Get.back();

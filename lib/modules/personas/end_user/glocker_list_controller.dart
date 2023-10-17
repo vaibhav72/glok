@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:glok/data/models/glocker_model.dart';
 import 'package:glok/data/repositories/glocker_repository.dart';
 import 'package:glok/utils/helpers.dart';
+import 'package:http/http.dart';
 
 import '../celebrity/celeb_profile/binding.dart';
 import '../celebrity/celeb_profile/view.dart';
@@ -13,8 +14,9 @@ class GlockerListController extends GetxController {
   GlockerRepository glockerRepository = GlockerRepository();
   static GlockerListController get to => Get.find<GlockerListController>();
   Rxn<GlockerModel> selectedGlocker = Rxn();
-  Rxn<List<GlockerModel>> currentGlockers = Rxn([]);
-  Rxn<List<GlockerModel>> trendingGlockers = Rxn([]);
+  RxList<GlockerModel> currentGlockers = RxList([]);
+  RxList<GlockerModel> trendingGlockers = RxList([]);
+  RxList<GlockerModel> favoriteGlockers = RxList([]);
   Rxn<String> searchText = Rxn("");
   Rxn<String> currentCategory = Rxn("Movie Star");
   Rxn<bool> searching = Rxn(false);
@@ -43,8 +45,8 @@ class GlockerListController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // getGlockerList();
-    // getGlockerTrendingList();
+    getGlockerList();
+    getGlockerTrendingList();
   }
 
   applyFilters() {
@@ -78,6 +80,17 @@ class GlockerListController extends GetxController {
           "${currentCategory.value!.isNotEmpty ? 'category=${currentCategory.value}' : ''}${searching.value! ? '&search=${searchText.value}' : ''}${appliedSortBy.value != '' ? '&sortby=${appliedSortBy.value!.toLowerCase().trim()}' : ''}${appliedMinPrice.value != null && appliedMaxPrice.value != null ? "&minprice=${appliedMinPrice.value!.toInt()}&maxprice=${appliedMaxPrice.value!.toInt()}" : ''}";
       currentGlockers.value = await glockerRepository.getGlockerList(
           filters: currentFilterString.value, index: 1);
+      currentGlockers.refresh();
+    } catch (e) {
+      log("$e");
+    }
+  }
+
+  getFavoriteList() async {
+    try {
+      favoriteGlockers.value = await glockerRepository.getGlockerList(
+          filters: "avorite=true", index: 1);
+      favoriteGlockers.refresh();
     } catch (e) {
       log("$e");
     }
@@ -85,8 +98,9 @@ class GlockerListController extends GetxController {
 
   getGlockerTrendingList() async {
     try {
-      currentGlockers.value!
-          .addAll(await glockerRepository.getTrendingGlockerList());
+      trendingGlockers.addAll(await glockerRepository.getTrendingGlockerList());
+
+      trendingGlockers.refresh();
     } catch (e) {
       log("$e");
     }
@@ -97,16 +111,19 @@ class GlockerListController extends GetxController {
       page.value = page.value! + 1;
       currentFilterString.value =
           "${currentCategory.value!.isNotEmpty ? 'category=${currentCategory.value}' : ''}${searching.value! ? '&search=${searchText.value}' : ''}${appliedSortBy.value != '' ? '&sortby=${appliedSortBy.value!.toLowerCase()}' : ''} ${appliedMinPrice.value != null && appliedMaxPrice.value != null ? "&minprice=${appliedMinPrice.value}&maxprice=${appliedMaxPrice.value}" : ''}";
-      currentGlockers.value!.addAll(await glockerRepository.getGlockerList(
+      currentGlockers.addAll(await glockerRepository.getGlockerList(
           filters: currentFilterString.value, index: page.value));
+      currentGlockers.refresh();
     } catch (e) {
       log("$e");
     }
   }
 
-  void changeCategory(String pageTitle) {
+  void changeCategory(String pageTitle) async {
     currentCategory.value = pageTitle;
-    getGlockerList();
+    await getGlockerList();
+    await getGlockerTrendingList();
+    refresh();
   }
 
   void viewGlocker(GlockerModel data) {
@@ -124,4 +141,39 @@ class GlockerListController extends GetxController {
       return;
     }
   }
+
+  handleFavourite(GlockerModel model, RefreshEnum refreshEnum) async {
+    try {
+      await glockerRepository.favorite(model.id!);
+
+      if (refreshEnum == RefreshEnum.refreshAllGlockers) {
+        await getFavoriteList();
+        await getGlockerList();
+        await getGlockerTrendingList();
+        await getSelectedGlockerData();
+      } else {
+        if (refreshEnum == RefreshEnum.refreshCurrentGlockers) {
+          await getGlockerList();
+        } else if (refreshEnum == RefreshEnum.refreshTrendingGlockers) {
+          await getGlockerTrendingList();
+        } else if (refreshEnum == RefreshEnum.refreshFavoriteGlockers) {
+          await getFavoriteList();
+        } else if (refreshEnum == RefreshEnum.refreshSelectedGlocker) {
+          await getSelectedGlockerData();
+        }
+      }
+
+      refresh();
+    } catch (e) {
+      // showSnackBar(message: "$e");
+    }
+  }
+}
+
+enum RefreshEnum {
+  refreshAllGlockers,
+  refreshCurrentGlockers,
+  refreshTrendingGlockers,
+  refreshFavoriteGlockers,
+  refreshSelectedGlocker
 }

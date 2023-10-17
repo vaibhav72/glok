@@ -64,6 +64,8 @@ class GlockerRepository {
         "${MetaStrings.baseUrl}${MetaStrings.getFilteredGlocker}${filters != null ? "?$filters" : ''}&page=$index&limit=10";
     final response = await http.get(Uri.parse(url.trim()), headers: headers);
     if (response.statusCode == 200) {
+      var parsedResponse = jsonDecode(response.body);
+      if (parsedResponse is Map) return [];
       return (jsonDecode(response.body) as List)
           .map((e) => GlockerModel.fromJson(e))
           .toList();
@@ -80,6 +82,8 @@ class GlockerRepository {
         MetaStrings.baseUrl + (MetaStrings.getFilteredGlocker) + ("/trending");
     final response = await http.get(Uri.parse(url), headers: headers);
     if (response.statusCode == 200) {
+      var parsedResponse = jsonDecode(response.body);
+      if (parsedResponse is Map) return [];
       return (jsonDecode(response.body) as List)
           .map((e) => GlockerModel.fromJson(e))
           .toList();
@@ -228,6 +232,19 @@ class GlockerRepository {
       }
     } catch (e) {
       rethrow;
+    }
+  }
+
+  favorite(int id) async {
+    var headers = await getHeaders();
+    final response = await http.patch(
+        Uri.parse(MetaStrings.baseUrl + MetaStrings.getFavorites),
+        body: jsonEncode({"glocker_id": id}),
+        headers: headers);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Couldnt add to favorites');
     }
   }
 }

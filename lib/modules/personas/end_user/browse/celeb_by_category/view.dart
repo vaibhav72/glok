@@ -247,9 +247,11 @@ class CelebByCategoryView extends GetView<CelebByCategoryController> {
                       childAspectRatio: .8,
                       crossAxisCount: 2),
                   itemBuilder: ((context, index) {
-                    return CelebrityTile(
-                        data: GlockerListController
-                            .to.currentGlockers.value![index]);
+                    return GlockerTile(
+                      data: GlockerListController
+                          .to.currentGlockers.value![index],
+                      resfreshEnum: RefreshEnum.refreshCurrentGlockers,
+                    );
                   })),
             ),
           ))

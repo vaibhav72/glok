@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // To parse this JSON data, do
 //
 //     final glockerModel = glockerModelFromJson(jsonString);
@@ -30,7 +31,7 @@ class GlockerModel {
   String? videoKyc;
   DateTime? createdAt;
   DateTime? updatedAt;
-
+  bool? isFavourite;
   GlockerModel({
     this.status,
     this.id,
@@ -52,6 +53,7 @@ class GlockerModel {
     this.videoKyc,
     this.createdAt,
     this.updatedAt,
+    this.isFavourite,
   });
 
   GlockerModel copyWith({
@@ -75,6 +77,7 @@ class GlockerModel {
     String? videoKyc,
     DateTime? createdAt,
     DateTime? updatedAt,
+    bool? isFavourite,
   }) =>
       GlockerModel(
         status: status ?? this.status,
@@ -97,6 +100,7 @@ class GlockerModel {
         videoKyc: videoKyc ?? this.videoKyc,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        isFavourite: isFavourite ?? this.isFavourite,
       );
 
   factory GlockerModel.fromJson(Map<String, dynamic> json) => GlockerModel(
@@ -124,6 +128,7 @@ class GlockerModel {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        isFavourite: json["is_favourite"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -148,4 +153,56 @@ class GlockerModel {
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
       };
+
+  @override
+  bool operator ==(covariant GlockerModel other) {
+    if (identical(this, other)) return true;
+
+    return other.status == status &&
+        other.id == id &&
+        other.name == name &&
+        other.category == category &&
+        other.aboutMe == aboutMe &&
+        other.isOnline == isOnline &&
+        other.price == price &&
+        other.kycPin == kycPin &&
+        other.isVideoKycDone == isVideoKycDone &&
+        other.isAadhar == isAadhar &&
+        other.aadharFront == aadharFront &&
+        other.aadharBack == aadharBack &&
+        other.profilePhoto == profilePhoto &&
+        other.coverPhoto == coverPhoto &&
+        other.nameAsPerPan == nameAsPerPan &&
+        other.panNumber == panNumber &&
+        other.gstinNumber == gstinNumber &&
+        other.videoKyc == videoKyc &&
+        other.createdAt == createdAt &&
+        other.updatedAt == updatedAt &&
+        other.isFavourite == isFavourite;
+  }
+
+  @override
+  int get hashCode {
+    return status.hashCode ^
+        id.hashCode ^
+        name.hashCode ^
+        category.hashCode ^
+        aboutMe.hashCode ^
+        isOnline.hashCode ^
+        price.hashCode ^
+        kycPin.hashCode ^
+        isVideoKycDone.hashCode ^
+        isAadhar.hashCode ^
+        aadharFront.hashCode ^
+        aadharBack.hashCode ^
+        profilePhoto.hashCode ^
+        coverPhoto.hashCode ^
+        nameAsPerPan.hashCode ^
+        panNumber.hashCode ^
+        gstinNumber.hashCode ^
+        videoKyc.hashCode ^
+        createdAt.hashCode ^
+        updatedAt.hashCode ^
+        isFavourite.hashCode;
+  }
 }
