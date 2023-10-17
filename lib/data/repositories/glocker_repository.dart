@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:glok/data/models/glocker_model.dart';
 import 'package:glok/utils/meta_strings.dart';
@@ -63,6 +64,8 @@ class GlockerRepository {
     String url =
         "${MetaStrings.baseUrl}${MetaStrings.getFilteredGlocker}${filters != null ? "?$filters" : ''}&page=$index&limit=10";
     final response = await http.get(Uri.parse(url.trim()), headers: headers);
+    log(url);
+    log(response.body);
     if (response.statusCode == 200) {
       var parsedResponse = jsonDecode(response.body);
       if (parsedResponse is Map) return [];

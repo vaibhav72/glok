@@ -38,8 +38,14 @@ class CelebByCategoryView extends GetView<CelebByCategoryController> {
             padding: const EdgeInsets.all(16.0),
             child: TextFormField(
               onChanged: (value) {
-                controller.glockerListController.searchText.value = value;
-                controller.glockerListController.getGlockerList();
+                if (value.isNotEmpty) {
+                  controller.glockerListController.searching.value = true;
+                  controller.glockerListController.searchText.value = value;
+                  controller.glockerListController.getGlockerList();
+                } else {
+                  controller.glockerListController.searching.value = false;
+                  controller.glockerListController.searchText.value = "";
+                }
               },
               decoration: searchFormDecoration("", "Search",
                   prefix: SvgPicture.asset(MetaAssets.browseIcon),
@@ -238,21 +244,25 @@ class CelebByCategoryView extends GetView<CelebByCategoryController> {
               child: Obx(
             () => Padding(
               padding: const EdgeInsets.only(left: 16),
-              child: GridView.builder(
-                  itemCount:
-                      GlockerListController.to.currentGlockers.value!.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: .8,
-                      crossAxisCount: 2),
-                  itemBuilder: ((context, index) {
-                    return GlockerTile(
-                      data: GlockerListController
-                          .to.currentGlockers.value![index],
-                      resfreshEnum: RefreshEnum.refreshCurrentGlockers,
-                    );
-                  })),
+              child: GlockerListController.to.currentGlockers.isEmpty
+                  ? Center(
+                      child: Text("No Glockers found"),
+                    )
+                  : GridView.builder(
+                      itemCount: GlockerListController
+                          .to.currentGlockers.value!.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          childAspectRatio: .8,
+                          crossAxisCount: 2),
+                      itemBuilder: ((context, index) {
+                        return GlockerTile(
+                          data: GlockerListController
+                              .to.currentGlockers.value![index],
+                          resfreshEnum: RefreshEnum.refreshCurrentGlockers,
+                        );
+                      })),
             ),
           ))
         ],

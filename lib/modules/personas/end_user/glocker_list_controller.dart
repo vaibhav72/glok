@@ -60,6 +60,12 @@ class GlockerListController extends GetxController {
   }
 
   clearFilters() {
+    clearFiltersValues();
+    getGlockerList();
+    Get.back();
+  }
+
+  clearFiltersValues() {
     appliedFilters.value = [];
     selectedFilters.value = [];
     appliedShowOnline.value = false;
@@ -70,8 +76,6 @@ class GlockerListController extends GetxController {
     maxPrice.value = 4999;
     appliedMinPrice.value = null;
     appliedMaxPrice.value = null;
-    getGlockerList();
-    Get.back();
   }
 
   getGlockerList() async {
