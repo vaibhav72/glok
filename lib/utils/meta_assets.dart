@@ -42,6 +42,7 @@ class MetaAssets {
   static const String bankIcon = 'assets/bank_icon.svg';
   static const String logout = 'assets/logout.svg';
   static const String moreProceed = 'assets/more_proceed.svg';
+  static const String editIcon = 'assets/edit.svg';
 
   //apply icons
 

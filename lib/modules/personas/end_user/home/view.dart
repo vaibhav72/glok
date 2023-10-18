@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:glok/data/models/glocker_model.dart';
-import 'package:glok/modules/personas/celebrity/celeb_profile/binding.dart';
+import 'package:glok/modules/personas/end_user/glocker_profile/binding.dart';
 import 'package:glok/modules/personas/end_user/browse/view.dart';
 import 'package:glok/modules/personas/end_user/glocker_list_controller.dart';
 import 'package:glok/modules/personas/end_user/home/controller.dart';
@@ -15,7 +15,7 @@ import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../celebrity/celeb_profile/view.dart';
+import '../glocker_profile/view.dart';
 
 class EndUserHomeView extends GetView<EndUserHomeController> {
   @override
@@ -150,17 +150,21 @@ class EndUserHomeView extends GetView<EndUserHomeController> {
                     width: double.maxFinite,
                     child: Column(
                       children: [
-                        Container(
-                          height: Get.height * .55,
-                          color: Colors.transparent,
-                          child: Text(""),
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            height: Get.height * .55,
+                            color: Colors.transparent,
+                            child: Text(""),
+                          ),
                         ),
                         Expanded(
+                            flex: 1,
                             child: Container(
-                          width: double.maxFinite,
-                          color: Colors.white,
-                          child: Text(""),
-                        ))
+                              width: double.maxFinite,
+                              color: Colors.white,
+                              child: Text(""),
+                            ))
                       ],
                     ),
                   ),

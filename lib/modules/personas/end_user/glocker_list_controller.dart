@@ -7,8 +7,8 @@ import 'package:glok/data/repositories/glocker_repository.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:http/http.dart';
 
-import '../celebrity/celeb_profile/binding.dart';
-import '../celebrity/celeb_profile/view.dart';
+import 'glocker_profile/binding.dart';
+import 'glocker_profile/view.dart';
 
 class GlockerListController extends GetxController {
   GlockerRepository glockerRepository = GlockerRepository();
@@ -132,7 +132,7 @@ class GlockerListController extends GetxController {
 
   void viewGlocker(GlockerModel data) {
     selectedGlocker.value = data;
-    Get.to(() => CelebrityProfileView(), binding: CelebrityProfileBinding());
+    Get.to(() => GlockerProfileView(), binding: GlockerProfileBinding());
   }
 
   getSelectedGlockerData() async {

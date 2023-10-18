@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:glok/modules/personas/celebrity/celeb_profile/controller.dart';
+import 'package:glok/modules/personas/celebrity/my_glocker_profile/update_profile_view.dart';
+
 import 'package:glok/utils/helpers.dart';
 import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CelebrityProfileView extends GetView<CelebrityProfileController> {
+import 'controller.dart';
+
+class MyGlockerProfileView extends GetView<MyGlockerProfileController> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -42,15 +45,14 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        Get.back();
+                                        controller.initProfileData();
+                                        Get.to(
+                                            () => UpdateMyGlockerProfileView());
                                       },
                                       child: CircleAvatar(
-                                        backgroundColor: Colors.black12,
-                                        child: Icon(
-                                          Icons.arrow_back,
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                                          backgroundColor: Colors.black12,
+                                          child: SvgPicture.asset(
+                                              MetaAssets.editIcon)),
                                     ),
                                     Spacer(),
                                     controller.isCurrentGlocker
@@ -184,12 +186,20 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                                           padding: const EdgeInsets.all(20)
                                               .copyWith(top: 0),
                                           child: CustomButtonWithChild(
+                                              color: MetaColors.primary
+                                                  .withOpacity(0.1),
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   SvgPicture.asset(
-                                                      MetaAssets.videoCallIcon),
+                                                    MetaAssets.videoCallIcon,
+                                                    colorFilter:
+                                                        ColorFilter.mode(
+                                                            Get.theme
+                                                                .primaryColor,
+                                                            BlendMode.srcIn),
+                                                  ),
                                                   SizedBox(
                                                     width: 8,
                                                   ),
@@ -198,7 +208,8 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                                                       Text(
                                                         "Video Call @",
                                                         style: TextStyle(
-                                                            color: Colors.white,
+                                                            color: Get.theme
+                                                                .primaryColor,
                                                             fontSize: 15),
                                                       ),
                                                       RichText(
@@ -206,8 +217,8 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                                                             text: "\u20b9",
                                                             style: GoogleFonts.inter(
                                                                 fontSize: 16,
-                                                                color: Colors
-                                                                    .white,
+                                                                color: Get.theme
+                                                                    .primaryColor,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w400),
@@ -218,8 +229,9 @@ class CelebrityProfileView extends GetView<CelebrityProfileController> {
                                                                   style: GoogleFonts.poppins(
                                                                       fontSize:
                                                                           15,
-                                                                      color: Colors
-                                                                          .white,
+                                                                      color: Get
+                                                                          .theme
+                                                                          .primaryColor,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w400))

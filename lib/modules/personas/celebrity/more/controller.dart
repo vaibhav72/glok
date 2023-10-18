@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../data/repositories/user_repository.dart';
 import '../../../auth_module/controller.dart';
 
-class EndUserMoreController extends GetxController {
+class GlockerMoreController extends GetxController {
   Rxn<UserModel> get user => AuthController.to.user;
   UserRepository userRepository = UserRepository();
 

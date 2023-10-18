@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:glok/data/models/glocker_model.dart';
 import 'package:glok/utils/meta_strings.dart';
@@ -51,10 +52,10 @@ class GalleryRepository {
           "${MetaStrings.baseUrl}${MetaStrings.getGlockerGallery}?id=$glockerId&page=$page&limit=10&category=$category";
       final response = await http.get(Uri.parse(url), headers: headers);
       if (response.statusCode == 200) {
-        return (jsonDecode(response.body) as Map).values.map((e) {
-          if (e is Map<String, dynamic>) return GalleryItem.fromJson(e);
-        }).toList()
-          ..remove(null);
+        log(response.body);
+        return (jsonDecode(response.body)["gallery"] as List).map((e) {
+          return GalleryItem.fromJson(e);
+        }).toList();
       } else {
         throw Exception('Failed to load gallery');
       }

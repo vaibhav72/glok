@@ -6,6 +6,7 @@ import 'package:glok/controllers/hive_controller.dart';
 import 'package:glok/modules/auth_module/binding.dart';
 import 'package:glok/modules/auth_module/controller.dart';
 import 'package:glok/modules/auth_module/view.dart';
+import 'package:glok/modules/personas/controller.dart';
 import 'package:glok/modules/personas/end_user/browse/binding.dart';
 import 'package:glok/modules/personas/end_user/more/bindings.dart';
 import 'package:glok/modules/wallet/binding.dart';
@@ -15,6 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import 'modules/personas/celebrity/home/binding.dart';
 import 'modules/personas/end_user/home/binding.dart';
 
 void main() async {
@@ -64,11 +66,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Get.put(HiveController());
+
     AuthBinding().dependencies();
+    Get.put(PersonaController());
+    GlockerHomeBinding().dependencies();
     EndUserHomeBinding().dependencies();
     WalletBinding().dependencies();
-    BrowseBinding().dependencies();
-    EndUserMoreBinding().dependencies();
     Get.put(BottomNavigationController());
     Future.delayed(Duration(seconds: 3), () {
       setState(() {

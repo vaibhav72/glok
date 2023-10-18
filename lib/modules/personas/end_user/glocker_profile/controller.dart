@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:glok/data/models/glocker_model.dart';
 import 'package:glok/data/repositories/gallery_repository.dart';
 import 'package:glok/modules/auth_module/controller.dart';
-import 'package:glok/modules/personas/celebrity/celeb_profile/video_view.dart';
+import 'package:glok/modules/personas/end_user/glocker_profile/video_view.dart';
 import 'package:glok/modules/personas/end_user/glocker_list_controller.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,9 +13,9 @@ import 'package:video_player/video_player.dart';
 import '../../../../data/models/gallery_model.dart';
 import 'photo_view.dart';
 
-class CelebrityProfileController extends GetxController {
-  static CelebrityProfileController get to =>
-      Get.find<CelebrityProfileController>();
+class GlockerProfileController extends GetxController {
+  static GlockerProfileController get to =>
+      Get.find<GlockerProfileController>();
   GlockerListController get glockerListController => GlockerListController.to;
   Rxn<GlockerModel>? get glocker => glockerListController.selectedGlocker;
   bool get isCurrentGlocker =>

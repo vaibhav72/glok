@@ -6,17 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:glok/modules/personas/celebrity/my_glocker_profile/controller.dart';
-import 'package:glok/modules/personas/controller.dart';
 import 'package:glok/modules/personas/end_user/apply_glocker/view.dart';
+import 'package:glok/modules/personas/end_user/more/view.dart';
 import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
 
 import '../../../../utils/helpers.dart';
-import '../apply_glocker/binding.dart';
 import 'controller.dart';
 
-class EndUserMoreView extends GetView<EndUserMoreController> {
+class GlockerMoreView extends GetView<GlockerMoreController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,9 +26,7 @@ class EndUserMoreView extends GetView<EndUserMoreController> {
             padding: const EdgeInsets.all(24),
             child: Obx(
               () => Container(
-                width: double.maxFinite,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
                       height: 16,
@@ -126,17 +122,6 @@ class EndUserMoreView extends GetView<EndUserMoreController> {
                     },
                   ),
                   Divider(),
-                  if (!controller.user.value!.isGlocker!) ...[
-                    _MoreTile(
-                      title: "Apply as Glocker",
-                      icon: MetaAssets.profileIconNew,
-                      onTap: () {
-                        Get.to(ApplyToGlockerView(),
-                            binding: ApplyToGlockerBinding());
-                      },
-                    ),
-                    Divider(),
-                  ],
                   _MoreTile(
                     title: "Notification Preference",
                     icon: MetaAssets.notificationIconNew,
@@ -194,90 +179,6 @@ class EndUserMoreView extends GetView<EndUserMoreController> {
   }
 }
 
-class PersonaSwapWidget extends StatelessWidget {
-  const PersonaSwapWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => Container(
-        decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.3),
-            borderRadius: BorderRadius.circular(80)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            InkWell(
-              onTap: () {
-                PersonaController.to.glockerMode.value = false;
-              },
-              child: Container(
-                width: 100,
-                decoration: BoxDecoration(
-                    color: PersonaController.to.glockerMode.value!
-                        ? Colors.transparent
-                        : Colors.white,
-                    borderRadius: BorderRadius.circular(80)),
-                child: Center(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 24, vertical: 6),
-                    child: Text(
-                      "User",
-                      style: TextStyle(
-                          color: PersonaController.to.glockerMode.value!
-                              ? Colors.white
-                              : Get.theme.primaryColor,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                PersonaController.to.glockerMode.value = true;
-                if ((MyGlockerProfileController
-                            .to.galleryPhotos.value?.isEmpty ??
-                        false) ||
-                    (MyGlockerProfileController
-                            .to.galleryVideos.value?.isEmpty ??
-                        false)) MyGlockerProfileController.to.getGallery();
-              },
-              child: Container(
-                width: 100,
-                decoration: BoxDecoration(
-                    color: PersonaController.to.glockerMode.value!
-                        ? Colors.white
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(80)),
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: Text(
-                      "Glocker",
-                      style: TextStyle(
-                          color: !PersonaController.to.glockerMode.value!
-                              ? Colors.white
-                              : Get.theme.primaryColor,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _MoreTile extends StatelessWidget {
   _MoreTile({
     super.key,
@@ -326,7 +227,7 @@ class _MoreTile extends StatelessWidget {
   }
 }
 
-class _MyProfile extends GetView<EndUserMoreController> {
+class _MyProfile extends GetView<GlockerMoreController> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -601,7 +502,7 @@ class _MyProfile extends GetView<EndUserMoreController> {
   }
 }
 
-class _BankAccountWidget extends GetView<EndUserMoreController> {
+class _BankAccountWidget extends GetView<GlockerMoreController> {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -822,7 +723,7 @@ class _BankAccountWidget extends GetView<EndUserMoreController> {
   }
 }
 
-class _NotificationPreference extends GetView<EndUserMoreController> {
+class _NotificationPreference extends GetView<GlockerMoreController> {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -939,7 +840,7 @@ class _NotificationPreferenceTile extends StatelessWidget {
   }
 }
 
-class _TermsAndConditions extends GetView<EndUserMoreController> {
+class _TermsAndConditions extends GetView<GlockerMoreController> {
   @override
   Widget build(BuildContext context) {
     return Material(

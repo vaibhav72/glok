@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 List<String> pageTitleList = ["Movie Star", "TV Star", "Singer", "Influencer"];
 
@@ -49,9 +50,10 @@ class CustomButtonWithChild extends StatelessWidget {
   CustomButtonWithChild(
       {super.key,
       required this.child,
+      this.color,
       required this.onPressed,
       this.loading = false});
-
+  Color? color;
   final Widget child;
   void Function()? onPressed;
   bool? loading;
@@ -63,7 +65,7 @@ class CustomButtonWithChild extends StatelessWidget {
       child: Container(
         height: 52,
         decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
+            color: color ?? Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(80)),
         child: Center(
           child: loading! ? const CircularProgressIndicator() : child,
@@ -328,4 +330,18 @@ String getFileExtension(String filePath) {
   } catch (e) {
     return '';
   }
+}
+
+Text getPercentageDifference(double percentage) {
+  return Text(
+    "${percentage.isNegative ? "-" : "+"}${percentage.abs().toStringAsFixed(0)}% than last week",
+    style: TextStyle(
+        fontSize: 12, color: percentage.isNegative ? Colors.red : Colors.green),
+  );
+}
+
+String getCurrency(double amount) {
+  return NumberFormat.currency(
+          locale: "en_IN", symbol: "\u20b9", decimalDigits: 0)
+      .format(amount);
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:glok/utils/meta_strings.dart';
 import 'package:hive/hive.dart';
@@ -26,7 +27,8 @@ class UserRepository {
         Uri.parse(MetaStrings.baseUrl + MetaStrings.getCurrentuser),
         headers: headers);
     if (response.statusCode == 200) {
-      return UserModel.fromJson(jsonDecode(response.body)["user"]);
+      log(response.body);
+      return UserModel.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to load user');
     }

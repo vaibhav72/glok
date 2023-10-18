@@ -44,9 +44,7 @@ class BankRepository {
               "?page=$page&limit=10"),
           headers: headers);
       if (response.statusCode == 200) {
-        return (jsonDecode(response.body) as Map)
-            .values
-            .where((element) => element is Map)
+        return (jsonDecode(response.body)["transaction"] as List)
             .map((e) => TransactionModel.fromJson(e))
             .toList();
       } else {

@@ -128,7 +128,7 @@ class GlockerRepository {
     var headers = await getHeaders();
     var params = {
       "name": data.name,
-      "category": data..category,
+      "category": data.category,
       "about_me": data.aboutMe,
       "price": data.price
     };

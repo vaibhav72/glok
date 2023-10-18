@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:glok/data/models/user_model.dart';
 import 'package:glok/data/repositories/glocker_repository.dart';
 import 'package:glok/data/repositories/user_repository.dart';
+import 'package:glok/modules/personas/end_user/home/binding.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -93,6 +94,7 @@ class AuthController extends GetxController with CodeAutoFill {
         authLoading.value = true;
         UserModel response = await authRepository.verifyOtp(
             phoneNumber.value!, otpController.text);
+
         getUserDetails();
       } catch (e) {
         authLoading.value = false;
@@ -155,6 +157,8 @@ class AuthController extends GetxController with CodeAutoFill {
   void onInit() {
     super.onInit();
     listenForCode();
-    if (isLoggedIn.value!) getUserDetails();
+    if (isLoggedIn.value!) {
+      getUserDetails();
+    }
   }
 }

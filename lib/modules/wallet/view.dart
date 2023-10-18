@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:glok/modules/personas/controller.dart';
 import 'package:glok/modules/personas/end_user/apply_glocker/view.dart';
 import 'package:glok/modules/wallet/add_fund_view.dart';
 import 'package:glok/modules/wallet/controller.dart';
@@ -57,33 +58,37 @@ class WalletView extends GetView<WalletController> {
                     SizedBox(
                       height: 16,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _FundActionButton(
-                          action: "Add Fund",
-                          handler: () {
-                            Get.to(AddFundView());
-                          },
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        _FundActionButton(
-                          action: "Withdraw",
-                          handler: () {
-                            if (controller.balance < 100) {
-                              showSnackBar(
-                                message:
-                                    "You need to have atleast ₹100 in your wallet to withdraw",
-                                title: "Insufficient Balance",
-                              );
-                              return;
-                            }
-                            Get.to(WithdrawFundView());
-                          },
-                        ),
-                      ],
+                    Obx(
+                      () => Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (!PersonaController.to.glockerMode.value!) ...[
+                            _FundActionButton(
+                              action: "Add Fund",
+                              handler: () {
+                                Get.to(AddFundView());
+                              },
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                          ],
+                          _FundActionButton(
+                            action: "Withdraw",
+                            handler: () {
+                              if (controller.balance < 100) {
+                                showSnackBar(
+                                  message:
+                                      "You need to have atleast ₹100 in your wallet to withdraw",
+                                  title: "Insufficient Balance",
+                                );
+                                return;
+                              }
+                              Get.to(WithdrawFundView());
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 16,

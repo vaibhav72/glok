@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:glok/modules/personas/celebrity/celeb_profile/controller.dart';
+import 'package:glok/modules/personas/end_user/glocker_profile/controller.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../utils/helpers.dart';
-import '../../end_user/apply_glocker/view.dart';
+import '../apply_glocker/view.dart';
 
-class VideoView extends GetView<CelebrityProfileController> {
+class VideoView extends GetView<GlockerProfileController> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -66,11 +66,12 @@ class VideoView extends GetView<CelebrityProfileController> {
                             },
                           ),
                         )),
-                        CustomButton(
-                            title: "Upload",
-                            onPressed: () {
-                              controller.uploadPhoto();
-                            })
+                        if (controller.isUploadPreview.value!)
+                          CustomButton(
+                              title: "Upload",
+                              onPressed: () {
+                                controller.uploadPhoto();
+                              })
                       ],
                     ),
                     Padding(

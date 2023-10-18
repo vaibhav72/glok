@@ -27,27 +27,32 @@ class UserModel {
   String? roles;
   String? glockerId;
   String? accessToken;
+  String? accountHolderName;
+  String? accountNumber;
+  String? ifscCode;
 
-  UserModel({
-    this.status,
-    this.id,
-    this.name,
-    this.gender,
-    this.email,
-    this.mobileNumber,
-    this.mobileVerified,
-    this.countryCode,
-    this.otp,
-    this.photo,
-    this.isGlocker,
-    this.isActive,
-    this.isBlocked,
-    this.createdAt,
-    this.updatedAt,
-    this.roles,
-    this.glockerId,
-    this.accessToken,
-  });
+  UserModel(
+      {this.status,
+      this.id,
+      this.name,
+      this.gender,
+      this.email,
+      this.mobileNumber,
+      this.mobileVerified,
+      this.countryCode,
+      this.otp,
+      this.photo,
+      this.isGlocker,
+      this.isActive,
+      this.isBlocked,
+      this.createdAt,
+      this.updatedAt,
+      this.roles,
+      this.glockerId,
+      this.accessToken,
+      this.accountHolderName,
+      this.accountNumber,
+      this.ifscCode});
 
   UserModel copyWith({
     int? status,
@@ -68,6 +73,9 @@ class UserModel {
     String? roles,
     String? glockerId,
     String? accessToken,
+    String? accountHolderName,
+    String? accountNumber,
+    String? ifscCode,
   }) =>
       UserModel(
         status: status ?? this.status,
@@ -88,6 +96,9 @@ class UserModel {
         roles: roles ?? this.roles,
         glockerId: glockerId ?? this.glockerId,
         accessToken: accessToken ?? this.accessToken,
+        accountHolderName: accountHolderName ?? this.accountHolderName,
+        accountNumber: accountNumber ?? this.accountNumber,
+        ifscCode: ifscCode ?? this.ifscCode,
       );
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -113,6 +124,9 @@ class UserModel {
         roles: json["roles"],
         glockerId: json["glocker_id"].toString(),
         accessToken: json["access_token"],
+        accountHolderName: json["account_holder_name"],
+        accountNumber: json["account_number"],
+        ifscCode: json["ifsc_code"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -134,5 +148,8 @@ class UserModel {
         "roles": roles,
         "glocker_id": glockerId,
         "access_token": accessToken,
+        // "account_holder_name": accountHolderName,
+        // "account_number": accountNumber,
+        // "ifsc_code": ifscCode,
       };
 }

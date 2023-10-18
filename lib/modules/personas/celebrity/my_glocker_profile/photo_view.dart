@@ -4,11 +4,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:glok/modules/personas/celebrity/celeb_profile/controller.dart';
+
 import 'package:glok/modules/personas/end_user/apply_glocker/view.dart';
 import 'package:glok/utils/helpers.dart';
 
-class PhotoView extends GetView<CelebrityProfileController> {
+import 'controller.dart';
+
+class PhotoView extends GetView<MyGlockerProfileController> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -40,14 +42,15 @@ class PhotoView extends GetView<CelebrityProfileController> {
                                   fit: BoxFit.cover,
                                 ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CustomButton(
-                              title: "Upload",
-                              onPressed: () {
-                                controller.uploadPhoto();
-                              }),
-                        )
+                        if (controller.isUploadPreview.value!)
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CustomButton(
+                                title: "Upload",
+                                onPressed: () {
+                                  controller.uploadPhoto();
+                                }),
+                          )
                       ],
                     ),
                     Padding(
