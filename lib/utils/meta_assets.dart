@@ -40,6 +40,7 @@ class MetaAssets {
   static const String documentIcon = 'assets/document_icon.svg';
   static const String inviteIcon = 'assets/invite_icon.svg';
   static const String bankIcon = 'assets/bank_icon.svg';
+  static const String taxIcon = 'assets/tax_icon.svg';
   static const String logout = 'assets/logout.svg';
   static const String moreProceed = 'assets/more_proceed.svg';
   static const String editIcon = 'assets/edit.svg';

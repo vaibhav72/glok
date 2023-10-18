@@ -5,12 +5,14 @@ import 'package:glok/data/repositories/bank_repository.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../data/models/glocker_model.dart';
 import '../../../../data/repositories/user_repository.dart';
 import '../../../auth_module/controller.dart';
 
 class GlockerMoreController extends GetxController {
   Rxn<UserModel> get user => AuthController.to.user;
   UserRepository userRepository = UserRepository();
+  Rxn<GlockerModel> get glocker => AuthController.to.glocker;
 
   /// User Profile
   ///

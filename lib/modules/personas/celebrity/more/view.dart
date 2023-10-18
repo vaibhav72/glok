@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:glok/modules/auth_module/controller.dart';
 import 'package:glok/modules/personas/end_user/apply_glocker/view.dart';
 import 'package:glok/modules/personas/end_user/more/view.dart';
 import 'package:glok/utils/meta_assets.dart';
@@ -118,6 +119,15 @@ class GlockerMoreView extends GetView<GlockerMoreController> {
                     onTap: () {
                       controller.initBankDetails();
                       Get.bottomSheet(_BankAccountWidget(),
+                          isScrollControlled: true);
+                    },
+                  ),
+                  Divider(),
+                  _MoreTile(
+                    title: "Tax Information",
+                    icon: MetaAssets.taxIcon,
+                    onTap: () {
+                      Get.bottomSheet(_TaxInfoWidget(),
                           isScrollControlled: true);
                     },
                   ),
@@ -717,6 +727,166 @@ class _BankAccountWidget extends GetView<GlockerMoreController> {
                     ),
                   ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TaxInfoWidget extends GetView<GlockerMoreController> {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      child: Container(
+        height: 500,
+        child: Obx(
+          () => controller.isLoading.value!
+              ? Center(child: Loader())
+              : Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Container(
+                                height: 6,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    color: Get.theme.dividerColor,
+                                    borderRadius: BorderRadius.circular(40)),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.all(16.0).copyWith(bottom: 24),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    "Tax Information",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Spacer(),
+                                ],
+                              ),
+                              Divider(),
+                              SizedBox(
+                                height: 24,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 6),
+                                    child: Text(
+                                      "Name as per PAN",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 15),
+                                    ),
+                                  ),
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue: controller
+                                            .glocker.value?.nameAsPerPan ??
+                                        '',
+                                    validator: (value) {
+                                      if (value!.trim().length < 3) {
+                                        return "Enter a valid name";
+                                      }
+                                      return null;
+                                    },
+                                    decoration: formDecoration(
+                                            "Name", "Enter your name")
+                                        .copyWith(
+                                            fillColor: Get.theme.dividerColor),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 6),
+                                    child: Text(
+                                      "PAN Number",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 15),
+                                    ),
+                                  ),
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue:
+                                        controller.glocker.value?.panNumber ??
+                                            '',
+                                    decoration: formDecoration("Pan Number",
+                                            "Enter your Pan Number")
+                                        .copyWith(
+                                            fillColor: Get.theme.dividerColor),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 6),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "GSTIN",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 15),
+                                        ),
+                                        Text(
+                                          "(optional)",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue:
+                                        controller.glocker.value?.panNumber ??
+                                            '',
+                                    decoration: formDecoration(
+                                        "GSTIN Number", "Enter GSTIN number"),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
         ),
       ),
     );
