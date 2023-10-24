@@ -5,14 +5,14 @@ import 'package:glok/data/models/agora_data_model.dart';
 import 'package:glok/data/models/bidlist_model.dart';
 import 'package:glok/data/repositories/user_repository.dart';
 import 'package:glok/modules/auth_module/controller.dart';
-import 'package:glok/modules/personas/bid/view.dart';
+import 'package:glok/modules/personas/celebrity/bid/view.dart';
 import 'package:glok/modules/personas/video/binding.dart';
 import 'package:glok/modules/personas/video/view.dart';
 import 'package:glok/utils/helpers.dart';
 
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-import 'bid/binding.dart';
+import 'celebrity/bid/binding.dart';
 
 class PersonaController extends GetxController {
   static PersonaController get to => Get.find<PersonaController>();
@@ -26,7 +26,7 @@ class PersonaController extends GetxController {
     socket!.connect();
     socket!.onConnect((data) {
       log("Connected");
-      return showSnackBar(message: "connected", isError: false);
+      showSnackBar(message: "connected", isError: false);
     });
     socket!.onDisconnect((_) {
       log("disconnected");
@@ -74,6 +74,6 @@ class PersonaController extends GetxController {
   }
 
   joinStream(int glockerId) {
-    socket!.emit("join_stream", glockerId);
+    socket!.emit('join_stream', glockerId);
   }
 }

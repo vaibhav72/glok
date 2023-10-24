@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:glok/data/models/glocker_model.dart';
 import 'package:glok/data/repositories/gallery_repository.dart';
 import 'package:glok/modules/auth_module/controller.dart';
+import 'package:glok/modules/personas/controller.dart';
 import 'package:glok/modules/personas/end_user/glocker_profile/video_view.dart';
 import 'package:glok/modules/personas/end_user/glocker_list_controller.dart';
 import 'package:glok/utils/helpers.dart';
@@ -11,6 +12,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../data/models/gallery_model.dart';
+import '../../../../data/repositories/glocker_repository.dart';
+import '../bid/binding.dart';
+import '../bid/view.dart';
 import 'photo_view.dart';
 
 class GlockerProfileController extends GetxController {
@@ -32,6 +36,24 @@ class GlockerProfileController extends GetxController {
   ImagePicker picker = ImagePicker();
   Rxn<GalleryItem?> selectedGalleryItem = Rxn();
   Rxn<bool> isUploadPreview = Rxn(false);
+  GlockerRepository glockerRepository = GlockerRepository();
+
+  PersonaController get personaController => PersonaController.to;
+
+//goto video
+
+  gotoVideo() async {
+    // await personaController.joinStream(glocker!.value!.id!);
+    loading.value = true;
+    try {
+      await glockerRepository.createBid(59001, glocker!.value!.id!);
+      loading.value = false;
+      Get.to(() => UserBiddingView(), binding: UserBiddingBinding());
+    } catch (e) {
+      loading.value = false;
+      showSnackBar(message: e.toString());
+    }
+  }
 
   //video
   late VideoPlayerController videoController;
@@ -67,6 +89,7 @@ class GlockerProfileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
     getGlockerData();
     getGallery();
   }
@@ -74,6 +97,9 @@ class GlockerProfileController extends GetxController {
   getGlockerData() async {
     loading.value = true;
     await glockerListController.getSelectedGlockerData();
+    await personaController.disconnect();
+    await personaController.init();
+    await personaController.joinStream(glocker!.value!.id!);
     loading.value = false;
   }
 
@@ -86,7 +112,7 @@ class GlockerProfileController extends GetxController {
           glockerId: glocker!.value!.id!, category: "video", page: 1);
       galleryLoading.value = false;
     } catch (e) {
-      showSnackBar(message: "Could not load gallery");
+      // showSnackBar(message: "Could not load gallery");
       galleryLoading.value = false;
     }
   }
@@ -179,5 +205,11 @@ class GlockerProfileController extends GetxController {
     } else {
       Get.to(() => PhotoView());
     }
+  }
+
+  @override
+  void dispose() async {
+    await personaController.disconnect();
+    super.dispose();
   }
 }

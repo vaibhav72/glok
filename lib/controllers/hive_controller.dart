@@ -21,4 +21,12 @@ class HiveController extends GetxController {
   readData(String key) {
     return Hive.box('app').get(key);
   }
+
+  clearData() async {
+    await Hive.box('app').clear();
+  }
+
+  logoutData() async {
+    await Hive.box('app').delete('token');
+  }
 }

@@ -111,8 +111,9 @@ class UserRepository {
   getSocket() async {
     try {
       IO.Socket socket = IO.io(
-          MetaStrings.baseUrl,
+          MetaStrings.baseUrl + "/glok",
           OptionBuilder()
+              .setExtraHeaders(await getHeaders())
               .setTransports(['websocket'])
               .disableAutoConnect() // for Flutter or Dart VM
               .build());

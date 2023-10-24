@@ -84,12 +84,17 @@ class OTPView extends GetView<AuthController> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text(
-                    "Resend SMS",
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: Get.theme.secondaryHeaderColor),
+                  InkWell(
+                    onTap: () {
+                      controller.handleResendOTP();
+                    },
+                    child: Text(
+                      "Resend SMS",
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Get.theme.secondaryHeaderColor),
+                    ),
                   ),
                   SizedBox(
                     height: 20,

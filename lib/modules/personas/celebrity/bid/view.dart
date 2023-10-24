@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:glok/data/models/bidlist_model.dart';
-import 'package:glok/modules/personas/bid/controller.dart';
+import 'package:glok/modules/personas/celebrity/bid/controller.dart';
 import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:google_fonts/google_fonts.dart';

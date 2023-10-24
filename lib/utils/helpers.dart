@@ -161,8 +161,10 @@ class DashedLinePainter extends CustomPainter {
 }
 
 showSnackBar({required String message, String? title, bool isError = true}) {
+  Get.closeAllSnackbars();
   Get.snackbar(title ?? '', message,
-      backgroundColor: isError ? Colors.red : Colors.green);
+      backgroundColor: isError ? Colors.red : Colors.green,
+      duration: Duration(seconds: 2));
 }
 
 Future<ImageSource?> showImageSourceSelector() async {

@@ -15,6 +15,7 @@ import '../../data/repositories/auth_repository.dart';
 
 class AuthController extends GetxController with CodeAutoFill {
   Rxn<bool> authLoading = Rxn<bool>(false);
+  Rxn<bool> resendOTp = Rxn<bool>(false);
   Rxn<bool> loading = Rxn<bool>(false);
   static AuthController get to => Get.find<AuthController>();
   AuthRepository authRepository = AuthRepository();
@@ -44,6 +45,15 @@ class AuthController extends GetxController with CodeAutoFill {
   setWalkthroughStatus(bool value) async {
     showWalkthrough.value = value;
     await hiveController.writeData('walkthrough', value);
+  }
+
+  handleLogout() async {
+    loading.value = true;
+    hiveController.clearData();
+    user.value = null;
+    wallet.value = null;
+    glocker.value = null;
+    loading.value = false;
   }
 
   handleLoginOTP() async {
@@ -160,5 +170,10 @@ class AuthController extends GetxController with CodeAutoFill {
     if (isLoggedIn.value!) {
       getUserDetails();
     }
+  }
+
+  void handleResendOTP() {
+    resendOTp.value = true;
+    handleLoginOTP();
   }
 }

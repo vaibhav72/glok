@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:glok/modules/auth_module/controller.dart';
 import 'package:glok/modules/personas/celebrity/my_glocker_profile/controller.dart';
 import 'package:glok/modules/personas/controller.dart';
 import 'package:glok/modules/personas/end_user/apply_glocker/view.dart';
@@ -182,7 +183,9 @@ class EndUserMoreView extends GetView<EndUserMoreController> {
                   _MoreTile(
                     title: "Log Out",
                     icon: MetaAssets.logout,
-                    onTap: () {},
+                    onTap: () {
+                      AuthController.to.handleLogout();
+                    },
                   ),
                 ],
               ),
