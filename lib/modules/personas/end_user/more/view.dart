@@ -212,7 +212,7 @@ class PersonaSwapWidget extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                PersonaController.to.glockerMode.value = false;
+                PersonaController.to.updateGlockerMode(false);
               },
               child: Container(
                 width: 100,
@@ -240,7 +240,7 @@ class PersonaSwapWidget extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                PersonaController.to.glockerMode.value = true;
+                PersonaController.to.updateGlockerMode(true);
                 if ((MyGlockerProfileController
                             .to.galleryPhotos.value?.isEmpty ??
                         false) ||

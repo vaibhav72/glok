@@ -1,6 +1,8 @@
 class MetaStrings {
   static const String baseUrl = 'http://dev.mindstack.in:3030';
 
+  static const String agoraAppid = '0a53e73e1beb4f1887eaa84cfcb37bd9';
+
   ///registration Urls
   static const String userRegistrationUrl = '/user/new';
   static const String verifyMobile = '/user/verifyMobile';
@@ -8,6 +10,7 @@ class MetaStrings {
   static const String updateUser = '/user';
   static const String generateOtp = '/auth/generateOtp';
   static const String loginVerifyOTP = '/auth/verifymobileotp';
+  static const String changeGlockerMode = '/user/updateisglocker';
 
   static const String updateUserPhoto = '/user/photo';
   static const String changeuserType = '/user/updateisglocker';
@@ -59,6 +62,7 @@ class MetaStrings {
 
   //video call
   static const String getVideoCall = '/videocall';
+
   static const String endCall = '/videocall/disconnect';
   static const String getAgoraToken = '/agora/token';
 

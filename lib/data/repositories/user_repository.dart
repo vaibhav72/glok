@@ -5,9 +5,11 @@ import 'package:glok/utils/meta_strings.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 import '../models/user_model.dart';
 import '../models/wallet_model.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class UserRepository {
   Future<String> getToken() async {
@@ -86,6 +88,37 @@ class UserRepository {
       return WalletModel.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to load user');
+    }
+  }
+
+  Future<bool> updateGlockerMode(bool isGlocker) async {
+    var headers = await getHeaders();
+    var params = {"is_glocker": isGlocker};
+    final response = await http.patch(
+        Uri.parse(MetaStrings.baseUrl + MetaStrings.changeGlockerMode),
+        body: jsonEncode(params),
+        headers: headers);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      var parsedResponse = jsonDecode(response.body);
+      throw parsedResponse["error"] ??
+          parsedResponse["message"] ??
+          "Failed to update user";
+    }
+  }
+
+  getSocket() async {
+    try {
+      IO.Socket socket = IO.io(
+          MetaStrings.baseUrl,
+          OptionBuilder()
+              .setTransports(['websocket'])
+              .disableAutoConnect() // for Flutter or Dart VM
+              .build());
+      return socket;
+    } catch (e) {
+      rethrow;
     }
   }
 }

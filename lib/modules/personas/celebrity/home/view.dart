@@ -7,9 +7,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:glok/data/models/glocker_model.dart';
 import 'package:glok/modules/auth_module/controller.dart';
+import 'package:glok/modules/personas/bid/binding.dart';
+import 'package:glok/modules/personas/bid/view.dart';
 import 'package:glok/modules/personas/celebrity/home/chart.dart';
 import 'package:glok/modules/personas/celebrity/home/controller.dart';
 import 'package:glok/modules/personas/celebrity/more/view.dart';
+import 'package:glok/modules/personas/controller.dart';
 import 'package:glok/modules/personas/end_user/glocker_profile/binding.dart';
 import 'package:glok/modules/personas/end_user/browse/view.dart';
 import 'package:glok/modules/personas/end_user/glocker_list_controller.dart';
@@ -29,305 +32,324 @@ class GlockerHomeView extends GetView<EndUserHomeController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Container(
-          height: double.maxFinite,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage(
-              MetaAssets.background,
-            ),
-            fit: BoxFit.cover,
-          )),
-          child: Scaffold(
-              bottomNavigationBar: BottomNavigationBar(
-                  onTap: (value) {
-                    controller.bottomNav.changePage(value);
-                  },
-                  type: BottomNavigationBarType.fixed,
-                  currentIndex: controller.bottomNav.currentIndex.value,
-                  showSelectedLabels: true,
-                  showUnselectedLabels: true,
-                  selectedItemColor: MetaColors.primary,
-                  unselectedItemColor: Colors.grey,
-                  selectedLabelStyle: TextStyle(
-                      color: MetaColors.primary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600),
-                  unselectedLabelStyle: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400),
-                  items: [
-                    BottomNavigationBarItem(
-                        icon: SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: SvgPicture.asset(
-                            MetaAssets.homeIcon,
-                          ),
-                        ),
-                        activeIcon: SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: SvgPicture.asset(
-                            MetaAssets.homeIcon,
-                            colorFilter: ColorFilter.mode(
-                                MetaColors.primary, BlendMode.srcIn),
-                          ),
-                        ),
-                        label: "Home"),
-                    BottomNavigationBarItem(
-                        icon: SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: Center(
-                            child: SvgPicture.asset(
-                              MetaAssets.walletIcon,
-                            ),
-                          ),
-                        ),
-                        activeIcon: SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: Center(
-                            child: SvgPicture.asset(
-                              MetaAssets.walletIcon,
-                              colorFilter: ColorFilter.mode(
-                                  MetaColors.primary, BlendMode.srcIn),
-                            ),
-                          ),
-                        ),
-                        label: "Wallet"),
-                    BottomNavigationBarItem(
-                        icon: SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: Center(
-                            child: CircleAvatar(
-                              backgroundImage: CachedNetworkImageProvider(
-                                  AuthController
-                                      .to.glocker.value!.profilePhoto!),
-                            ),
-                          ),
-                        ),
-                        activeIcon: SizedBox(
+      () {
+        return Container(
+            height: double.maxFinite,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage(
+                MetaAssets.background,
+              ),
+              fit: BoxFit.cover,
+            )),
+            child: Scaffold(
+                bottomNavigationBar: BottomNavigationBar(
+                    onTap: (value) {
+                      controller.bottomNav.changePage(value);
+                    },
+                    type: BottomNavigationBarType.fixed,
+                    currentIndex: controller.bottomNav.currentIndex.value,
+                    showSelectedLabels: true,
+                    showUnselectedLabels: true,
+                    selectedItemColor: MetaColors.primary,
+                    unselectedItemColor: Colors.grey,
+                    selectedLabelStyle: TextStyle(
+                        color: MetaColors.primary,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600),
+                    unselectedLabelStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
+                    items: [
+                      BottomNavigationBarItem(
+                          icon: SizedBox(
                             height: 24,
                             width: 24,
-                            child: CircleAvatar(
-                              backgroundImage: CachedNetworkImageProvider(
-                                  AuthController
-                                      .to.glocker.value!.profilePhoto!),
-                            )),
-                        label: "Glok"),
-                    BottomNavigationBarItem(
-                        icon: SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: Center(
                             child: SvgPicture.asset(
-                              MetaAssets.moreIcon,
-                              height: 20,
-                              width: 14.5,
+                              MetaAssets.homeIcon,
                             ),
                           ),
-                        ),
-                        activeIcon: SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: Center(
+                          activeIcon: SizedBox(
+                            height: 24,
+                            width: 24,
                             child: SvgPicture.asset(
-                              MetaAssets.moreIcon,
-                              height: 20,
-                              width: 14.5,
+                              MetaAssets.homeIcon,
                               colorFilter: ColorFilter.mode(
                                   MetaColors.primary, BlendMode.srcIn),
                             ),
                           ),
-                        ),
-                        label: "More"),
-                  ]),
-              backgroundColor: Colors.transparent,
-              body: Stack(
-                children: [
-                  Container(
-                    color: Colors.transparent,
-                    height: Get.height,
-                    width: double.maxFinite,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            height: Get.height * .55,
-                            color: Colors.transparent,
-                            child: Text(""),
-                          ),
-                        ),
-                        Expanded(
-                            flex: 1,
-                            child: Container(
-                              width: double.maxFinite,
-                              color: Colors.white,
-                              child: Text(""),
-                            ))
-                      ],
-                    ),
-                  ),
-                  controller.bottomNav.currentIndex.value != 0
-                      ? controller.bottomNav.currentIndex.value != 1
-                          ? controller.bottomNav.currentIndex.value != 2
-                              ? GlockerMoreView()
-                              : MyGlockerProfileView()
-                          : WalletView()
-                      : Padding(
-                          padding: MediaQuery.of(context).padding,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(16.0)
-                                    .copyWith(bottom: 0),
-                                child: CustomAppBar(),
+                          label: "Home"),
+                      BottomNavigationBarItem(
+                          icon: SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: Center(
+                              child: SvgPicture.asset(
+                                MetaAssets.walletIcon,
                               ),
-                              Expanded(
-                                  child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20))),
-                                      width: double.maxFinite,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Center(
-                                              child: Container(
-                                                height: 6,
-                                                width: 60,
-                                                decoration: BoxDecoration(
-                                                    color:
-                                                        Get.theme.dividerColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            40)),
+                            ),
+                          ),
+                          activeIcon: SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: Center(
+                              child: SvgPicture.asset(
+                                MetaAssets.walletIcon,
+                                colorFilter: ColorFilter.mode(
+                                    MetaColors.primary, BlendMode.srcIn),
+                              ),
+                            ),
+                          ),
+                          label: "Wallet"),
+                      BottomNavigationBarItem(
+                          icon: SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: Center(
+                              child: CircleAvatar(
+                                backgroundImage: CachedNetworkImageProvider(
+                                    AuthController
+                                        .to.glocker.value!.profilePhoto!),
+                              ),
+                            ),
+                          ),
+                          activeIcon: SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircleAvatar(
+                                backgroundImage: CachedNetworkImageProvider(
+                                    AuthController
+                                        .to.glocker.value!.profilePhoto!),
+                              )),
+                          label: "Glok"),
+                      BottomNavigationBarItem(
+                          icon: SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: Center(
+                              child: SvgPicture.asset(
+                                MetaAssets.moreIcon,
+                                height: 20,
+                                width: 14.5,
+                              ),
+                            ),
+                          ),
+                          activeIcon: SizedBox(
+                            height: 24,
+                            width: 24,
+                            child: Center(
+                              child: SvgPicture.asset(
+                                MetaAssets.moreIcon,
+                                height: 20,
+                                width: 14.5,
+                                colorFilter: ColorFilter.mode(
+                                    MetaColors.primary, BlendMode.srcIn),
+                              ),
+                            ),
+                          ),
+                          label: "More"),
+                    ]),
+                backgroundColor: Colors.transparent,
+                body: Stack(
+                  children: [
+                    Container(
+                      color: Colors.transparent,
+                      height: Get.height,
+                      width: double.maxFinite,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              height: Get.height * .55,
+                              color: Colors.transparent,
+                              child: Text(""),
+                            ),
+                          ),
+                          Expanded(
+                              flex: 1,
+                              child: Container(
+                                width: double.maxFinite,
+                                color: Colors.white,
+                                child: Text(""),
+                              ))
+                        ],
+                      ),
+                    ),
+                    controller.bottomNav.currentIndex.value != 0
+                        ? controller.bottomNav.currentIndex.value != 1
+                            ? controller.bottomNav.currentIndex.value != 2
+                                ? GlockerMoreView()
+                                : MyGlockerProfileView()
+                            : WalletView()
+                        : Padding(
+                            padding: MediaQuery.of(context).padding,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0)
+                                      .copyWith(bottom: 0),
+                                  child: CustomAppBar(),
+                                ),
+                                Expanded(
+                                    child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20))),
+                                        width: double.maxFinite,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Center(
+                                                child: Container(
+                                                  height: 6,
+                                                  width: 60,
+                                                  decoration: BoxDecoration(
+                                                      color: Get
+                                                          .theme.dividerColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              40)),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(16.0)
-                                                .copyWith(bottom: 8),
-                                            child: Text(
-                                              "Weekly Dashboard",
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                    child: _EarningsTile()),
-                                                SizedBox(
-                                                  width: 16,
+                                            InkWell(
+                                              onTap: () {
+                                                Get.to(
+                                                    () => GlockerBiddingView(),
+                                                    binding:
+                                                        GlockerBiddingBinding());
+                                              },
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(16.0)
+                                                        .copyWith(bottom: 8),
+                                                child: Text(
+                                                  "Weekly Dashboard",
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w600),
                                                 ),
-                                                Expanded(
-                                                    child: _TotalMinutesTile())
-                                              ],
+                                              ),
                                             ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                    child: _TotalUsersTile()),
-                                                SizedBox(
-                                                  width: 16,
-                                                ),
-                                                Expanded(
-                                                    child: _TotalMinutesTile())
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: Container(
-                                              height: 293,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Row(
                                                 children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 16,
-                                                        vertical: 8),
-                                                    child: Text(
-                                                      "Weekly Earning Trend",
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    ),
+                                                  Expanded(
+                                                      child: _EarningsTile()),
+                                                  SizedBox(
+                                                    width: 16,
                                                   ),
                                                   Expanded(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Chart(),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            16.0),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Container(
-                                                            height: 2,
-                                                            width: 12,
-                                                            color:
-                                                                Colors.orange),
-                                                        SizedBox(
-                                                          width: 4,
-                                                        ),
-                                                        Text("Earning"),
-                                                      ],
-                                                    ),
-                                                  )
+                                                      child:
+                                                          _TotalMinutesTile())
                                                 ],
                                               ),
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Get
-                                                          .theme.dividerColor),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12)),
                                             ),
-                                          )
-                                        ],
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                      child: _TotalUsersTile()),
+                                                  SizedBox(
+                                                    width: 16,
+                                                  ),
+                                                  Expanded(
+                                                      child:
+                                                          _TotalMinutesTile())
+                                                ],
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Container(
+                                                height: 293,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 16,
+                                                          vertical: 8),
+                                                      child: Text(
+                                                        "Weekly Earning Trend",
+                                                        style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Chart(),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16.0),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Container(
+                                                              height: 2,
+                                                              width: 12,
+                                                              color: Colors
+                                                                  .orange),
+                                                          SizedBox(
+                                                            width: 4,
+                                                          ),
+                                                          Text("Earning"),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Get.theme
+                                                            .dividerColor),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12)),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ))
-                            ],
+                                    ],
+                                  ),
+                                ))
+                              ],
+                            ),
                           ),
-                        ),
-                ],
-              ))),
+                  ],
+                )));
+      },
     );
   }
 }
@@ -642,7 +664,7 @@ class CustomAppBar extends GetView<GlockerHomeController> {
                       borderRadius: BorderRadius.circular(18),
                       child: InkWell(
                         onTap: () {
-                          controller.changeStatus();
+                          PersonaController.to.changeStatus();
                         },
                         child: AnimatedContainer(
                           duration: Duration(milliseconds: 300),
@@ -651,16 +673,17 @@ class CustomAppBar extends GetView<GlockerHomeController> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(18)),
                           child: Align(
-                            alignment: controller.online.value!
+                            alignment: PersonaController.to.online.value!
                                 ? Alignment.centerRight
                                 : Alignment.centerLeft,
                             child: Padding(
                                 padding: const EdgeInsets.all(3.0),
                                 child: CircleAvatar(
                                   radius: 9,
-                                  backgroundColor: controller.online.value!
-                                      ? Colors.green
-                                      : Get.theme.dividerColor,
+                                  backgroundColor:
+                                      PersonaController.to.online.value!
+                                          ? Colors.green
+                                          : Get.theme.dividerColor,
                                 )),
                           ),
                         ),

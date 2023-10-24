@@ -7,6 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import '../../utils/helpers.dart';
 import '../models/user_model.dart';
 
@@ -68,8 +69,8 @@ class GlockerRepository {
     log(response.body);
     if (response.statusCode == 200) {
       var parsedResponse = jsonDecode(response.body);
-      if (parsedResponse is Map) return [];
-      return (jsonDecode(response.body) as List)
+
+      return (parsedResponse["glocker"] as List)
           .map((e) => GlockerModel.fromJson(e))
           .toList();
     } else {
@@ -239,15 +240,53 @@ class GlockerRepository {
   }
 
   favorite(int id) async {
-    var headers = await getHeaders();
-    final response = await http.patch(
-        Uri.parse(MetaStrings.baseUrl + MetaStrings.getFavorites),
-        body: jsonEncode({"glocker_id": id}),
-        headers: headers);
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      throw Exception('Couldnt add to favorites');
+    try {
+      var headers = await getHeaders();
+      final response = await http.patch(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.getFavorites),
+          body: jsonEncode({"glocker_id": id}),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Couldnt add to favorites');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> createBid(int amount, int glockerId) async {
+    try {
+      var headers = await getHeaders();
+      final response = await http.post(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.bidNew),
+          body: jsonEncode({"amount": amount, "glocker_id": glockerId}),
+          headers: headers);
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        throw Exception('Couldnt create bid');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> acceptCall(int userId) async {
+    try {
+      var headers = await getHeaders();
+      final response = await http.patch(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.acceptCall),
+          body: jsonEncode({"user_id": userId}),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Couldnt accept call');
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 }

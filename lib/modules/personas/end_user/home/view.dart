@@ -374,30 +374,32 @@ class EndUserHomeView extends GetView<EndUserHomeController> {
                                                 ],
                                               ),
                                             ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(16.0)
-                                                      .copyWith(
-                                                          right: 0, top: 0),
-                                              child: SingleChildScrollView(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                child: Row(
-                                                  children: List.generate(
-                                                      GlockerListController
-                                                          .to
-                                                          .trendingGlockers
-                                                          .value!
-                                                          .length,
-                                                      (index) => GlockerTile(
-                                                            data: GlockerListController
-                                                                .to
-                                                                .trendingGlockers
-                                                                .value![index],
-                                                            resfreshEnum:
-                                                                RefreshEnum
-                                                                    .refreshTrendingGlockers,
-                                                          )),
+                                            Obx(
+                                              () => Padding(
+                                                padding:
+                                                    const EdgeInsets.all(16.0)
+                                                        .copyWith(
+                                                            right: 0, top: 0),
+                                                child: SingleChildScrollView(
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  child: Row(
+                                                    children: List.generate(
+                                                        GlockerListController
+                                                            .to
+                                                            .trendingGlockers
+                                                            .value!
+                                                            .length,
+                                                        (index) => GlockerTile(
+                                                              data: GlockerListController
+                                                                  .to
+                                                                  .trendingGlockers
+                                                                  .value![index],
+                                                              resfreshEnum:
+                                                                  RefreshEnum
+                                                                      .refreshTrendingGlockers,
+                                                            )),
+                                                  ),
                                                 ),
                                               ),
                                             ),

@@ -55,4 +55,10 @@ class MetaAssets {
   static const String placeHolderProfile = 'assets/placeholder_profile.svg';
 
   static const String coverPlaceHolder = 'assets/cover_placeholder.png';
+
+  static const String endCall = 'assets/end_call.svg';
+  static const String acceptCall = 'assets/accept_call.svg';
+  static const String swapCamera = 'assets/swap_camera.svg';
+  static const String mic = 'assets/mic.svg';
+  static const String closeQueue = 'assets/close_queue.svg';
 }

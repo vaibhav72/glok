@@ -102,7 +102,7 @@ class GlockerListController extends GetxController {
 
   getGlockerTrendingList() async {
     try {
-      trendingGlockers.addAll(await glockerRepository.getTrendingGlockerList());
+      trendingGlockers.value = await glockerRepository.getTrendingGlockerList();
 
       trendingGlockers.refresh();
     } catch (e) {
