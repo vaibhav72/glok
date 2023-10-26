@@ -72,7 +72,7 @@ class GalleryRepository {
       request.headers.addAll(headers);
       request.files.add(await http.MultipartFile.fromPath('photo', file.path));
       var response = await request.send();
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         return true;
       } else {
         var parsedResponse = await http.Response.fromStream(response);
@@ -92,7 +92,7 @@ class GalleryRepository {
       request.headers.addAll(headers);
       request.files.add(await http.MultipartFile.fromPath('vidoe', file.path));
       var response = await request.send();
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         return true;
       } else {
         var parsedResponse = await http.Response.fromStream(response);

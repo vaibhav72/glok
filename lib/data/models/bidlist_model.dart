@@ -12,70 +12,77 @@ String bidListModelToJson(List<BidListModel> data) =>
 
 class BidListModel {
   int? id;
-  int? userId;
-  int? glockerId;
-  int? biddingSessionId;
   int? amount;
-  State? state;
+  int? glockerId;
+  int? userId;
+  String? state;
+  int? biddingSessionId;
+  String? userName;
+  String? profilePhoto;
+  double? rating;
+  int? count;
 
   BidListModel({
     this.id,
-    this.userId,
-    this.glockerId,
-    this.biddingSessionId,
     this.amount,
+    this.glockerId,
+    this.userId,
     this.state,
+    this.biddingSessionId,
+    this.userName,
+    this.profilePhoto,
+    this.rating,
+    this.count,
   });
 
   BidListModel copyWith({
     int? id,
-    int? userId,
-    int? glockerId,
-    int? biddingSessionId,
     int? amount,
-    State? state,
+    int? glockerId,
+    int? userId,
+    String? state,
+    int? biddingSessionId,
+    String? userName,
+    String? profilePhoto,
+    double? rating,
+    int? count,
   }) =>
       BidListModel(
         id: id ?? this.id,
-        userId: userId ?? this.userId,
-        glockerId: glockerId ?? this.glockerId,
-        biddingSessionId: biddingSessionId ?? this.biddingSessionId,
         amount: amount ?? this.amount,
+        glockerId: glockerId ?? this.glockerId,
+        userId: userId ?? this.userId,
         state: state ?? this.state,
+        biddingSessionId: biddingSessionId ?? this.biddingSessionId,
+        userName: userName ?? this.userName,
+        profilePhoto: profilePhoto ?? this.profilePhoto,
+        rating: rating ?? this.rating,
+        count: count ?? this.count,
       );
 
   factory BidListModel.fromJson(Map<String, dynamic> json) => BidListModel(
         id: json["id"],
-        userId: json["user_id"],
-        glockerId: json["glocker_id"],
-        biddingSessionId: json["bidding_session_id"],
         amount: json["amount"],
-        state: stateValues.map[json["state"]]!,
+        glockerId: json["glocker_id"],
+        userId: json["user_id"],
+        state: json["state"],
+        biddingSessionId: json["bidding_session_id"],
+        userName: json["user_name"],
+        profilePhoto: json["profile_photo"],
+        rating: json["rating"]?.toDouble(),
+        count: json["count"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "user_id": userId,
-        "glocker_id": glockerId,
-        "bidding_session_id": biddingSessionId,
         "amount": amount,
-        "state": stateValues.reverse[state],
+        "glocker_id": glockerId,
+        "user_id": userId,
+        "state": state,
+        "bidding_session_id": biddingSessionId,
+        "user_name": userName,
+        "profile_photo": profilePhoto,
+        "rating": rating,
+        "count": count,
       };
-}
-
-enum State { ACCEPTED, REJECTED }
-
-final stateValues =
-    EnumValues({"accepted": State.ACCEPTED, "rejected": State.REJECTED});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

@@ -243,6 +243,7 @@ class _MyProfile extends GetView<GlockerMoreController> {
     return Container(
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           elevation: 1,
           leading: IconButton(
               onPressed: () {

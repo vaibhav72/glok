@@ -5,14 +5,17 @@ import 'package:glok/data/models/agora_data_model.dart';
 import 'package:glok/data/models/bidlist_model.dart';
 import 'package:glok/data/repositories/user_repository.dart';
 import 'package:glok/modules/auth_module/controller.dart';
-import 'package:glok/modules/personas/celebrity/bid/view.dart';
-import 'package:glok/modules/personas/video/binding.dart';
-import 'package:glok/modules/personas/video/view.dart';
+
 import 'package:glok/utils/helpers.dart';
 
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'celebrity/bid/binding.dart';
+import 'celebrity/bid/view.dart';
+import 'celebrity/video/binding.dart';
+import 'celebrity/video/view.dart';
+import 'end_user/video/binding.dart';
+import 'end_user/video/view.dart';
 
 class PersonaController extends GetxController {
   static PersonaController get to => Get.find<PersonaController>();
@@ -28,21 +31,35 @@ class PersonaController extends GetxController {
       log("Connected");
       showSnackBar(message: "connected", isError: false);
     });
+    socket!.onAny((event, data) => log("onAny $event $data"));
     socket!.onDisconnect((_) {
       log("disconnected");
-      showSnackBar(message: "disconnected", isError: true);
+      // showSnackBar(message: "disconnected", isError: true);
     });
     socket!.on('agora_token', (data) {
       agoraResponse.value = AgoraResponseModel.fromJson(data);
-      Get.to(VideoControllerView(),
-          binding: VideoCallBinding(
-            channel: agoraResponse.value!.channelName!,
-            token: agoraResponse.value!.token!,
-          ));
+      if (glockerMode.value!) {
+        Get.to(() => GlockerVideoView(),
+            binding: GlockerVideoCallBinding(
+              channel: agoraResponse.value!.channelName!,
+              token: agoraResponse.value!.token!,
+            ));
+      } else {
+        Get.to(() => UserVideoView(),
+            binding: UserVideoCallBinding(
+              channel: agoraResponse.value!.channelName!,
+              token: agoraResponse.value!.token!,
+            ));
+      }
     });
     socket!.on('bid_list', (data) {
-      bidList.value = bidListModelFromJson(data);
-      Get.to(() => GlockerBiddingView(), binding: GlockerBiddingBinding());
+      bidList.value =
+          (data as List).map((e) => BidListModel.fromJson(e)).toList();
+      if (glockerMode.value! && online.value! && bidList.value!.isNotEmpty) {
+        Get.to(() => GlockerBiddingView(), binding: GlockerBiddingBinding());
+      } else {
+        // Get.to(() => UserBiddingView(), binding: UserBiddingBinding());
+      }
     });
   }
 
@@ -58,7 +75,7 @@ class PersonaController extends GetxController {
   Rxn<bool> glockerMode = Rxn(false);
   updateGlockerMode(bool value) async {
     glockerMode.value = value;
-    if (online.value!) await userRepository.updateGlockerMode(value);
+    await userRepository.updateGlockerMode(value);
   }
 
   Rxn<bool> online = Rxn<bool>(false);
@@ -74,6 +91,6 @@ class PersonaController extends GetxController {
   }
 
   joinStream(int glockerId) {
-    socket!.emit('join_stream', glockerId);
+    socket!.emit('join_stream', glockerId.toString());
   }
 }

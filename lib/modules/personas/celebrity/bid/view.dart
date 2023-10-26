@@ -21,7 +21,8 @@ class GlockerBiddingView extends GetView<GlockerBiddingController> {
           CachedNetworkImage(
               height: double.maxFinite,
               width: double.maxFinite,
-              imageUrl: controller.glocker.value?.profilePhoto ?? ''),
+              fit: BoxFit.cover,
+              imageUrl: controller.bidList.value?.first.profilePhoto ?? ''),
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
             child: Scaffold(
@@ -34,10 +35,11 @@ class GlockerBiddingView extends GetView<GlockerBiddingController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            " controller.bidList.value?.first.amount.toString() " ??
-                                '',
+                            "${controller.bidList.value?.first.userName ?? ''}",
                             style: TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.w600),
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600),
                           )
                         ],
                       ),
@@ -78,10 +80,12 @@ class GlockerBiddingView extends GetView<GlockerBiddingController> {
                                 ),
                                 Divider(),
                                 Expanded(
-                                  child: Column(
-                                    children: controller.bidList.value!
-                                        .map((e) => BidWidgetTile(data: e))
-                                        .toList(),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: controller.bidList.value!
+                                          .map((e) => _BidWidgetTile(data: e))
+                                          .toList(),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -203,8 +207,8 @@ class GlockerBiddingView extends GetView<GlockerBiddingController> {
   }
 }
 
-class BidWidgetTile extends StatelessWidget {
-  BidWidgetTile({
+class _BidWidgetTile extends StatelessWidget {
+  _BidWidgetTile({
     super.key,
     required this.data,
   });
@@ -215,14 +219,18 @@ class BidWidgetTile extends StatelessWidget {
     return Container(
       child: Row(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: CircleAvatar(
+              radius: 18,
+              backgroundImage:
+                  CachedNetworkImageProvider(data.profilePhoto ?? ''),
+            ),
+          ),
           Expanded(
-            child: Row(
-              children: [
-                Text(
-                  'AArava',
-                  style: TextStyle(fontSize: 15, color: MetaColors.primaryText),
-                )
-              ],
+            child: Text(
+              data.userName ?? '',
+              style: TextStyle(fontSize: 15, color: MetaColors.primaryText),
             ),
           ),
           SizedBox(

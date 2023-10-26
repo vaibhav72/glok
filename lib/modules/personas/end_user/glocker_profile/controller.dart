@@ -46,7 +46,8 @@ class GlockerProfileController extends GetxController {
     // await personaController.joinStream(glocker!.value!.id!);
     loading.value = true;
     try {
-      await glockerRepository.createBid(59001, glocker!.value!.id!);
+      await glockerRepository.createBid(
+          glocker!.value!.price!, glocker!.value!.id!);
       loading.value = false;
       Get.to(() => UserBiddingView(), binding: UserBiddingBinding());
     } catch (e) {
@@ -208,8 +209,8 @@ class GlockerProfileController extends GetxController {
   }
 
   @override
-  void dispose() async {
-    await personaController.disconnect();
-    super.dispose();
+  void onClose() {
+    super.onClose();
+    personaController.disconnect();
   }
 }

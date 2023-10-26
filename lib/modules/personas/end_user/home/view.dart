@@ -9,13 +9,16 @@ import 'package:glok/modules/personas/end_user/browse/view.dart';
 import 'package:glok/modules/personas/end_user/glocker_list_controller.dart';
 import 'package:glok/modules/personas/end_user/home/controller.dart';
 import 'package:glok/modules/personas/end_user/more/view.dart';
+import 'package:glok/modules/personas/end_user/video/view.dart';
 import 'package:glok/modules/wallet/view.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../utils/meta_strings.dart';
 import '../glocker_profile/view.dart';
+import '../video/binding.dart';
 
 class EndUserHomeView extends GetView<EndUserHomeController> {
   @override
@@ -610,12 +613,21 @@ class CustomAppBar extends GetView<EndUserHomeController> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text(
-                        "Welcome Back",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
+                      child: InkWell(
+                        onTap: () {
+                          Get.to(() => UserVideoView(),
+                              binding: UserVideoCallBinding(
+                                channel: MetaStrings.testingChannelName,
+                                token: MetaStrings.testingToken,
+                              ));
+                        },
+                        child: Text(
+                          "Welcome Back",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        ),
                       ),
                     ),
                     SvgPicture.asset(MetaAssets.notificationIcon)

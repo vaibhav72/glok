@@ -49,7 +49,10 @@ class GlockerRepository {
       if (response.statusCode == 200) {
         return GlockerModel.fromJson(jsonDecode(response.body));
       } else {
-        throw Exception('Failed to load user');
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse["message"] ??
+            parsedResponse["error"] ??
+            "Failed to load glocker";
       }
     } catch (e) {
       rethrow;
@@ -87,8 +90,8 @@ class GlockerRepository {
     final response = await http.get(Uri.parse(url), headers: headers);
     if (response.statusCode == 200) {
       var parsedResponse = jsonDecode(response.body);
-      if (parsedResponse is Map) return [];
-      return (jsonDecode(response.body) as List)
+
+      return (parsedResponse["glocker"] as List)
           .map((e) => GlockerModel.fromJson(e))
           .toList();
     } else {
@@ -113,7 +116,7 @@ class GlockerRepository {
       request.files.add(
           await http.MultipartFile.fromPath('cover_photo', coverImage.path));
       var response = await request.send();
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         return true;
       } else {
         var parsedResponse = await http.Response.fromStream(response);
@@ -249,7 +252,10 @@ class GlockerRepository {
       if (response.statusCode == 200) {
         return true;
       } else {
-        throw Exception('Couldnt add to favorites');
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse['error'] ??
+            parsedResponse['message'] ??
+            "Failed to add to favorites";
       }
     } catch (e) {
       rethrow;
@@ -259,14 +265,40 @@ class GlockerRepository {
   Future<bool> createBid(int amount, int glockerId) async {
     try {
       var headers = await getHeaders();
+      print(headers);
+      print({"amount": amount, "glocker_id": glockerId});
       final response = await http.post(
           Uri.parse(MetaStrings.baseUrl + MetaStrings.bidNew),
-          body: jsonEncode({"amount": amount, "glocker_id": glockerId}),
+          body: jsonEncode({"amount": 4500, "glocker_id": glockerId}),
           headers: headers);
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         return true;
       } else {
-        throw Exception('Couldnt create bid');
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse['error'] ??
+            parsedResponse['message'] ??
+            "Failed to create bid";
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> cancelBid(int userId) async {
+    try {
+      var headers = await getHeaders();
+
+      final response = await http.post(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.cancelBid),
+          body: jsonEncode({"user_id": userId}),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse['error'] ??
+            parsedResponse['message'] ??
+            "Failed to create bid";
       }
     } catch (e) {
       rethrow;

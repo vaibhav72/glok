@@ -23,8 +23,8 @@ class GlockerListController extends GetxController {
   Rxn<bool> showOnline = Rxn(false);
   Rxn<bool> appliedShowOnline = Rxn(false);
   List<String> sortByList = ["Popular", "Lowest Price", "Highest Price"];
-  Rxn<String> sortBy = Rxn("Popular");
-  Rxn<String> appliedSortBy = Rxn("Popular");
+  Rxn<String> sortBy = Rxn("Lowest Price");
+  Rxn<String> appliedSortBy = Rxn("Lowest Price");
   Rxn<List<String>> selectedFilters = Rxn([]);
   Rxn<List<String>> appliedFilters = Rxn([]);
   Rxn<String> currentFilterString = Rxn("");
@@ -45,6 +45,10 @@ class GlockerListController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    initData();
+  }
+
+  initData() {
     getGlockerList();
     getGlockerTrendingList();
   }

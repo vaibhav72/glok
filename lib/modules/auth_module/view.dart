@@ -4,6 +4,7 @@ import 'package:glok/modules/auth_module/controller.dart';
 import 'package:glok/modules/auth_module/pages/otp_view.dart';
 import 'package:glok/modules/auth_module/pages/sign_in_view.dart';
 import 'package:glok/modules/auth_module/user_details_module/view.dart';
+import 'package:glok/modules/personas/end_user/apply_glocker/view.dart';
 import 'package:glok/modules/personas/view.dart';
 import 'package:glok/modules/walkthrough/view.dart';
 
@@ -14,17 +15,25 @@ class AuthView extends GetView<AuthController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(
-        () => Center(
-          child: !controller.walkthroughDone.value!
-              ? WalkthroughView()
-              : controller.user.value != null
-                  ? PersonaView()
-                  : PageView(
-                      physics: NeverScrollableScrollPhysics(),
-                      controller: controller.pageController,
-                      children: [SignInView(), OTPView(), UserDetailsView()],
-                    ),
-        ),
+        () => controller.loading.value!
+            ? Center(
+                child: Loader(),
+              )
+            : Center(
+                child: !controller.walkthroughDone.value!
+                    ? WalkthroughView()
+                    : controller.user.value != null
+                        ? PersonaView()
+                        : PageView(
+                            physics: NeverScrollableScrollPhysics(),
+                            controller: controller.pageController,
+                            children: [
+                              SignInView(),
+                              OTPView(),
+                              UserDetailsView()
+                            ],
+                          ),
+              ),
       ),
     );
   }

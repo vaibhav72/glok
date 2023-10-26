@@ -22,11 +22,14 @@ import 'package:glok/modules/wallet/view.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
+import 'package:glok/utils/meta_strings.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../end_user/glocker_profile/view.dart';
 import '../my_glocker_profile/view.dart';
+import '../video/binding.dart';
+import '../video/view.dart';
 
 class GlockerHomeView extends GetView<EndUserHomeController> {
   @override
@@ -225,10 +228,14 @@ class GlockerHomeView extends GetView<EndUserHomeController> {
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                Get.to(
-                                                    () => GlockerBiddingView(),
+                                                Get.to(() => GlockerVideoView(),
                                                     binding:
-                                                        GlockerBiddingBinding());
+                                                        GlockerVideoCallBinding(
+                                                      channel: MetaStrings
+                                                          .testingChannelName,
+                                                      token: MetaStrings
+                                                          .testingToken,
+                                                    ));
                                               },
                                               child: Padding(
                                                 padding:

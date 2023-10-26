@@ -1,7 +1,10 @@
 class MetaStrings {
   static const String baseUrl = 'http://dev.mindstack.in:3030';
 
-  static const String agoraAppid = '0a53e73e1beb4f1887eaa84cfcb37bd9';
+  static const String agoraAppid = '015220b56d364114ab3294d988a9777e';
+  static const String testingToken =
+      '007eJxTYDhteXe1jvcJG1d/tWrp5FNbA55fLZqUY2VU3z5/y4bjN8MVGAwMTY2MDJJMzVKMzUwMDU0Sk4yNLE1SLC0sEi3Nzc1TTc5bpTYEMjL43/nAwsgAgSA+O0NJanFJZl46AwMAnpIgpA==';
+  static const String testingChannelName = 'testing';
 
   ///registration Urls
   static const String userRegistrationUrl = '/user/new';
@@ -47,8 +50,8 @@ class MetaStrings {
   static const String getGlockerGallery = '/gallery/user/';
 
   //favorites
-  static const String getFavorites = '/favorite';
-  static const String updateFavorites = '/favorite/fav';
+  static const String getFavorites = '/favourite';
+  static const String updateFavorites = '/favourite/fav';
 
   //rating
   static const String updateUserRating = '/rating';
@@ -68,6 +71,7 @@ class MetaStrings {
 
   //bid
   static const String bidNew = '/bid/new';
+  static const String cancelBid = '/bid/cancelbid';
   static const String bidList = '/bid/bidlist';
   static const String acceptCall = '/bid/acceptcall';
 }

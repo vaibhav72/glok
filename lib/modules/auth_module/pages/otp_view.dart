@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:glok/modules/auth_module/controller.dart';
+import 'package:glok/modules/personas/end_user/apply_glocker/view.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -37,77 +38,100 @@ class OTPView extends GetView<AuthController> {
           elevation: 0,
         ),
         backgroundColor: Colors.white,
-        body: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: Container(
-            width: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        "We have sent a verification code to",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
+        body: Obx(
+          () => controller.authLoading.value!
+              ? Center(
+                  child: Loader(),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Container(
+                    width: double.maxFinite,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "We have sent a verification code to",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              Text(
+                                "+91-${controller.numberController.text}",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 70,
+                          ),
+                          PinCodeTextField(
+                            appContext: context,
+                            controller: controller.otpController,
+                            autoDisposeControllers: false,
+                            length: 5,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                signed: true, decimal: true),
+                            pinTheme: PinTheme(
+                              fieldHeight: 48,
+                              fieldWidth: 55,
+                              shape: PinCodeFieldShape.box,
+                              borderWidth: 1,
+                              activeColor: Theme.of(context).primaryColor,
+                              inactiveColor: Theme.of(context).dividerColor,
+                              selectedColor: Theme.of(context).primaryColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Obx(
+                            () => controller.resendOTp.value!
+                                ? InkWell(
+                                    onTap: () {
+                                      controller.handleResendOTP();
+                                    },
+                                    child: Text(
+                                      "Resend SMS",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          decoration: TextDecoration.underline,
+                                          color: Get.theme.primaryColor),
+                                    ),
+                                  )
+                                : InkWell(
+                                    onTap: () {
+                                      // controller.handleResendOTP();
+                                    },
+                                    child: Text(
+                                      "Resend OTP in ${controller.timeLeft.value!.inSeconds} seconds",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              Get.theme.secondaryHeaderColor),
+                                    ),
+                                  ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          CustomButton(
+                              title: "Continue",
+                              onPressed: () {
+                                controller.handleVerifyOTP();
+                              })
+                        ],
                       ),
-                      Text(
-                        "+91-${controller.numberController.text}",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 70,
-                  ),
-                  PinCodeTextField(
-                    appContext: context,
-                    controller: controller.otpController,
-                    autoDisposeControllers: false,
-                    length: 5,
-                    keyboardType: const TextInputType.numberWithOptions(
-                        signed: true, decimal: true),
-                    pinTheme: PinTheme(
-                      fieldHeight: 48,
-                      fieldWidth: 55,
-                      shape: PinCodeFieldShape.box,
-                      borderWidth: 1,
-                      activeColor: Theme.of(context).primaryColor,
-                      inactiveColor: Theme.of(context).dividerColor,
-                      selectedColor: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      controller.handleResendOTP();
-                    },
-                    child: Text(
-                      "Resend SMS",
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: Get.theme.secondaryHeaderColor),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  CustomButton(
-                      title: "Continue",
-                      onPressed: () {
-                        controller.handleVerifyOTP();
-                      })
-                ],
-              ),
-            ),
-          ),
+                ),
         ),
       ),
     );

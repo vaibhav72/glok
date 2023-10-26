@@ -31,6 +31,8 @@ class UserRepository {
     if (response.statusCode == 200) {
       log(response.body);
       return UserModel.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 401) {
+      throw 401;
     } else {
       throw Exception('Failed to load user');
     }

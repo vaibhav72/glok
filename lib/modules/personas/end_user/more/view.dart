@@ -52,7 +52,7 @@ class EndUserMoreView extends GetView<EndUserMoreController> {
                       height: 12,
                     ),
                     Text(
-                      controller.user.value!.name!,
+                      controller.user.value!.name ?? '',
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
@@ -62,7 +62,7 @@ class EndUserMoreView extends GetView<EndUserMoreController> {
                       height: 8,
                     ),
                     Text(
-                      controller.user.value!.mobileNumber!,
+                      controller.user.value!.mobileNumber ?? '',
                       style: TextStyle(color: Colors.white),
                     ),
                   ],
@@ -127,7 +127,7 @@ class EndUserMoreView extends GetView<EndUserMoreController> {
                     },
                   ),
                   Divider(),
-                  if (!controller.user.value!.isGlocker!) ...[
+                  if (!(controller.user.value!.isGlocker ?? false)) ...[
                     _MoreTile(
                       title: "Apply as Glocker",
                       icon: MetaAssets.profileIconNew,
@@ -336,6 +336,7 @@ class _MyProfile extends GetView<EndUserMoreController> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 1,
+          centerTitle: true,
           leading: IconButton(
               onPressed: () {
                 Get.back();

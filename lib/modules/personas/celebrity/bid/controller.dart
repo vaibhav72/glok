@@ -18,7 +18,7 @@ class GlockerBiddingController extends GetxController {
 
   acceptCall(BidListModel data) async {
     try {
-      await glockerRepository.acceptCall(data.id!);
+      await glockerRepository.acceptCall(data.userId!);
     } catch (e) {
       showSnackBar(message: e.toString());
     }

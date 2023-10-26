@@ -21,15 +21,22 @@ class BankRepository {
   }
 
   Future<BankModel> addBank(Map<String, String> params) async {
-    var headers = await getHeaders();
-    final response = await http.post(
-        Uri.parse(MetaStrings.baseUrl + MetaStrings.updatebank),
-        body: jsonEncode(params),
-        headers: headers);
-    if (response.statusCode == 201) {
-      return BankModel.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load user');
+    try {
+      var headers = await getHeaders();
+      final response = await http.post(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.updatebank),
+          body: jsonEncode(params),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return BankModel.fromJson(jsonDecode(response.body));
+      } else {
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse["message"] ??
+            parsedResponse['error'] ??
+            Exception('Failed to add bank');
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -56,28 +63,42 @@ class BankRepository {
   }
 
   Future<TransactionModel> addFunds(double amount) async {
-    var headers = await getHeaders();
-    final response = await http.post(
-        Uri.parse(MetaStrings.baseUrl + MetaStrings.addFunds),
-        body: jsonEncode({"amount": amount}),
-        headers: headers);
-    if (response.statusCode == 201) {
-      return TransactionModel.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load user');
+    try {
+      var headers = await getHeaders();
+      final response = await http.post(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.addFunds),
+          body: jsonEncode({"amount": amount}),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return TransactionModel.fromJson(jsonDecode(response.body));
+      } else {
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse["message"] ??
+            parsedResponse['error'] ??
+            Exception('Failed to add funds');
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 
   Future<TransactionModel> withdrawFunds(double amount) async {
-    var headers = await getHeaders();
-    final response = await http.post(
-        Uri.parse(MetaStrings.baseUrl + MetaStrings.withdrawFunds),
-        body: jsonEncode({"amount": amount}),
-        headers: headers);
-    if (response.statusCode == 201) {
-      return TransactionModel.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to load user');
+    try {
+      var headers = await getHeaders();
+      final response = await http.post(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.withdrawFunds),
+          body: jsonEncode({"amount": amount}),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return TransactionModel.fromJson(jsonDecode(response.body));
+      } else {
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse["message"] ??
+            parsedResponse['error'] ??
+            Exception('Failed to withdraw funds');
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 }
