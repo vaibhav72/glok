@@ -48,31 +48,52 @@ class GlockerVideoView extends GetView<GlockerVideoCallController> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 24,
-                            backgroundColor: Colors.white.withOpacity(0.3),
-                            child: SvgPicture.asset(MetaAssets.swapCamera),
-                          ),
-                          SizedBox(
-                            width: 32,
-                          ),
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundColor: MetaColors.transactionFailed,
-                            child: SvgPicture.asset(MetaAssets.endCall),
-                          ),
-                          SizedBox(
-                            width: 32,
-                          ),
-                          CircleAvatar(
-                            radius: 24,
-                            backgroundColor: Colors.white.withOpacity(0.3),
-                            child: SvgPicture.asset(MetaAssets.mic),
-                          )
-                        ],
+                      child: Obx(
+                        () => Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                controller.switchCamera();
+                              },
+                              child: CircleAvatar(
+                                radius: 24,
+                                backgroundColor: Colors.white.withOpacity(0.3),
+                                child: controller.swapCamera.value!
+                                    ? Icon(Icons.video_call_outlined)
+                                    : SvgPicture.asset(MetaAssets.swapCamera),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 32,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                controller.endCall();
+                              },
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundColor: MetaColors.transactionFailed,
+                                child: SvgPicture.asset(MetaAssets.endCall),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 32,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                controller.muteAudio();
+                              },
+                              child: CircleAvatar(
+                                radius: 24,
+                                backgroundColor: Colors.white.withOpacity(0.3),
+                                child: controller.isMuted.value!
+                                    ? Icon(Icons.mic_off_outlined)
+                                    : SvgPicture.asset(MetaAssets.mic),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     )
                   ],
@@ -106,7 +127,7 @@ class GlockerVideoView extends GetView<GlockerVideoCallController> {
 
   // Display remote user's video
   Widget _remoteVideo() {
-    if (controller != null) {
+    if (controller != null && controller.remoteUid.value != null) {
       return AgoraVideoView(
         controller: VideoViewController.remote(
           rtcEngine: controller.engine,

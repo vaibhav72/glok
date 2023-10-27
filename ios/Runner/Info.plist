@@ -35,10 +35,10 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
-	<key>Privacy - Microphone Usage Description</key>
+	<!-- <key>Privacy - Microphone Usage Description</key>
 	<string>$(PRODUCT_NAME) uses microphone</string>
 	<key>Privacy - Camera Usage Description</key>
-	<string>$(PRODUCT_NAME) uses camera</string>
+	<string>$(PRODUCT_NAME) uses camera</string> -->
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>

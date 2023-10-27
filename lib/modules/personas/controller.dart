@@ -43,13 +43,20 @@ class PersonaController extends GetxController {
             binding: GlockerVideoCallBinding(
               channel: agoraResponse.value!.channelName!,
               token: agoraResponse.value!.token!,
+              userId: agoraResponse.value!.userId!,
             ));
       } else {
-        Get.to(() => UserVideoView(),
-            binding: UserVideoCallBinding(
-              channel: agoraResponse.value!.channelName!,
-              token: agoraResponse.value!.token!,
-            ));
+        if (agoraResponse.value!.userId == AuthController.to.user.value!.id) {
+          Get.to(() => UserVideoView(),
+              binding: UserVideoCallBinding(
+                channel: agoraResponse.value!.channelName!,
+                token: agoraResponse.value!.token!,
+                userId: agoraResponse.value!.userId!,
+              ));
+        } else {
+          Get.back();
+          showSnackBar(message: "Sorry You bid was not accepted");
+        }
       }
     });
     socket!.on('bid_list', (data) {

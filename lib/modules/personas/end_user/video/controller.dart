@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:glok/modules/personas/controller.dart';
+import 'package:glok/utils/helpers.dart';
 import 'package:glok/utils/meta_strings.dart';
 
 import 'package:permission_handler/permission_handler.dart';
@@ -8,10 +11,14 @@ import 'package:permission_handler/permission_handler.dart';
 class UserVideoCallController extends GetxController {
   String channel;
   String token;
-  UserVideoCallController({required this.channel, required this.token});
+  int? userId;
+  UserVideoCallController(
+      {required this.channel, required this.token, this.userId = 0});
   RtcEngine? engine;
   Rxn<int> remoteUid = Rxn<int>(null);
   Rxn<bool> loading = Rxn<bool>(false);
+  Rxn<bool> isMuted = Rxn<bool>(false);
+  Rxn<bool> swapCamera = Rxn<bool>(false);
   @override
   void onClose() {
     super.onClose();
@@ -23,8 +30,6 @@ class UserVideoCallController extends GetxController {
   void onInit() {
     super.onInit();
     initAgora();
-    registerHandlers();
-    joinChannel();
   }
 
   Future<void> _dispose() async {
@@ -49,9 +54,15 @@ class UserVideoCallController extends GetxController {
   registerHandlers() {
     engine?.registerEventHandler(
       RtcEngineEventHandler(
-        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {},
+        onError: (err, msg) {
+          showSnackBar(message: "$err $msg");
+        },
+        onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
+          log("joined local");
+        },
         onUserJoined: (RtcConnection connection, int remoteId, int elapsed) {
           remoteUid.value = remoteId;
+          showSnackBar(message: "User Joined", isError: false);
         },
         onUserOffline: (RtcConnection connection, int remoteId,
             UserOfflineReasonType reason) {
@@ -66,14 +77,34 @@ class UserVideoCallController extends GetxController {
 
   joinChannel() async {
     await engine?.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
+    await engine!.setupLocalVideo(VideoCanvas(uid: 0));
+    await engine?.enableAudio();
     await engine?.enableVideo();
     await engine?.startPreview();
 
-    await engine?.joinChannel(
-      token: token,
-      channelId: channel,
-      uid: PersonaController.to.glockerMode.value! ? 1 : 0,
-      options: const ChannelMediaOptions(),
-    );
+    try {
+      await engine?.joinChannel(
+        token: token,
+        channelId: channel,
+        uid: 0,
+        options: const ChannelMediaOptions(),
+      );
+    } catch (e) {
+      log("error $e");
+    }
+  }
+
+  void switchCamera() {
+    engine?.switchCamera();
+    swapCamera.value = !swapCamera.value!;
+  }
+
+  void muteAudio() {
+    engine?.muteLocalAudioStream(isMuted.value!);
+    isMuted.value = !isMuted.value!;
+  }
+
+  void endCall() {
+    Get.back();
   }
 }

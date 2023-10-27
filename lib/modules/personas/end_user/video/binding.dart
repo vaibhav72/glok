@@ -5,12 +5,12 @@ import 'controller.dart';
 class UserVideoCallBinding extends Bindings {
   String channel;
   String token;
-  UserVideoCallBinding({required this.channel, required this.token});
+  int? userId;
+  UserVideoCallBinding(
+      {required this.channel, required this.token, this.userId = 0});
   @override
   void dependencies() {
     Get.put<UserVideoCallController>(UserVideoCallController(
-      channel: channel,
-      token: token,
-    ));
+        channel: channel, token: token, userId: userId));
   }
 }

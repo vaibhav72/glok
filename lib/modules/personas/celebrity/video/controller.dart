@@ -10,10 +10,14 @@ import 'package:permission_handler/permission_handler.dart';
 class GlockerVideoCallController extends GetxController {
   String channel;
   String token;
-  GlockerVideoCallController({required this.channel, required this.token});
+  int userId;
+  GlockerVideoCallController(
+      {required this.channel, required this.token, required this.userId});
   late RtcEngine engine;
   Rxn<int> remoteUid = Rxn<int>(null);
   Rxn<bool> loading = Rxn<bool>(false);
+  Rxn<bool> isMuted = Rxn<bool>(false);
+  Rxn<bool> swapCamera = Rxn<bool>(false);
   @override
   void onInit() {
     // TODO: implement onInit
@@ -43,7 +47,7 @@ class GlockerVideoCallController extends GetxController {
       channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
     ));
     await registerHandlers();
-    joinChannel();
+    await joinChannel();
     loading.value = false;
   }
 
@@ -73,13 +77,30 @@ class GlockerVideoCallController extends GetxController {
   joinChannel() async {
     await engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
     await engine.enableVideo();
+    await engine.enableAudio();
     await engine.startPreview();
-
+    log("$channel $token $userId");
     await engine.joinChannel(
       token: token,
       channelId: channel,
-      uid: 3,
-      options: const ChannelMediaOptions(),
+      uid: 0,
+      options: const ChannelMediaOptions(
+          channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+          clientRoleType: ClientRoleType.clientRoleBroadcaster),
     );
+  }
+
+  void switchCamera() {
+    engine?.switchCamera();
+    swapCamera.value = !swapCamera.value!;
+  }
+
+  void muteAudio() {
+    engine?.muteLocalAudioStream(isMuted.value!);
+    isMuted.value = !isMuted.value!;
+  }
+
+  void endCall() {
+    Get.back();
   }
 }
