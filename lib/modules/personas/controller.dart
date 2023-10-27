@@ -55,6 +55,7 @@ class PersonaController extends GetxController {
               ));
         } else {
           Get.back();
+          Get.back();
           showSnackBar(message: "Sorry You bid was not accepted");
         }
       }

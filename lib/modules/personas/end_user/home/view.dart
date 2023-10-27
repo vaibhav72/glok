@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -390,17 +391,17 @@ class EndUserHomeView extends GetView<EndUserHomeController> {
                                                     children: List.generate(
                                                         GlockerListController
                                                             .to
-                                                            .trendingGlockers
+                                                            .favoriteGlockers
                                                             .value!
                                                             .length,
                                                         (index) => GlockerTile(
                                                               data: GlockerListController
                                                                   .to
-                                                                  .trendingGlockers
+                                                                  .favoriteGlockers
                                                                   .value![index],
                                                               resfreshEnum:
                                                                   RefreshEnum
-                                                                      .refreshTrendingGlockers,
+                                                                      .refreshFavoriteGlockers,
                                                             )),
                                                   ),
                                                 ),
@@ -452,8 +453,8 @@ class GlockerTile extends GetView<GlockerListController> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        MetaAssets.dummyCeleb,
+                      child: CachedNetworkImage(
+                        imageUrl: glockerModel.value?.profilePhoto ?? '',
                         fit: BoxFit.fill,
                         width: double.maxFinite,
                         height: double.maxFinite,
@@ -531,12 +532,22 @@ class GlockerTile extends GetView<GlockerListController> {
                 children: [
                   Row(
                     children: [
-                      Text(
-                        "${data.name}",
-                        style: Get.theme.textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: Get.theme.colorScheme.secondary),
+                      Flexible(
+                        child: Text(
+                          "${data.name}",
+                          style: Get.theme.textTheme.bodyLarge!.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: Get.theme.colorScheme.secondary),
+                        ),
                       ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      if (glockerModel.value?.isOnline ?? false)
+                        CircleAvatar(
+                          radius: 5.6,
+                          backgroundColor: MetaColors.transactionSuccess,
+                        )
                     ],
                   ),
                   SizedBox(

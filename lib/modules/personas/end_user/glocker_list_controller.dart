@@ -51,6 +51,7 @@ class GlockerListController extends GetxController {
   initData() {
     getGlockerList();
     getGlockerTrendingList();
+    getFavoriteList();
   }
 
   applyFilters() {
@@ -97,7 +98,7 @@ class GlockerListController extends GetxController {
   getFavoriteList() async {
     try {
       favoriteGlockers.value = await glockerRepository.getGlockerList(
-          filters: "avorite=true", index: 1);
+          filters: "favourite=true", index: 1);
       favoriteGlockers.refresh();
     } catch (e) {
       log("$e");
@@ -170,6 +171,7 @@ class GlockerListController extends GetxController {
           await getSelectedGlockerData();
         }
       }
+      getFavoriteList();
 
       refresh();
     } catch (e) {

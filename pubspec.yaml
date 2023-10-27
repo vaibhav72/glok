@@ -53,6 +53,7 @@ dependencies:
   agora_rtc_engine: ^6.2.4
   permission_handler: ^11.0.1
   socket_io_client: ^2.0.3+1
+  video_thumbnail_imageview: ^0.0.5
 
 
 dev_dependencies:

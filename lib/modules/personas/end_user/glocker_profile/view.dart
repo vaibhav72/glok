@@ -9,6 +9,7 @@ import 'package:glok/utils/helpers.dart';
 import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:video_thumbnail_imageview/video_thumbnail_imageview.dart';
 
 import '../bid/binding.dart';
 
@@ -95,13 +96,48 @@ class GlockerProfileView extends GetView<GlockerProfileController> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            CircleAvatar(
-                                              radius: 48,
-                                              backgroundImage:
-                                                  CachedNetworkImageProvider(
-                                                      controller.glocker?.value
-                                                              ?.profilePhoto ??
-                                                          ''),
+                                            SizedBox(
+                                              width: 96,
+                                              height: 96,
+                                              child: Stack(
+                                                children: [
+                                                  CircleAvatar(
+                                                    radius: 48,
+                                                    backgroundImage:
+                                                        CachedNetworkImageProvider(
+                                                            controller
+                                                                    .glocker
+                                                                    ?.value
+                                                                    ?.profilePhoto ??
+                                                                ''),
+                                                  ),
+                                                  if (controller.glocker?.value
+                                                          ?.isOnline ??
+                                                      false)
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.bottomRight,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .all(8.0)
+                                                                .copyWith(
+                                                                    bottom: 5),
+                                                        child: CircleAvatar(
+                                                          radius: 7.35,
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          child: CircleAvatar(
+                                                            radius: 5.6,
+                                                            backgroundColor:
+                                                                MetaColors
+                                                                    .transactionSuccess,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                ],
+                                              ),
                                             ),
                                             SizedBox(
                                               width: 20,
@@ -222,7 +258,8 @@ class GlockerProfileView extends GetView<GlockerProfileController> {
                                             ],
                                           ),
                                           onPressed: () {
-                                            controller.gotoVideo();
+                                            if (!controller.isCurrentGlocker)
+                                              controller.gotoVideo();
                                           }),
                                     ),
                                     Container(
@@ -370,8 +407,10 @@ class GlockerProfileView extends GetView<GlockerProfileController> {
                                 controller.viewGalleryItem(
                                     controller.galleryPhotos.value![index]!);
                               },
-                              child: Image.asset(
-                                MetaAssets.dummyCeleb,
+                              child: CachedNetworkImage(
+                                imageUrl: controller
+                                        .galleryPhotos.value![index]!.file ??
+                                    '',
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -385,15 +424,28 @@ class GlockerProfileView extends GetView<GlockerProfileController> {
                 padding: EdgeInsets.all(3),
                 children: List.generate(
                     controller.galleryVideos.value!.length,
-                    (index) => InkWell(
-                          onTap: () {
-                            controller.viewGalleryItem(
-                                controller.galleryPhotos.value![index]!);
-                          },
-                          child: Image.asset(
-                            MetaAssets.carouselImage,
-                            fit: BoxFit.cover,
-                          ),
+                    (index) => Padding(
+                          padding: const EdgeInsets.all(3.0),
+                          child: InkWell(
+                              onTap: () {
+                                controller.viewGalleryItem(
+                                    controller.galleryPhotos.value![index]!);
+                              },
+                              child: VTImageView(
+                                fit: BoxFit.cover,
+                                assetPlaceHolder: MetaAssets.dummyCeleb,
+                                videoUrl: controller
+                                        .galleryPhotos.value![index]!.file ??
+                                    '',
+                                errorBuilder: (context, error, stack) {
+                                  return Container(
+                                    color: Colors.green,
+                                    child: const Center(
+                                      child: Text("error loading Image"),
+                                    ),
+                                  );
+                                },
+                              )),
                         )),
               ),
             ),

@@ -161,26 +161,33 @@ class UserBiddingView extends GetView<UserBiddingController> {
                                 ),
                               ),
                             ),
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(80),
-                                color: MetaColors.transactionFailed),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(MetaAssets.endCall),
-                                    SizedBox(
-                                      width: 8,
-                                    ),
-                                    Text(
-                                      'End Video Call',
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white),
-                                    )
-                                  ],
+                          InkWell(
+                            onTap: () {
+                              Get.back();
+                              Get.back();
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(80),
+                                  color: MetaColors.transactionFailed),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 14),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(MetaAssets.endCall),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Text(
+                                        'End Video Call',
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.white),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

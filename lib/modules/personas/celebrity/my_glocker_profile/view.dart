@@ -9,6 +9,7 @@ import 'package:glok/utils/helpers.dart';
 import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:video_thumbnail_imageview/video_thumbnail_imageview.dart';
 
 import 'controller.dart';
 
@@ -412,9 +413,20 @@ class MyGlockerProfileView extends GetView<MyGlockerProfileController> {
                                 controller.viewGalleryItem(
                                     controller.galleryPhotos.value![index]!);
                               },
-                              child: Image.asset(
-                                MetaAssets.carouselImage,
+                              child: VTImageView(
                                 fit: BoxFit.cover,
+                                assetPlaceHolder: MetaAssets.dummyCeleb,
+                                videoUrl: controller
+                                        .galleryPhotos.value![index]!.file ??
+                                    '',
+                                errorBuilder: (context, error, stack) {
+                                  return Container(
+                                    color: Colors.green,
+                                    child: const Center(
+                                      child: Text("error loading Image"),
+                                    ),
+                                  );
+                                },
                               ),
                             )),
                   ),

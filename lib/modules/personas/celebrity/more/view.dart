@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:glok/modules/auth_module/controller.dart';
+import 'package:glok/modules/personas/controller.dart';
 import 'package:glok/modules/personas/end_user/apply_glocker/view.dart';
 import 'package:glok/modules/personas/end_user/more/view.dart';
 import 'package:glok/utils/meta_assets.dart';
@@ -177,7 +178,10 @@ class GlockerMoreView extends GetView<GlockerMoreController> {
                   _MoreTile(
                     title: "Log Out",
                     icon: MetaAssets.logout,
-                    onTap: () {},
+                    onTap: () {
+                      PersonaController.to.updateGlockerMode(false);
+                      AuthController.to.handleLogout();
+                    },
                   ),
                 ],
               ),
