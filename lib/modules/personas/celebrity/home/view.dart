@@ -38,7 +38,7 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
       () {
         return Container(
             height: double.maxFinite,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 image: DecorationImage(
               image: AssetImage(
                 MetaAssets.background,
@@ -56,11 +56,11 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                     showUnselectedLabels: true,
                     selectedItemColor: MetaColors.primary,
                     unselectedItemColor: Colors.grey,
-                    selectedLabelStyle: TextStyle(
+                    selectedLabelStyle: const TextStyle(
                         color: MetaColors.primary,
                         fontSize: 12,
                         fontWeight: FontWeight.w600),
-                    unselectedLabelStyle: TextStyle(
+                    unselectedLabelStyle: const TextStyle(
                         color: Colors.grey,
                         fontSize: 12,
                         fontWeight: FontWeight.w400),
@@ -78,7 +78,7 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                             width: 24,
                             child: SvgPicture.asset(
                               MetaAssets.homeIcon,
-                              colorFilter: ColorFilter.mode(
+                              colorFilter: const ColorFilter.mode(
                                   MetaColors.primary, BlendMode.srcIn),
                             ),
                           ),
@@ -99,7 +99,7 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                             child: Center(
                               child: SvgPicture.asset(
                                 MetaAssets.walletIcon,
-                                colorFilter: ColorFilter.mode(
+                                colorFilter: const ColorFilter.mode(
                                     MetaColors.primary, BlendMode.srcIn),
                               ),
                             ),
@@ -146,7 +146,7 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                                 MetaAssets.moreIcon,
                                 height: 20,
                                 width: 14.5,
-                                colorFilter: ColorFilter.mode(
+                                colorFilter: const ColorFilter.mode(
                                     MetaColors.primary, BlendMode.srcIn),
                               ),
                             ),
@@ -167,7 +167,7 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                             child: Container(
                               height: Get.height * .55,
                               color: Colors.transparent,
-                              child: Text(""),
+                              child: const Text(""),
                             ),
                           ),
                           Expanded(
@@ -175,7 +175,7 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                               child: Container(
                                 width: double.maxFinite,
                                 color: Colors.white,
-                                child: Text(""),
+                                child: const Text(""),
                               ))
                         ],
                       ),
@@ -194,14 +194,14 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                                   Padding(
                                     padding: const EdgeInsets.all(16.0)
                                         .copyWith(bottom: 0),
-                                    child: CustomAppBar(),
+                                    child: const CustomAppBar(),
                                   ),
                                   Expanded(
                                       child: SingleChildScrollView(
                                     child: Column(
                                       children: [
                                         Container(
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                               color: Colors.white,
                                               borderRadius: BorderRadius.only(
                                                   topLeft: Radius.circular(20),
@@ -234,7 +234,7 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                                                   padding:
                                                       const EdgeInsets.all(16.0)
                                                           .copyWith(bottom: 8),
-                                                  child: Text(
+                                                  child: const Text(
                                                     "Weekly Dashboard",
                                                     style: TextStyle(
                                                         fontSize: 18,
@@ -262,7 +262,7 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                                                               0)
                                                           .toDouble(),
                                                     )),
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       width: 16,
                                                     ),
                                                     Expanded(
@@ -302,7 +302,7 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                                                               0)
                                                           .toDouble(),
                                                     )),
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       width: 16,
                                                     ),
                                                     Expanded(
@@ -323,71 +323,79 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                                                   ],
                                                 ),
                                               ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(16.0),
-                                                child: Container(
-                                                  height: 293,
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal: 16,
-                                                                vertical: 8),
-                                                        child: Text(
-                                                          "Weekly Earning Trend",
-                                                          style: TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                              if (controller
+                                                      .glockerStats.value !=
+                                                  null)
+                                                Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      16.0),
+                                                  child: Container(
+                                                    height: 293,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: Get.theme
+                                                                .dividerColor),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12)),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Padding(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      16,
+                                                                  vertical: 8),
+                                                          child: Text(
+                                                            "Weekly Earning Trend",
+                                                            style: TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Expanded(
-                                                        child: Padding(
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Chart(
+                                                              stats: controller
+                                                                  .glockerStats
+                                                                  .value!,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Chart(),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(16.0),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Container(
-                                                                height: 2,
-                                                                width: 12,
-                                                                color: Colors
-                                                                    .orange),
-                                                            SizedBox(
-                                                              width: 4,
-                                                            ),
-                                                            Text("Earning"),
-                                                          ],
-                                                        ),
-                                                      )
-                                                    ],
+                                                                  .all(16.0),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Container(
+                                                                  height: 2,
+                                                                  width: 12,
+                                                                  color: Colors
+                                                                      .orange),
+                                                              const SizedBox(
+                                                                width: 4,
+                                                              ),
+                                                              const Text(
+                                                                  "Earning"),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Get.theme
-                                                              .dividerColor),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12)),
-                                                ),
-                                              )
+                                                )
                                             ],
                                           ),
                                         ),
@@ -424,7 +432,7 @@ class _EarningsTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Total Earnings",
               style: TextStyle(fontSize: 15, color: MetaColors.secondaryText),
             ),
@@ -432,7 +440,8 @@ class _EarningsTile extends StatelessWidget {
               fit: BoxFit.scaleDown,
               child: Text(
                 getCurrency(double.parse(value.trim())),
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
+                style:
+                    const TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
               ),
             ),
             getPercentageDifference(percentage)
@@ -463,7 +472,7 @@ class _TotalUsersTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Total Users",
               style: TextStyle(fontSize: 15, color: MetaColors.secondaryText),
             ),
@@ -471,7 +480,8 @@ class _TotalUsersTile extends StatelessWidget {
               fit: BoxFit.scaleDown,
               child: Text(
                 "$value",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
+                style:
+                    const TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
               ),
             ),
             getPercentageDifference(percentage)
@@ -501,7 +511,7 @@ class _TotalMinutesTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Total Minutes",
               style: TextStyle(fontSize: 15, color: MetaColors.secondaryText),
             ),
@@ -509,7 +519,8 @@ class _TotalMinutesTile extends StatelessWidget {
               fit: BoxFit.scaleDown,
               child: Text(
                 "$value",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
+                style:
+                    const TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
               ),
             ),
             getPercentageDifference(percentage)
@@ -578,7 +589,7 @@ class GlockerTile extends GetView<GlockerListController> {
                             child: (glockerModel.value?.isFavourite ?? false)
                                 ? SvgPicture.asset(
                                     MetaAssets.likeOutlineIcon,
-                                    colorFilter: ColorFilter.mode(
+                                    colorFilter: const ColorFilter.mode(
                                         Colors.green, BlendMode.srcIn),
                                   )
                                 : SvgPicture.asset(MetaAssets.likeOutlineIcon),
@@ -620,7 +631,7 @@ class GlockerTile extends GetView<GlockerListController> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 6,
               ),
               Container(
@@ -637,7 +648,7 @@ class GlockerTile extends GetView<GlockerListController> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 2,
                   ),
                   Text("${data.category}",
@@ -680,7 +691,7 @@ class PageSelectorTile extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               child: Text(
                 title,
-                style: TextStyle(fontSize: 16, color: Colors.white),
+                style: const TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
           ),
@@ -707,17 +718,17 @@ class CustomAppBar extends GetView<GlockerHomeController> {
                 backgroundImage: CachedNetworkImageProvider(
                     controller.currentGlocker.value!.profilePhoto!),
               ),
-              Spacer(),
+              const Spacer(),
               Row(
                 children: [
-                  Text(
+                  const Text(
                     "Online",
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Colors.white),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   Obx(
@@ -728,7 +739,7 @@ class CustomAppBar extends GetView<GlockerHomeController> {
                           PersonaController.to.changeStatus();
                         },
                         child: AnimatedContainer(
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           width: 42,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -755,7 +766,7 @@ class CustomAppBar extends GetView<GlockerHomeController> {
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
         ],

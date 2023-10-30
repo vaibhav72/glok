@@ -57,7 +57,7 @@ class MetaStrings {
   static const String updateFavorites = '/favourite/fav';
 
   //rating
-  static const String updateUserRating = '/rating';
+  static const String updateUserRating = '/rating/';
   static const String updateGlockerRating = '/glokrating';
 
   //money

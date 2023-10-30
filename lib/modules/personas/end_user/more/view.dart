@@ -79,115 +79,117 @@ class EndUserMoreView extends GetView<EndUserMoreController> {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20))),
             width: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: Container(
-                        height: 6,
-                        width: 60,
-                        decoration: BoxDecoration(
-                            color: Get.theme.dividerColor,
-                            borderRadius: BorderRadius.circular(40)),
+            child: Obx(
+              () => SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Container(
+                          height: 6,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Get.theme.dividerColor,
+                              borderRadius: BorderRadius.circular(40)),
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0).copyWith(bottom: 0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "ACCOUNT",
-                          style: TextStyle(
-                            color: MetaColors.tertiaryText,
+                    Padding(
+                      padding: const EdgeInsets.all(16.0).copyWith(bottom: 0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "ACCOUNT",
+                            style: TextStyle(
+                              color: MetaColors.tertiaryText,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  _MoreTile(
-                    title: "My Profile",
-                    icon: MetaAssets.profileIconNew,
-                    onTap: () {
-                      controller.initProfileDetails();
-                      Get.to(_MyProfile());
-                    },
-                  ),
-                  Divider(),
-                  _MoreTile(
-                    title: "Bank Account",
-                    icon: MetaAssets.bankIcon,
-                    onTap: () {
-                      controller.initBankDetails();
-                      Get.bottomSheet(_BankAccountWidget(),
-                          isScrollControlled: true);
-                    },
-                  ),
-                  Divider(),
-                  if (!(controller.user.value!.isGlocker ?? false)) ...[
                     _MoreTile(
-                      title: "Apply as Glocker",
+                      title: "My Profile",
                       icon: MetaAssets.profileIconNew,
                       onTap: () {
-                        Get.to(ApplyToGlockerView(),
-                            binding: ApplyToGlockerBinding());
+                        controller.initProfileDetails();
+                        Get.to(_MyProfile());
                       },
                     ),
                     Divider(),
-                  ],
-                  _MoreTile(
-                    title: "Notification Preference",
-                    icon: MetaAssets.notificationIconNew,
-                    onTap: () {
-                      Get.bottomSheet(_NotificationPreference(),
-                          isScrollControlled: true);
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0).copyWith(bottom: 0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "OTHER",
-                          style: TextStyle(
-                            color: MetaColors.tertiaryText,
-                          ),
-                        ),
-                      ],
+                    _MoreTile(
+                      title: "Bank Account",
+                      icon: MetaAssets.bankIcon,
+                      onTap: () {
+                        controller.initBankDetails();
+                        Get.bottomSheet(_BankAccountWidget(),
+                            isScrollControlled: true);
+                      },
                     ),
-                  ),
-                  _MoreTile(
-                    title: "Invite to Glockers",
-                    icon: MetaAssets.inviteIcon,
-                    onTap: () {},
-                  ),
-                  Divider(),
-                  _MoreTile(
-                    title: "Terms and Conditions",
-                    icon: MetaAssets.documentIcon,
-                    onTap: () {
-                      Get.bottomSheet(_TermsAndConditions(),
-                          isScrollControlled: true);
-                    },
-                  ),
-                  Divider(),
-                  _MoreTile(
-                    title: "Privacy Policy",
-                    icon: MetaAssets.documentIcon,
-                    onTap: () {},
-                  ),
-                  Divider(),
-                  _MoreTile(
-                    title: "Log Out",
-                    icon: MetaAssets.logout,
-                    onTap: () {
-                      AuthController.to.handleLogout();
-                    },
-                  ),
-                ],
+                    Divider(),
+                    if (!(AuthController.to.glocker.value?.id != null)) ...[
+                      _MoreTile(
+                        title: "Apply as Glocker",
+                        icon: MetaAssets.profileIconNew,
+                        onTap: () {
+                          Get.to(ApplyToGlockerView(),
+                              binding: ApplyToGlockerBinding());
+                        },
+                      ),
+                      Divider(),
+                    ],
+                    _MoreTile(
+                      title: "Notification Preference",
+                      icon: MetaAssets.notificationIconNew,
+                      onTap: () {
+                        Get.bottomSheet(_NotificationPreference(),
+                            isScrollControlled: true);
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0).copyWith(bottom: 0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "OTHER",
+                            style: TextStyle(
+                              color: MetaColors.tertiaryText,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    _MoreTile(
+                      title: "Invite to Glockers",
+                      icon: MetaAssets.inviteIcon,
+                      onTap: () {},
+                    ),
+                    Divider(),
+                    _MoreTile(
+                      title: "Terms and Conditions",
+                      icon: MetaAssets.documentIcon,
+                      onTap: () {
+                        Get.bottomSheet(_TermsAndConditions(),
+                            isScrollControlled: true);
+                      },
+                    ),
+                    Divider(),
+                    _MoreTile(
+                      title: "Privacy Policy",
+                      icon: MetaAssets.documentIcon,
+                      onTap: () {},
+                    ),
+                    Divider(),
+                    _MoreTile(
+                      title: "Log Out",
+                      icon: MetaAssets.logout,
+                      onTap: () {
+                        AuthController.to.handleLogout();
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

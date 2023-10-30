@@ -1,9 +1,12 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:glok/data/models/stats_model.dart';
 import 'package:glok/utils/meta_colors.dart';
+import 'package:intl/intl.dart';
 
 class Chart extends StatefulWidget {
-  const Chart({super.key});
+  const Chart({super.key, required this.stats});
+  final GlockerStatsModel stats;
 
   @override
   State<Chart> createState() => _ChartState();
@@ -24,21 +27,11 @@ class _ChartState extends State<Chart> {
       color: MetaColors.tertiaryText,
       fontSize: 12,
     );
-    Widget text;
-    switch (value.toInt()) {
-      case 2:
-        text = const Text('MAR', style: style);
-        break;
-      case 5:
-        text = const Text('JUN', style: style);
-        break;
-      case 8:
-        text = const Text('SEP', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
-    }
+    Widget text = Text(
+      DateFormat('EEE')
+          .format(DateTime.fromMillisecondsSinceEpoch(value.toInt())),
+      style: style,
+    );
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
@@ -52,19 +45,8 @@ class _ChartState extends State<Chart> {
       fontSize: 12,
     );
     String text;
-    switch (value.toInt()) {
-      case 1:
-        text = '10K';
-        break;
-      case 3:
-        text = '30k';
-        break;
-      case 5:
-        text = '50k';
-        break;
-      default:
-        return Container();
-    }
+
+    text = '${value.toInt()}';
 
     return Text(text, style: style, textAlign: TextAlign.left);
   }
@@ -113,21 +95,20 @@ class _ChartState extends State<Chart> {
         border: Border(bottom: BorderSide(color: MetaColors.dividerColor)),
       ),
       minX: 0,
-      maxX: 11,
+      maxX: widget.stats.stat?.isNotEmpty ?? false
+          ? widget.stats.stat!.last.date!.millisecondsSinceEpoch.toDouble()
+          : 0.0,
       minY: 0,
-      maxY: 6,
+      maxY: widget.stats.stat?.isNotEmpty ?? false
+          ? widget.stats.stat!.last.amount!.toDouble()
+          : 0.0,
       lineBarsData: [
         LineChartBarData(
           color: Colors.orange,
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
+          spots: (widget.stats.stat ?? [])
+              .map((e) => FlSpot(e.date!.millisecondsSinceEpoch.toDouble(),
+                  e.amount!.toDouble()))
+              .toList(),
           isCurved: true,
           barWidth: 1,
           isStrokeCapRound: true,

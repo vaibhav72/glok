@@ -61,4 +61,8 @@ class MetaAssets {
   static const String swapCamera = 'assets/swap_camera.svg';
   static const String mic = 'assets/mic.svg';
   static const String closeQueue = 'assets/close_queue.svg';
+
+  //rating
+  static const String starFilled = 'assets/fill_star.svg';
+  static const String starUnfilled= 'assets/unfilled_star.svg';
 }

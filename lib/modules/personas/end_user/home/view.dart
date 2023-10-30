@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:glok/data/models/glocker_model.dart';
+import 'package:glok/modules/auth_module/controller.dart';
 import 'package:glok/modules/personas/end_user/glocker_profile/binding.dart';
 import 'package:glok/modules/personas/end_user/browse/view.dart';
 import 'package:glok/modules/personas/end_user/glocker_list_controller.dart';
@@ -616,7 +617,8 @@ class CustomAppBar extends GetView<EndUserHomeController> {
           Row(
             children: [
               CircleAvatar(
-                backgroundImage: AssetImage(MetaAssets.dummyProfile),
+                backgroundImage: CachedNetworkImageProvider(
+                    AuthController.to.user.value?.photo ?? ''),
               ),
               Expanded(
                   child: Padding(

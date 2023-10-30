@@ -388,4 +388,58 @@ class GlockerRepository {
       rethrow;
     }
   }
+
+  Future<bool> updateGlockerRating(
+      {required int userRating,
+      required int callRate,
+      required String comment,
+      required int fanUserId}) async {
+    try {
+      var headers = await getHeaders();
+      var params = {
+        "user_rate": userRating,
+        "call_rate": callRate,
+        "comment": comment,
+        "fan_user_id": fanUserId
+      };
+      final response = await http.post(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.updateGlockerRating),
+          body: jsonEncode(params),
+          headers: headers);
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        throw Exception('Couldnt end call');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> updateUserRating(
+      {required int personRating,
+      required int callRate,
+      required String comment,
+      required int glockerId}) async {
+    try {
+      var headers = await getHeaders();
+      var params = {
+        "person_rate": personRating,
+        "call_rate": callRate,
+        "comment": comment,
+        "glocker_id": glockerId
+      };
+      final response = await http.post(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.updateUserRating),
+          body: jsonEncode(params),
+          headers: headers);
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        throw Exception('Couldnt end call');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

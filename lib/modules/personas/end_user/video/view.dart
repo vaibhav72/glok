@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:glok/modules/personas/end_user/video/controller.dart';
 
+import '../../../../utils/helpers.dart';
 import '../../../../utils/meta_assets.dart';
 import '../../../../utils/meta_colors.dart';
 import '../apply_glocker/view.dart';
