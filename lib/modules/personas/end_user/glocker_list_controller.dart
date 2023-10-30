@@ -172,8 +172,9 @@ class GlockerListController extends GetxController {
       await getFavoriteList();
       await getGlockerList();
       await getGlockerTrendingList();
-      if (refreshEnum == RefreshEnum.refreshSelectedGlocker)
+      if (refreshEnum == RefreshEnum.refreshSelectedGlocker) {
         await getSelectedGlockerData();
+      }
 
       refresh();
     } catch (e) {

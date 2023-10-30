@@ -19,13 +19,15 @@ class WalletController extends GetxController {
   BankRepository bankRepository = BankRepository();
   final addFundFormKey = GlobalKey<FormState>();
   final withDrawFundFormKey = GlobalKey<FormState>();
+  double get balance =>
+      double.parse(AuthController.to.wallet.value?.balance ?? "0");
+  Rxn<List<TransactionModel>> transactions = Rxn([]);
   Rxn<bool> isLoading = Rxn(false);
   Rxn<bool> isFetchingNext = Rxn(false);
   Rxn<bool> lastPage = Rxn(false);
-  double get balance =>
-      double.parse(AuthController.to.wallet.value?.balance ?? "0");
+
   Rxn<int> page = Rxn(0);
-  Rxn<List<TransactionModel>> transactions = Rxn([]);
+
   @override
   void onInit() {
     super.onInit();

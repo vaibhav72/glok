@@ -26,6 +26,7 @@ import 'package:glok/utils/meta_strings.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../controllers/bottom_navigation_controller.dart';
 import '../../end_user/glocker_profile/view.dart';
 import '../my_glocker_profile/view.dart';
 import '../video/binding.dart';
@@ -713,10 +714,15 @@ class CustomAppBar extends GetView<GlockerHomeController> {
         children: [
           Row(
             children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundImage: CachedNetworkImageProvider(
-                    controller.currentGlocker.value!.profilePhoto!),
+              InkWell(
+                onTap: () {
+                  BottomNavigationController.to.changePage(3);
+                },
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: CachedNetworkImageProvider(
+                      controller.currentGlocker.value!.profilePhoto!),
+                ),
               ),
               const Spacer(),
               Row(

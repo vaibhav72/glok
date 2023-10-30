@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:glok/controllers/bottom_navigation_controller.dart';
 import 'package:glok/data/models/glocker_model.dart';
 import 'package:glok/modules/auth_module/controller.dart';
 import 'package:glok/modules/personas/end_user/glocker_profile/binding.dart';
@@ -19,7 +20,11 @@ import 'package:glok/utils/meta_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../utils/meta_strings.dart';
+import '../browse/celeb_by_category/binding.dart';
+import '../browse/celeb_by_category/view.dart';
 import '../glocker_profile/view.dart';
+import '../trending_glockers/binding.dart';
+import '../trending_glockers/view.dart';
 import '../video/binding.dart';
 
 class EndUserHomeView extends GetView<EndUserHomeController> {
@@ -302,15 +307,25 @@ class EndUserHomeView extends GetView<EndUserHomeController> {
                                                             FontWeight.w600),
                                                   ),
                                                   Spacer(),
-                                                  Text(
-                                                    "View All",
-                                                    style: Get.theme.textTheme
-                                                        .bodyMedium
-                                                        ?.copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Get.theme
-                                                                .primaryColor),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      Get.to(
+                                                          () =>
+                                                              TrendingGlockersView(),
+                                                          binding:
+                                                              TrendingGlockersBinding());
+                                                    },
+                                                    child: Text(
+                                                      "View All",
+                                                      style: Get.theme.textTheme
+                                                          .bodyMedium
+                                                          ?.copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              color: Get.theme
+                                                                  .primaryColor),
+                                                    ),
                                                   )
                                                 ],
                                               ),
@@ -616,9 +631,14 @@ class CustomAppBar extends GetView<EndUserHomeController> {
         children: [
           Row(
             children: [
-              CircleAvatar(
-                backgroundImage: CachedNetworkImageProvider(
-                    AuthController.to.user.value?.photo ?? ''),
+              InkWell(
+                onTap: () {
+                  BottomNavigationController.to.changePage(3);
+                },
+                child: CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(
+                      AuthController.to.user.value?.photo ?? ''),
+                ),
               ),
               Expanded(
                   child: Padding(
@@ -627,13 +647,7 @@ class CustomAppBar extends GetView<EndUserHomeController> {
                   children: [
                     Expanded(
                       child: InkWell(
-                        onTap: () {
-                          Get.to(() => UserVideoView(),
-                              binding: UserVideoCallBinding(
-                                channel: MetaStrings.testingChannelName,
-                                token: MetaStrings.testingToken,
-                              ));
-                        },
+                        onTap: () {},
                         child: Text(
                           "Welcome Back",
                           style: TextStyle(
@@ -665,6 +679,8 @@ class CustomAppBar extends GetView<EndUserHomeController> {
                             // controller.changePage(index);
                             GlockerListController.to
                                 .changeCategory(pageTitleList[index]);
+                            Get.to(CelebByCategoryView(),
+                                binding: CelebByCategoryBinding());
                           },
                           selected: pageTitleList[index] ==
                               GlockerListController.to.currentCategory.value,

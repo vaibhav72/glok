@@ -7,6 +7,8 @@ import 'package:glok/modules/personas/end_user/browse/celeb_by_category/view.dar
 import 'package:glok/modules/personas/end_user/browse/controller.dart';
 import 'package:glok/modules/personas/end_user/glocker_list_controller.dart';
 import 'package:glok/modules/personas/end_user/home/view.dart';
+import 'package:glok/modules/personas/end_user/trending_glockers/binding.dart';
+import 'package:glok/modules/personas/end_user/trending_glockers/view.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
@@ -128,12 +130,18 @@ class BrowseView extends GetView<BrowseController> {
                                         fontWeight: FontWeight.w600),
                                   ),
                                   Spacer(),
-                                  Text(
-                                    "View All",
-                                    style: Get.theme.textTheme.bodyMedium
-                                        ?.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            color: Get.theme.primaryColor),
+                                  InkWell(
+                                    onTap: () {
+                                      Get.to(() => TrendingGlockersView(),
+                                          binding: TrendingGlockersBinding());
+                                    },
+                                    child: Text(
+                                      "View All",
+                                      style: Get.theme.textTheme.bodyMedium
+                                          ?.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: Get.theme.primaryColor),
+                                    ),
                                   )
                                 ],
                               ),
@@ -194,7 +202,7 @@ class BrowseView extends GetView<BrowseController> {
                                       GlockerListController.to
                                           .changeCategory(pageTitleList[index]);
                                       Get.to(CelebByCategoryView(),
-                                          binding: CelebByCategoryBiding());
+                                          binding: CelebByCategoryBinding());
                                     },
                                     child: Container(
                                       child: Column(

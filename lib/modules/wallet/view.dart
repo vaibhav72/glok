@@ -20,148 +20,153 @@ class WalletView extends GetView<WalletController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Obx(
-        () => Column(children: [
-          Padding(
-            padding: MediaQuery.of(context).padding,
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Container(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      "Available Balance",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                          text: "₹",
-                          style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontSize: 36,
-                              fontWeight: FontWeight.w600),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await controller.getTransactions();
+        },
+        child: Obx(
+          () => Column(children: [
+            Padding(
+              padding: MediaQuery.of(context).padding,
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Text(
+                        "Available Balance",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      RichText(
+                        text: TextSpan(
+                            text: "₹",
+                            style: GoogleFonts.inter(
+                                color: Colors.white,
+                                fontSize: 36,
+                                fontWeight: FontWeight.w600),
+                            children: [
+                              TextSpan(
+                                  text: NumberFormat.currency(
+                                    locale: "en_IN",
+                                    symbol: "",
+                                  ).format(controller.balance),
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontSize: 36,
+                                      fontWeight: FontWeight.w600))
+                            ]),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Obx(
+                        () => Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            TextSpan(
-                                text: NumberFormat.currency(
-                                  locale: "en_IN",
-                                  symbol: "",
-                                ).format(controller.balance),
-                                style: GoogleFonts.poppins(
-                                    color: Colors.white,
-                                    fontSize: 36,
-                                    fontWeight: FontWeight.w600))
-                          ]),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Obx(
-                      () => Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (!PersonaController.to.glockerMode.value!) ...[
+                            if (!PersonaController.to.glockerMode.value!) ...[
+                              _FundActionButton(
+                                action: "Add Fund",
+                                handler: () {
+                                  Get.to(AddFundView());
+                                },
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                            ],
                             _FundActionButton(
-                              action: "Add Fund",
+                              action: "Withdraw",
                               handler: () {
-                                Get.to(AddFundView());
+                                if (controller.balance < 100) {
+                                  showSnackBar(
+                                    message:
+                                        "You need to have atleast ₹100 in your wallet to withdraw",
+                                    title: "Insufficient Balance",
+                                  );
+                                  return;
+                                }
+                                Get.to(WithdrawFundView());
                               },
                             ),
-                            SizedBox(
-                              width: 8,
-                            ),
                           ],
-                          _FundActionButton(
-                            action: "Withdraw",
-                            handler: () {
-                              if (controller.balance < 100) {
-                                showSnackBar(
-                                  message:
-                                      "You need to have atleast ₹100 in your wallet to withdraw",
-                                  title: "Insufficient Balance",
-                                );
-                                return;
-                              }
-                              Get.to(WithdrawFundView());
-                            },
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                  ],
+                      SizedBox(
+                        height: 16,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
-              width: double.maxFinite,
-              child: controller.isLoading.value!
-                  ? Center(
-                      child: Loader(),
-                    )
-                  : SingleChildScrollView(
-                      controller: controller.scrollController,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Container(
-                                height: 6,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                    color: Get.theme.dividerColor,
-                                    borderRadius: BorderRadius.circular(40)),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20))),
+                width: double.maxFinite,
+                child: controller.isLoading.value!
+                    ? Center(
+                        child: Loader(),
+                      )
+                    : SingleChildScrollView(
+                        controller: controller.scrollController,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Container(
+                                  height: 6,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                      color: Get.theme.dividerColor,
+                                      borderRadius: BorderRadius.circular(40)),
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.all(16.0).copyWith(bottom: 8),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "All Activity",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      color: Get.theme.colorScheme.secondary,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.all(16.0)
+                                  .copyWith(bottom: 8),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "All Activity",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Get.theme.colorScheme.secondary,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Column(
-                            children: controller.transactions.value!
-                                .map((e) => e.type == "add"
-                                    ? CreditTile(
-                                        transaction: e,
-                                      )
-                                    : DebitTile(
-                                        transaction: e,
-                                      ))
-                                .toList(),
-                          ),
-                          if (controller.isFetchingNext.value! &&
-                              controller.transactions.value!.length == 0)
-                            Loader(),
-                        ],
+                            Column(
+                              children: controller.transactions.value!
+                                  .map((e) => e.type == "add"
+                                      ? CreditTile(
+                                          transaction: e,
+                                        )
+                                      : DebitTile(
+                                          transaction: e,
+                                        ))
+                                  .toList(),
+                            ),
+                            if (controller.isFetchingNext.value! &&
+                                controller.transactions.value!.length == 0)
+                              Loader(),
+                          ],
+                        ),
                       ),
-                    ),
+              ),
             ),
-          ),
-        ]),
+          ]),
+        ),
       ),
     );
   }
