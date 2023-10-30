@@ -155,23 +155,25 @@ class GlockerListController extends GetxController {
     try {
       await glockerRepository.favorite(model.id!);
 
-      if (refreshEnum == RefreshEnum.refreshAllGlockers) {
-        await getFavoriteList();
-        await getGlockerList();
-        await getGlockerTrendingList();
+      // if (refreshEnum == RefreshEnum.refreshAllGlockers) {
+
+      // } else {
+      //   if (refreshEnum == RefreshEnum.refreshCurrentGlockers) {
+      //     await getGlockerList();
+      //   } else if (refreshEnum == RefreshEnum.refreshTrendingGlockers) {
+      //     await getGlockerTrendingList();
+      //   } else if (refreshEnum == RefreshEnum.refreshFavoriteGlockers) {
+      //     await getFavoriteList();
+      //   } else if (refreshEnum == RefreshEnum.refreshSelectedGlocker) {
+      //     await getSelectedGlockerData();
+      //   }
+      // }
+      // getFavoriteList();
+      await getFavoriteList();
+      await getGlockerList();
+      await getGlockerTrendingList();
+      if (refreshEnum == RefreshEnum.refreshSelectedGlocker)
         await getSelectedGlockerData();
-      } else {
-        if (refreshEnum == RefreshEnum.refreshCurrentGlockers) {
-          await getGlockerList();
-        } else if (refreshEnum == RefreshEnum.refreshTrendingGlockers) {
-          await getGlockerTrendingList();
-        } else if (refreshEnum == RefreshEnum.refreshFavoriteGlockers) {
-          await getFavoriteList();
-        } else if (refreshEnum == RefreshEnum.refreshSelectedGlocker) {
-          await getSelectedGlockerData();
-        }
-      }
-      getFavoriteList();
 
       refresh();
     } catch (e) {

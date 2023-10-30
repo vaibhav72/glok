@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import '../../utils/helpers.dart';
+import '../models/stats_model.dart';
 import '../models/user_model.dart';
 
 class GlockerRepository {
@@ -90,6 +91,7 @@ class GlockerRepository {
     final response = await http.get(Uri.parse(url), headers: headers);
     if (response.statusCode == 200) {
       var parsedResponse = jsonDecode(response.body);
+      log(parsedResponse.toString());
 
       return (parsedResponse["glocker"] as List)
           .map((e) => GlockerModel.fromJson(e))
@@ -316,6 +318,71 @@ class GlockerRepository {
         return true;
       } else {
         throw Exception('Couldnt accept call');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> startCallTrack(int callerId) async {
+    try {
+      var headers = await getHeaders();
+      final response = await http.post(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.getVideoCall),
+          body: jsonEncode({"caller_id": callerId}),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Couldnt start call');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> endCallTrack() async {
+    try {
+      var headers = await getHeaders();
+      final response = await http.get(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.getVideoCall),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Couldnt end call');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<GlockerStatsModel> getStats() async {
+    try {
+      var headers = await getHeaders();
+      final response = await http.get(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.glockerUserStatistics),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return glockerStatsModelFromJson(response.body);
+      } else {
+        throw Exception('Couldnt end call');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> updateonline() async {
+    try {
+      var headers = await getHeaders();
+      final response = await http.patch(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.updateOnlineStatus),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body)['online'];
+      } else {
+        throw Exception('Couldnt end call');
       }
     } catch (e) {
       rethrow;

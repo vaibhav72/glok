@@ -3,9 +3,12 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:glok/modules/personas/controller.dart';
+import 'package:glok/utils/helpers.dart';
 import 'package:glok/utils/meta_strings.dart';
 
 import 'package:permission_handler/permission_handler.dart';
+
+import '../../../../data/repositories/glocker_repository.dart';
 
 class GlockerVideoCallController extends GetxController {
   String channel;
@@ -18,6 +21,7 @@ class GlockerVideoCallController extends GetxController {
   Rxn<bool> loading = Rxn<bool>(false);
   Rxn<bool> isMuted = Rxn<bool>(false);
   Rxn<bool> swapCamera = Rxn<bool>(false);
+  GlockerRepository glockerRepository = GlockerRepository();
   @override
   void onInit() {
     // TODO: implement onInit
@@ -62,10 +66,15 @@ class GlockerVideoCallController extends GetxController {
         },
         onUserJoined: (RtcConnection connection, int remoteId, int elapsed) {
           remoteUid.value = remoteId;
+          acceptCallTrack();
         },
         onUserOffline: (RtcConnection connection, int remoteId,
             UserOfflineReasonType reason) {
           remoteUid.value = null;
+          endCall();
+        },
+        onLeaveChannel: (connection, stats) {
+          endCall();
         },
         onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
           // _engine.renewToken(token);
@@ -100,7 +109,20 @@ class GlockerVideoCallController extends GetxController {
     isMuted.value = !isMuted.value!;
   }
 
-  void endCall() {
-    Get.back();
+  void endCall() async {
+    try {
+      await glockerRepository.endCallTrack();
+      Get.back();
+    } catch (e) {
+      showSnackBar(message: e.toString());
+    }
+  }
+
+  void acceptCallTrack() async {
+    try {
+      await glockerRepository.startCallTrack(userId);
+    } catch (e) {
+      showSnackBar(message: e.toString());
+    }
   }
 }

@@ -94,19 +94,23 @@ class UserRepository {
   }
 
   Future<bool> updateGlockerMode(bool isGlocker) async {
-    var headers = await getHeaders();
-    var params = {"is_glocker": isGlocker};
-    final response = await http.patch(
-        Uri.parse(MetaStrings.baseUrl + MetaStrings.changeGlockerMode),
-        body: jsonEncode(params),
-        headers: headers);
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      var parsedResponse = jsonDecode(response.body);
-      throw parsedResponse["error"] ??
-          parsedResponse["message"] ??
-          "Failed to update user";
+    try {
+      var headers = await getHeaders();
+      var params = {"is_glocker": isGlocker};
+      final response = await http.patch(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.changeGlockerMode),
+          body: jsonEncode(params),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse["error"] ??
+            parsedResponse["message"] ??
+            "Failed to update user";
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 

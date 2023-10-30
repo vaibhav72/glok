@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:glok/data/repositories/glocker_repository.dart';
 import 'package:glok/modules/personas/controller.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:glok/utils/meta_strings.dart';
@@ -19,6 +20,7 @@ class UserVideoCallController extends GetxController {
   Rxn<bool> loading = Rxn<bool>(false);
   Rxn<bool> isMuted = Rxn<bool>(false);
   Rxn<bool> swapCamera = Rxn<bool>(false);
+  GlockerRepository glockerRepository = GlockerRepository();
   @override
   void onClose() {
     super.onClose();
@@ -67,6 +69,10 @@ class UserVideoCallController extends GetxController {
         onUserOffline: (RtcConnection connection, int remoteId,
             UserOfflineReasonType reason) {
           remoteUid.value = null;
+          // endCall();
+        },
+        onLeaveChannel: (connection, stats) {
+          endCall();
         },
         onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
           // _engine.renewToken(token);
@@ -104,7 +110,12 @@ class UserVideoCallController extends GetxController {
     isMuted.value = !isMuted.value!;
   }
 
-  void endCall() {
-    Get.back();
+  void endCall() async {
+    try {
+      await glockerRepository.endCallTrack();
+      Get.back();
+    } catch (e) {
+      showSnackBar(message: e.toString());
+    }
   }
 }

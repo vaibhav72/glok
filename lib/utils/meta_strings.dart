@@ -29,6 +29,9 @@ class MetaStrings {
   static const String updateGlockerCoverPhoto = '/glocker/updatecoverphoto';
   static const String updateAadharFile = '/glocker/updateaadharfile';
   static const String updateVideKYC = '/glocker/updatevideokyc';
+  static const String glockerUserStatistics = '/glocker/statistics';
+  static const String updateOnlineStatus = '/glocker/online_status';
+
   //glocker list sort
   static const String getGlocker = '/glocker/';
   static const String getGlockerSort = '/glocker/sort';

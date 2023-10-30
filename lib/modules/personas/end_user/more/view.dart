@@ -205,78 +205,81 @@ class PersonaSwapWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Container(
-        decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.3),
-            borderRadius: BorderRadius.circular(80)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            InkWell(
-              onTap: () {
-                PersonaController.to.updateGlockerMode(false);
-              },
-              child: Container(
-                width: 100,
-                decoration: BoxDecoration(
-                    color: PersonaController.to.glockerMode.value!
-                        ? Colors.transparent
-                        : Colors.white,
-                    borderRadius: BorderRadius.circular(80)),
-                child: Center(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 24, vertical: 6),
-                    child: Text(
-                      "User",
-                      style: TextStyle(
+      () => (AuthController.to.glocker.value?.id == null)
+          ? SizedBox.shrink()
+          : Container(
+              decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(80)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      PersonaController.to.updateGlockerMode(false);
+                    },
+                    child: Container(
+                      width: 100,
+                      decoration: BoxDecoration(
+                          color: PersonaController.to.glockerMode.value!
+                              ? Colors.transparent
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(80)),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 6),
+                          child: Text(
+                            "User",
+                            style: TextStyle(
+                                color: PersonaController.to.glockerMode.value!
+                                    ? Colors.white
+                                    : Get.theme.primaryColor,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      PersonaController.to.updateGlockerMode(true);
+                      if ((MyGlockerProfileController
+                                  .to.galleryPhotos.value?.isEmpty ??
+                              false) ||
+                          (MyGlockerProfileController
+                                  .to.galleryVideos.value?.isEmpty ??
+                              false))
+                        MyGlockerProfileController.to.getGallery();
+                    },
+                    child: Container(
+                      width: 100,
+                      decoration: BoxDecoration(
                           color: PersonaController.to.glockerMode.value!
                               ? Colors.white
-                              : Get.theme.primaryColor,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600),
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(80)),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          child: Text(
+                            "Glocker",
+                            style: TextStyle(
+                                color: !PersonaController.to.glockerMode.value!
+                                    ? Colors.white
+                                    : Get.theme.primaryColor,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
+                  )
+                ],
               ),
             ),
-            InkWell(
-              onTap: () {
-                PersonaController.to.updateGlockerMode(true);
-                if ((MyGlockerProfileController
-                            .to.galleryPhotos.value?.isEmpty ??
-                        false) ||
-                    (MyGlockerProfileController
-                            .to.galleryVideos.value?.isEmpty ??
-                        false)) MyGlockerProfileController.to.getGallery();
-              },
-              child: Container(
-                width: 100,
-                decoration: BoxDecoration(
-                    color: PersonaController.to.glockerMode.value!
-                        ? Colors.white
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.circular(80)),
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: Text(
-                      "Glocker",
-                      style: TextStyle(
-                          color: !PersonaController.to.glockerMode.value!
-                              ? Colors.white
-                              : Get.theme.primaryColor,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }
@@ -798,6 +801,7 @@ class _BankAccountWidget extends GetView<EndUserMoreController> {
                                       },
                                       inputFormatters: [
                                         LengthLimitingTextInputFormatter(11),
+                                        UpperCaseTextFormatter(),
                                       ],
                                       decoration: formDecoration(
                                           "IFSC Code", "Enter IFSC Code"),

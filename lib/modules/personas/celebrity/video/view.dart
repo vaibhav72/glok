@@ -106,7 +106,7 @@ class GlockerVideoView extends GetView<GlockerVideoCallController> {
                         children: [
                           InkWell(
                             onTap: () {
-                              Get.back();
+                              controller.endCall();
                             },
                             child: CircleAvatar(
                               backgroundColor: Colors.black12,

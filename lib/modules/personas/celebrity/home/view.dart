@@ -31,7 +31,7 @@ import '../my_glocker_profile/view.dart';
 import '../video/binding.dart';
 import '../video/view.dart';
 
-class GlockerHomeView extends GetView<EndUserHomeController> {
+class GlockerHomeView extends GetView<GlockerHomeController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -186,172 +186,216 @@ class GlockerHomeView extends GetView<EndUserHomeController> {
                                 ? GlockerMoreView()
                                 : MyGlockerProfileView()
                             : WalletView()
-                        : Padding(
-                            padding: MediaQuery.of(context).padding,
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0)
-                                      .copyWith(bottom: 0),
-                                  child: CustomAppBar(),
-                                ),
-                                Expanded(
-                                    child: SingleChildScrollView(
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(20),
-                                                topRight: Radius.circular(20))),
-                                        width: double.maxFinite,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Center(
-                                                child: Container(
-                                                  height: 6,
-                                                  width: 60,
-                                                  decoration: BoxDecoration(
-                                                      color: Get
-                                                          .theme.dividerColor,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              40)),
-                                                ),
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                Get.to(() => GlockerVideoView(),
-                                                    binding:
-                                                        GlockerVideoCallBinding(
-                                                      channel: MetaStrings
-                                                          .testingChannelName,
-                                                      token: MetaStrings
-                                                          .testingToken,
-                                                    ));
-                                              },
-                                              child: Padding(
+                        : Obx(
+                            () => Padding(
+                              padding: MediaQuery.of(context).padding,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0)
+                                        .copyWith(bottom: 0),
+                                    child: CustomAppBar(),
+                                  ),
+                                  Expanded(
+                                      child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  topRight:
+                                                      Radius.circular(20))),
+                                          width: double.maxFinite,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
                                                 padding:
-                                                    const EdgeInsets.all(16.0)
-                                                        .copyWith(bottom: 8),
-                                                child: Text(
-                                                  "Weekly Dashboard",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.w600),
+                                                    const EdgeInsets.all(8.0),
+                                                child: Center(
+                                                  child: Container(
+                                                    height: 6,
+                                                    width: 60,
+                                                    decoration: BoxDecoration(
+                                                        color: Get
+                                                            .theme.dividerColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(40)),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(16.0),
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                      child: _EarningsTile()),
-                                                  SizedBox(
-                                                    width: 16,
+                                              InkWell(
+                                                onTap: () {},
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(16.0)
+                                                          .copyWith(bottom: 8),
+                                                  child: Text(
+                                                    "Weekly Dashboard",
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w600),
                                                   ),
-                                                  Expanded(
-                                                      child:
-                                                          _TotalMinutesTile())
-                                                ],
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(16.0),
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                      child: _TotalUsersTile()),
-                                                  SizedBox(
-                                                    width: 16,
-                                                  ),
-                                                  Expanded(
-                                                      child:
-                                                          _TotalMinutesTile())
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(16.0),
-                                              child: Container(
-                                                height: 293,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                child: Row(
                                                   children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 16,
-                                                          vertical: 8),
-                                                      child: Text(
-                                                        "Weekly Earning Trend",
-                                                        style: TextStyle(
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
+                                                    Expanded(
+                                                        child: _EarningsTile(
+                                                      value: controller
+                                                              .glockerStats
+                                                              .value
+                                                              ?.totalAmount ??
+                                                          '0',
+                                                      percentage: (controller
+                                                                  .glockerStats
+                                                                  .value
+                                                                  ?.percentageAmountChange ??
+                                                              0)
+                                                          .toDouble(),
+                                                    )),
+                                                    SizedBox(
+                                                      width: 16,
                                                     ),
                                                     Expanded(
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Chart(),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              16.0),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Container(
-                                                              height: 2,
-                                                              width: 12,
-                                                              color: Colors
-                                                                  .orange),
-                                                          SizedBox(
-                                                            width: 4,
-                                                          ),
-                                                          Text("Earning"),
-                                                        ],
-                                                      ),
-                                                    )
+                                                        child:
+                                                            _TotalMinutesTile(
+                                                      value: controller
+                                                              .glockerStats
+                                                              .value
+                                                              ?.totalDuration ??
+                                                          '0',
+                                                      percentage: (controller
+                                                                  .glockerStats
+                                                                  .value
+                                                                  ?.percentageDurationChange ??
+                                                              0)
+                                                          .toDouble(),
+                                                    ))
                                                   ],
                                                 ),
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Get.theme
-                                                            .dividerColor),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12)),
                                               ),
-                                            )
-                                          ],
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                        child: _TotalUsersTile(
+                                                      value: controller
+                                                              .glockerStats
+                                                              .value
+                                                              ?.totalUser ??
+                                                          '0',
+                                                      percentage: (controller
+                                                                  .glockerStats
+                                                                  .value
+                                                                  ?.percentageUserChange ??
+                                                              0)
+                                                          .toDouble(),
+                                                    )),
+                                                    SizedBox(
+                                                      width: 16,
+                                                    ),
+                                                    Expanded(
+                                                        child:
+                                                            _TotalMinutesTile(
+                                                      value: controller
+                                                              .glockerStats
+                                                              .value
+                                                              ?.totalDuration ??
+                                                          '0',
+                                                      percentage: (controller
+                                                                  .glockerStats
+                                                                  .value
+                                                                  ?.percentageDurationChange ??
+                                                              0)
+                                                          .toDouble(),
+                                                    ))
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                child: Container(
+                                                  height: 293,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 16,
+                                                                vertical: 8),
+                                                        child: Text(
+                                                          "Weekly Earning Trend",
+                                                          style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Chart(),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(16.0),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Container(
+                                                                height: 2,
+                                                                width: 12,
+                                                                color: Colors
+                                                                    .orange),
+                                                            SizedBox(
+                                                              width: 4,
+                                                            ),
+                                                            Text("Earning"),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Get.theme
+                                                              .dividerColor),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12)),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ))
-                              ],
+                                      ],
+                                    ),
+                                  ))
+                                ],
+                              ),
                             ),
                           ),
                   ],
@@ -364,8 +408,11 @@ class GlockerHomeView extends GetView<EndUserHomeController> {
 class _EarningsTile extends StatelessWidget {
   const _EarningsTile({
     super.key,
+    required this.value,
+    required this.percentage,
   });
-
+  final String value;
+  final double percentage;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -384,11 +431,11 @@ class _EarningsTile extends StatelessWidget {
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                getCurrency(18500),
+                getCurrency(double.parse(value.trim())),
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
               ),
             ),
-            getPercentageDifference(11)
+            getPercentageDifference(percentage)
           ],
         ),
       ),
@@ -399,7 +446,11 @@ class _EarningsTile extends StatelessWidget {
 class _TotalUsersTile extends StatelessWidget {
   const _TotalUsersTile({
     super.key,
+    required this.value,
+    required this.percentage,
   });
+  final String value;
+  final double percentage;
 
   @override
   Widget build(BuildContext context) {
@@ -419,11 +470,11 @@ class _TotalUsersTile extends StatelessWidget {
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                "100",
+                "$value",
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
               ),
             ),
-            getPercentageDifference(-21)
+            getPercentageDifference(percentage)
           ],
         ),
       ),
@@ -434,8 +485,11 @@ class _TotalUsersTile extends StatelessWidget {
 class _TotalMinutesTile extends StatelessWidget {
   const _TotalMinutesTile({
     super.key,
+    required this.value,
+    required this.percentage,
   });
-
+  final String value;
+  final double percentage;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -454,11 +508,11 @@ class _TotalMinutesTile extends StatelessWidget {
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                "108",
+                "$value",
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
               ),
             ),
-            getPercentageDifference(-9)
+            getPercentageDifference(percentage)
           ],
         ),
       ),

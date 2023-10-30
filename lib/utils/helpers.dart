@@ -7,8 +7,17 @@ import 'package:glok/utils/meta_assets.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 
 List<String> pageTitleList = ["Movie Star", "TV Star", "Singer", "Influencer"];
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return newValue.copyWith(text: newValue.text.toUpperCase());
+  }
+}
 
 class CustomButton extends StatelessWidget {
   CustomButton(

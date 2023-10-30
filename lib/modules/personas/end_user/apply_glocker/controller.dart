@@ -126,6 +126,8 @@ class ApplyToGlockerController extends GetxController {
         profileImage: profileImage.value!,
         coverImage: coverImage.value!,
       );
+      pageController.nextPage(
+          duration: Duration(milliseconds: 100), curve: Curves.easeIn);
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;
@@ -170,6 +172,7 @@ class ApplyToGlockerController extends GetxController {
       isLoading.value = false;
       pageController.nextPage(
           duration: Duration(milliseconds: 100), curve: Curves.easeIn);
+      AuthController.to.getGlockerDetails();
     } catch (e) {
       isLoading.value = false;
       showSnackBar(message: "${e}");

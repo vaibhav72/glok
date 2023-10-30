@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:glok/data/models/agora_data_model.dart';
 import 'package:glok/data/models/bidlist_model.dart';
+import 'package:glok/data/models/stats_model.dart';
+import 'package:glok/data/repositories/glocker_repository.dart';
 import 'package:glok/data/repositories/user_repository.dart';
 import 'package:glok/modules/auth_module/controller.dart';
 
@@ -20,6 +22,8 @@ import 'end_user/video/view.dart';
 class PersonaController extends GetxController {
   static PersonaController get to => Get.find<PersonaController>();
   UserRepository userRepository = UserRepository();
+  GlockerRepository glockerRepository = GlockerRepository();
+  Rxn<GlockerStatsModel> glockerStats = Rxn();
   IO.Socket? socket;
   Rxn<List<BidListModel>> bidList = Rxn([]);
   Rxn<AgoraResponseModel> agoraResponse = Rxn();
@@ -82,13 +86,23 @@ class PersonaController extends GetxController {
 
   Rxn<bool> glockerMode = Rxn(false);
   updateGlockerMode(bool value) async {
-    glockerMode.value = value;
-    await userRepository.updateGlockerMode(value);
+    try {
+      await userRepository.updateGlockerMode(value);
+      glockerStats.value = await glockerRepository.getStats();
+      glockerMode.value = value;
+    } catch (e) {
+      showSnackBar(message: e.toString());
+    }
   }
 
   Rxn<bool> online = Rxn<bool>(false);
   changeStatus() async {
-    online.value = !online.value!;
+    try {
+      online.value = !online.value!;
+      online.value = await glockerRepository.updateonline();
+    } catch (e) {
+      showSnackBar(message: e.toString());
+    }
     await disconnect();
 
     if (online.value!) {
