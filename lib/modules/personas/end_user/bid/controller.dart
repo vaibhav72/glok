@@ -20,6 +20,13 @@ class UserBiddingController extends GetxController {
   GlockerRepository glockerRepository = GlockerRepository();
   PersonaController get personaController => PersonaController.to;
   Rxn<bool> loading = Rxn(false);
+  @override
+  void onClose() async {
+    priceController.dispose();
+    await glockerRepository.cancelBid(
+        AuthController.to.user.value!.id!, glocker.value!.id!);
+    super.onClose();
+  }
 
   showPrice() {
     Get.dialog(

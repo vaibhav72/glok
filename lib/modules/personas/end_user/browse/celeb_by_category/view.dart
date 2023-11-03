@@ -17,11 +17,43 @@ class CelebByCategoryView extends GetView<CelebByCategoryController> {
       appBar: AppBar(
         elevation: 1,
         actions: [
-          InkWell(
-              onTap: () {
-                controller.showFilters();
-              },
-              child: SvgPicture.asset(MetaAssets.filterIcon))
+          Obx(
+            () => Center(
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: InkWell(
+                        onTap: () {
+                          controller.showFilters();
+                        },
+                        child: SvgPicture.asset(
+                          MetaAssets.filterIcon,
+                          height: 24,
+                          width: 24,
+                          colorFilter: ColorFilter.mode(
+                              Get.theme.primaryColor, BlendMode.srcIn),
+                        )),
+                  ),
+                  if (controller.glockerListController.filtersCount != 0)
+                    Positioned(
+                        top: 0,
+                        right: 0,
+                        child: CircleAvatar(
+                            backgroundColor: Get.theme.primaryColor,
+                            radius: 8,
+                            child: Text(
+                              controller.glockerListController.filtersCount
+                                  .toString(),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600),
+                            )))
+                ],
+              ),
+            ),
+          )
         ],
         centerTitle: true,
         title: Text(

@@ -49,16 +49,20 @@ class UserDetailsView extends GetView<UserDetailsController> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                CircleAvatar(
-                                  radius: 60,
-                                  backgroundImage: controller.image.value !=
-                                          null
-                                      ? FileImage(
-                                          File(controller.image.value!.path))
-                                      : AssetImage(MetaAssets.dummyProfile)
-                                          as ImageProvider<Object>?,
-                                  backgroundColor: Get.theme.dividerColor,
-                                ),
+                                if (controller.image.value != null)
+                                  CircleAvatar(
+                                    radius: 60,
+                                    backgroundImage: FileImage(
+                                        File(controller.image.value!.path)),
+                                    backgroundColor: Get.theme.dividerColor,
+                                  )
+                                else
+                                  CircleAvatar(
+                                      radius: 60,
+                                      backgroundColor: Get.theme.dividerColor,
+                                      child: Center(
+                                          child: Image.asset(
+                                              MetaAssets.dummyProfile))),
                                 SizedBox(
                                   height: 16,
                                 ),
@@ -90,6 +94,12 @@ class UserDetailsView extends GetView<UserDetailsController> {
                                     ),
                                     TextFormField(
                                       controller: controller.nameController,
+                                      validator: (value) {
+                                        if (value!.length < 3) {
+                                          return "Please enter your name";
+                                        }
+                                        return null;
+                                      },
                                       decoration: formDecoration(
                                           "Name", "Enter your name"),
                                     ),

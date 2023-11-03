@@ -6,20 +6,19 @@ import 'package:glok/utils/meta_assets.dart';
 class WalkthroughController extends GetxController {
   static WalkthroughController get to => Get.find<WalkthroughController>();
   final AuthController authController = AuthController.to;
-  PageController pageController=PageController();
-  nextPage()
-  {
-    pageController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+  PageController pageController = PageController();
+  nextPage() {
+    pageController.nextPage(
+        duration: Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
-  skip(){
+  skip() {
     authController.setWalkthroughStatus(true);
- 
   }
 
   List<_WalkThroughObject> pages = [
     _WalkThroughObject(
-        title: "Welcome to Glockers",
+        title: "Welcome to Glockers!",
         description:
             "The ultimate app that brings you closer to your favorite celebrities. Book personalized video calls and connect with them like never before.",
         image: Stack(

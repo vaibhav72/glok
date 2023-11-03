@@ -84,8 +84,10 @@ class CustomButtonWithChild extends StatelessWidget {
   }
 }
 
-InputDecoration formDecoration(String label, String hintText) {
+InputDecoration formDecoration(String label, String hintText,
+    {Widget? suffix}) {
   return InputDecoration(
+    suffix: suffix,
     hintText: hintText,
     labelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
     // labelText: label,

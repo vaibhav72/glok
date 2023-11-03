@@ -11,6 +11,7 @@ import '../../../auth_module/controller.dart';
 class EndUserMoreController extends GetxController {
   Rxn<UserModel> get user => AuthController.to.user;
   UserRepository userRepository = UserRepository();
+  Rxn<bool> showAccountNumber = Rxn(false);
 
   /// User Profile
   ///

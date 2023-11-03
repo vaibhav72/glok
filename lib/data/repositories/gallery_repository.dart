@@ -7,8 +7,10 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
+import '../../utils/helpers.dart';
 import '../models/gallery_model.dart';
 import '../models/user_model.dart';
+import 'package:http_parser/http_parser.dart';
 
 class GalleryRepository {
   Future<String> getToken() async {
@@ -86,11 +88,16 @@ class GalleryRepository {
 
   Future<bool> uploadVideo(XFile file) async {
     try {
+      var fileExtension = getFileExtension(file.path);
+      if (fileExtension.isEmpty) {
+        throw "Invalid file extension";
+      }
       var headers = await getHeaders(isForm: true);
       String url = MetaStrings.baseUrl + MetaStrings.updateGalleryVideo;
       var request = http.MultipartRequest('POST', Uri.parse(url));
       request.headers.addAll(headers);
-      request.files.add(await http.MultipartFile.fromPath('vidoe', file.path));
+      request.files.add(await http.MultipartFile.fromPath('video', file.path,
+          contentType: MediaType('application', fileExtension.toLowerCase())));
       var response = await request.send();
       if (response.statusCode == 200) {
         return true;

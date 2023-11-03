@@ -286,13 +286,13 @@ class GlockerRepository {
     }
   }
 
-  Future<bool> cancelBid(int userId) async {
+  Future<bool> cancelBid(int userId, int glockerId) async {
     try {
       var headers = await getHeaders();
 
-      final response = await http.post(
+      final response = await http.patch(
           Uri.parse(MetaStrings.baseUrl + MetaStrings.cancelBid),
-          body: jsonEncode({"user_id": userId}),
+          body: jsonEncode({"user_id": userId, "glocker_id": glockerId}),
           headers: headers);
       if (response.statusCode == 200) {
         return true;
@@ -345,7 +345,7 @@ class GlockerRepository {
     try {
       var headers = await getHeaders();
       final response = await http.get(
-          Uri.parse(MetaStrings.baseUrl + MetaStrings.getVideoCall),
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.endCall),
           headers: headers);
       if (response.statusCode == 200) {
         return true;

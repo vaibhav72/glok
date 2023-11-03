@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../../utils/meta_colors.dart';
 import '../../celebrity/home/view.dart';
 import '../glocker_list_controller.dart';
+import '../home/view.dart';
 import 'controller.dart';
 
 class TrendingGlockersView extends GetView<TrendingGlockersController> {

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:glok/modules/personas/celebrity/my_glocker_profile/video_controller.dart';
 
 import 'package:video_player/video_player.dart';
 
@@ -8,13 +9,12 @@ import '../../../../utils/helpers.dart';
 import '../../end_user/apply_glocker/view.dart';
 import 'controller.dart';
 
-class VideoView extends GetView<MyGlockerProfileController> {
+class VideoView extends GetView<MyVideoViewController> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        controller.handleVideoBackButton();
-        return Future.value(false);
+        return Future.value(true);
       },
       child: Scaffold(
         body: Obx(
@@ -67,45 +67,53 @@ class VideoView extends GetView<MyGlockerProfileController> {
                             },
                           ),
                         )),
-                        if (controller.isUploadPreview.value!)
+                        if (controller
+                            .myGlockerProfileController.isUploadPreview.value!)
                           CustomButton(
                               title: "Upload",
                               onPressed: () {
-                                controller.uploadPhoto();
+                                controller.myGlockerProfileController
+                                    .uploadVideo();
                               })
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              controller.handleVideoBackButton();
-                            },
-                            child: CircleAvatar(
-                              backgroundColor: Colors.black12,
-                              child: Icon(
-                                Icons.arrow_back,
-                                color: Colors.white,
+                      padding: MediaQuery.of(context).padding,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: CircleAvatar(
+                                backgroundColor: Colors.black12,
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
-                          Spacer(),
-                          if (controller.isCurrentGlocker &&
-                              !controller.isUploadPreview.value!)
-                            InkWell(
-                                onTap: () {
-                                  controller.deleteGalleryItem();
-                                },
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.black12,
-                                  child: Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  ),
-                                )),
-                        ],
+                            Spacer(),
+                            if (controller.myGlockerProfileController
+                                    .isCurrentGlocker &&
+                                !controller.myGlockerProfileController
+                                    .isUploadPreview.value!)
+                              InkWell(
+                                  onTap: () {
+                                    controller.myGlockerProfileController
+                                        .deleteGalleryItem();
+                                  },
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.black12,
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                  )),
+                          ],
+                        ),
                       ),
                     ),
                   ],

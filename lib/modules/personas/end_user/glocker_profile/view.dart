@@ -343,7 +343,7 @@ class GlockerProfileView extends GetView<GlockerProfileController> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(controller.glocker?.value?.aboutMe ?? ''),
+                    Obx(() => Text(controller.glocker?.value?.aboutMe ?? '')),
                     SizedBox(
                       height: 10,
                     ),
@@ -418,35 +418,37 @@ class GlockerProfileView extends GetView<GlockerProfileController> {
                 ),
               ),
             ),
-            Container(
-              child: GridView.count(
-                crossAxisCount: 3,
-                padding: EdgeInsets.all(3),
-                children: List.generate(
-                    controller.galleryVideos.value!.length,
-                    (index) => Padding(
-                          padding: const EdgeInsets.all(3.0),
-                          child: InkWell(
-                              onTap: () {
-                                controller.viewGalleryItem(
-                                    controller.galleryPhotos.value![index]!);
-                              },
-                              child: VTImageView(
-                                fit: BoxFit.cover,
-                                assetPlaceHolder: MetaAssets.dummyCeleb,
-                                videoUrl: controller
-                                        .galleryPhotos.value![index]!.file ??
-                                    '',
-                                errorBuilder: (context, error, stack) {
-                                  return Container(
-                                    color: Colors.green,
-                                    child: const Center(
-                                      child: Text("error loading Image"),
-                                    ),
-                                  );
+            Obx(
+              () => Container(
+                child: GridView.count(
+                  crossAxisCount: 3,
+                  padding: EdgeInsets.all(3),
+                  children: List.generate(
+                      controller.galleryVideos.value!.length,
+                      (index) => Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: InkWell(
+                                onTap: () {
+                                  controller.viewGalleryItem(
+                                      controller.galleryVideos.value![index]!);
                                 },
-                              )),
-                        )),
+                                child: VTImageView(
+                                  fit: BoxFit.cover,
+                                  assetPlaceHolder: MetaAssets.dummyCeleb,
+                                  videoUrl: controller
+                                          .galleryVideos.value![index]!.file ??
+                                      '',
+                                  errorBuilder: (context, error, stack) {
+                                    return Container(
+                                      color: Colors.green,
+                                      child: const Center(
+                                        child: Text("error loading Image"),
+                                      ),
+                                    );
+                                  },
+                                )),
+                          )),
+                ),
               ),
             ),
           ]),

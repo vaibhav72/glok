@@ -12,7 +12,7 @@ import '../../data/models/transaction_model.dart';
 class WalletController extends GetxController {
   static WalletController get to => Get.find<WalletController>();
   ScrollController scrollController = ScrollController();
-  List<double> prefilledTransactions = [500, 1000, 1500, 200];
+  List<double> prefilledTransactions = [500, 1000, 1500, 2000];
   AuthController authController = AuthController.to;
   TextEditingController addFundController = TextEditingController();
   TextEditingController withDrawFundController = TextEditingController();

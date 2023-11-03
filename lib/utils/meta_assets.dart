@@ -64,5 +64,7 @@ class MetaAssets {
 
   //rating
   static const String starFilled = 'assets/fill_star.svg';
-  static const String starUnfilled= 'assets/unfilled_star.svg';
+  static const String starUnfilled = 'assets/unfilled_star.svg';
+
+  static const String eyeIcon = 'assets/eye.svg';
 }

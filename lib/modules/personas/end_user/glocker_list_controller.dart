@@ -33,6 +33,15 @@ class GlockerListController extends GetxController {
   Rxn<double> maxPrice = Rxn(4999);
   Rxn<double> appliedMinPrice = Rxn(499);
   Rxn<double> appliedMaxPrice = Rxn(4999);
+  int get filtersCount {
+    int count = 0;
+    if (appliedShowOnline.value!) count++;
+    if (appliedSortBy.value != "") count++;
+    if (appliedMinPrice.value != null || appliedMaxPrice.value != null) count++;
+
+    return count;
+  }
+
   List<String> priceList = [
     "Below \u20b9 499",
     "\u20b9 999 - \u20b9 1999",
@@ -86,7 +95,7 @@ class GlockerListController extends GetxController {
   getGlockerList() async {
     try {
       currentFilterString.value =
-          "${currentCategory.value!.isNotEmpty ? 'category=${currentCategory.value}' : ''}${searching.value! ? '&search=${searchText.value}' : ''}${appliedSortBy.value != '' ? '&sortby=${appliedSortBy.value!.toLowerCase().trim()}' : ''}${appliedMinPrice.value != null && appliedMaxPrice.value != null ? "&minprice=${appliedMinPrice.value!.toInt()}&maxprice=${appliedMaxPrice.value!.toInt()}" : ''}";
+          "${currentCategory.value!.isNotEmpty ? 'category=${currentCategory.value}' : ''}${searching.value! ? '&search=${searchText.value}' : ''}${appliedSortBy.value != '' ? '&sortby=${appliedSortBy.value!.split(" ").join().toLowerCase().trim()}' : ''}${appliedMinPrice.value != null && appliedMaxPrice.value != null ? "&minprice=${appliedMinPrice.value!.toInt()}&maxprice=${appliedMaxPrice.value!.toInt()}" : ''}";
       currentGlockers.value = await glockerRepository.getGlockerList(
           filters: currentFilterString.value, index: 1);
       currentGlockers.refresh();
@@ -119,7 +128,7 @@ class GlockerListController extends GetxController {
     try {
       page.value = page.value! + 1;
       currentFilterString.value =
-          "${currentCategory.value!.isNotEmpty ? 'category=${currentCategory.value}' : ''}${searching.value! ? '&search=${searchText.value}' : ''}${appliedSortBy.value != '' ? '&sortby=${appliedSortBy.value!.toLowerCase()}' : ''} ${appliedMinPrice.value != null && appliedMaxPrice.value != null ? "&minprice=${appliedMinPrice.value}&maxprice=${appliedMaxPrice.value}" : ''}";
+          "${currentCategory.value!.isNotEmpty ? 'category=${currentCategory.value}' : ''}${searching.value! ? '&search=${searchText.value}' : ''}${appliedSortBy.value != '' ? '&sortby=${appliedSortBy.value!.splitMapJoin(" ").toLowerCase()}' : ''} ${appliedMinPrice.value != null && appliedMaxPrice.value != null ? "&minprice=${appliedMinPrice.value}&maxprice=${appliedMaxPrice.value}" : ''}";
       currentGlockers.addAll(await glockerRepository.getGlockerList(
           filters: currentFilterString.value, index: page.value));
       currentGlockers.refresh();

@@ -715,6 +715,8 @@ class _BankAccountWidget extends GetView<EndUserMoreController> {
                                       ),
                                     ),
                                     TextFormField(
+                                      obscureText:
+                                          !controller.showAccountNumber.value!,
                                       controller:
                                           controller.accountNumberController,
                                       validator: (value) {
@@ -732,7 +734,28 @@ class _BankAccountWidget extends GetView<EndUserMoreController> {
                                               signed: true, decimal: true),
                                       decoration: formDecoration(
                                           "Account Number",
-                                          "Enter Account Number"),
+                                          "Enter Account Number",
+                                          suffix: InkWell(
+                                            onTap: () {
+                                              controller
+                                                      .showAccountNumber.value =
+                                                  !controller
+                                                      .showAccountNumber.value!;
+                                            },
+                                            child: !controller
+                                                    .showAccountNumber.value!
+                                                ? SvgPicture.asset(
+                                                    MetaAssets.eyeIcon,
+                                                    colorFilter:
+                                                        ColorFilter.mode(
+                                                            Get.theme
+                                                                .primaryColor,
+                                                            BlendMode.srcIn),
+                                                  )
+                                                : SvgPicture.asset(
+                                                    MetaAssets.eyeIcon,
+                                                  ),
+                                          )),
                                     ),
                                   ],
                                 ),

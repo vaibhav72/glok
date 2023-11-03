@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 import 'package:glok/data/models/glocker_model.dart';
 import 'package:glok/data/repositories/gallery_repository.dart';
 import 'package:glok/modules/auth_module/controller.dart';
-import 'package:glok/modules/personas/end_user/glocker_profile/video_view.dart';
+import 'package:glok/modules/personas/celebrity/my_glocker_profile/video_view_binding.dart';
+
 import 'package:glok/modules/personas/end_user/glocker_list_controller.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +15,7 @@ import 'package:video_player/video_player.dart';
 import '../../../../data/models/gallery_model.dart';
 import '../../../../data/repositories/glocker_repository.dart';
 import 'photo_view.dart';
+import 'video_view.dart';
 
 class MyGlockerProfileController extends GetxController {
   static MyGlockerProfileController get to =>
@@ -131,6 +133,7 @@ class MyGlockerProfileController extends GetxController {
   }
 
   void initVideo() async {
+    loading.value = true;
     if (isUploadPreview.value!) {
       videoController = VideoPlayerController.file(
         File(selectedFile.value!.path),
@@ -142,6 +145,7 @@ class MyGlockerProfileController extends GetxController {
     }
 
     initializeVideoPlayerFuture = videoController.initialize();
+    loading.value = false;
   }
 
   getGallery() async {
@@ -170,8 +174,8 @@ class MyGlockerProfileController extends GetxController {
     if (isVideo) {
       selectedFile.value = await picker.pickVideo(source: source);
       isUploadPreview.value = true;
-      initVideo();
-      Get.to(() => VideoView());
+
+      Get.to(() => VideoView(), binding: MyVideoViewBinding());
     } else {
       selectedFile.value = await picker.pickImage(source: source);
       isUploadPreview.value = true;
@@ -225,6 +229,7 @@ class MyGlockerProfileController extends GetxController {
   void handleVideoBackButton() {
     refreshVideo();
     resetGalleryItem();
+    loading.value = false;
     Get.back();
   }
 
@@ -232,17 +237,20 @@ class MyGlockerProfileController extends GetxController {
     isUploadPreview.value = false;
     selectedFile.value = null;
     selectedGalleryItem.value = null;
+    loading.value = false;
   }
 
   void handlePhotoBackButton() {
     resetGalleryItem();
+
     Get.back();
   }
 
   viewGalleryItem(GalleryItem item) {
     selectedGalleryItem.value = item;
+    isUploadPreview.value = false;
     if (item.category == "video") {
-      Get.to(() => VideoView());
+      Get.to(() => VideoView(), binding: MyVideoViewBinding());
     } else {
       Get.to(() => PhotoView());
     }

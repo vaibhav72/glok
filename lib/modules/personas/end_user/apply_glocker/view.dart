@@ -19,6 +19,7 @@ class ApplyToGlockerView extends GetView<ApplyToGlockerController> {
     // TODO: implement build
     return Scaffold(
       body: PageView(
+        physics: NeverScrollableScrollPhysics(),
         controller: controller.pageController,
         children: [
           if (controller.glocker.value?.panNumber == null) ...[

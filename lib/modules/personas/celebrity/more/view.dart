@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:glok/controllers/bottom_navigation_controller.dart';
 import 'package:glok/modules/auth_module/controller.dart';
 import 'package:glok/modules/personas/controller.dart';
 import 'package:glok/modules/personas/end_user/apply_glocker/view.dart';
@@ -19,176 +20,182 @@ import 'controller.dart';
 class GlockerMoreView extends GetView<GlockerMoreController> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Column(children: [
-        Padding(
-          padding: MediaQuery.of(context).padding,
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Obx(
-              () => Container(
+    return WillPopScope(
+      onWillPop: () {
+        BottomNavigationController.to.changePage(0);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Column(children: [
+          Padding(
+            padding: MediaQuery.of(context).padding,
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Obx(
+                () => Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 16,
+                      ),
+                      PersonaSwapWidget(),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      CircleAvatar(
+                        radius: 44,
+                        backgroundImage: controller.user.value!.photo != null
+                            ? CachedNetworkImageProvider(
+                                controller.user.value!.photo!)
+                            : AssetImage(MetaAssets.dummyProfile)
+                                as ImageProvider,
+                      ),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Text(
+                        controller.user.value!.name!,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            color: Colors.white),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        controller.user.value!.mobileNumber!,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20))),
+              width: double.maxFinite,
+              child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      height: 16,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Container(
+                          height: 6,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Get.theme.dividerColor,
+                              borderRadius: BorderRadius.circular(40)),
+                        ),
+                      ),
                     ),
-                    PersonaSwapWidget(),
-                    SizedBox(
-                      height: 16,
+                    Padding(
+                      padding: const EdgeInsets.all(16.0).copyWith(bottom: 0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "ACCOUNT",
+                            style: TextStyle(
+                              color: MetaColors.tertiaryText,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    CircleAvatar(
-                      radius: 44,
-                      backgroundImage: controller.user.value!.photo != null
-                          ? CachedNetworkImageProvider(
-                              controller.user.value!.photo!)
-                          : AssetImage(MetaAssets.dummyProfile)
-                              as ImageProvider,
+                    _MoreTile(
+                      title: "My Profile",
+                      icon: MetaAssets.profileIconNew,
+                      onTap: () {
+                        controller.initProfileDetails();
+                        Get.to(_MyProfile());
+                      },
                     ),
-                    SizedBox(
-                      height: 12,
+                    Divider(),
+                    _MoreTile(
+                      title: "Bank Account",
+                      icon: MetaAssets.bankIcon,
+                      onTap: () {
+                        controller.initBankDetails();
+                        Get.bottomSheet(_BankAccountWidget(),
+                            isScrollControlled: true);
+                      },
                     ),
-                    Text(
-                      controller.user.value!.name!,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                          color: Colors.white),
+                    Divider(),
+                    _MoreTile(
+                      title: "Tax Information",
+                      icon: MetaAssets.taxIcon,
+                      onTap: () {
+                        Get.bottomSheet(_TaxInfoWidget(),
+                            isScrollControlled: true);
+                      },
                     ),
-                    SizedBox(
-                      height: 8,
+                    Divider(),
+                    _MoreTile(
+                      title: "Notification Preference",
+                      icon: MetaAssets.notificationIconNew,
+                      onTap: () {
+                        Get.bottomSheet(_NotificationPreference(),
+                            isScrollControlled: true);
+                      },
                     ),
-                    Text(
-                      controller.user.value!.mobileNumber!,
-                      style: TextStyle(color: Colors.white),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0).copyWith(bottom: 0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "OTHER",
+                            style: TextStyle(
+                              color: MetaColors.tertiaryText,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    _MoreTile(
+                      title: "Invite to Glockers",
+                      icon: MetaAssets.inviteIcon,
+                      onTap: () {},
+                    ),
+                    Divider(),
+                    _MoreTile(
+                      title: "Terms and Conditions",
+                      icon: MetaAssets.documentIcon,
+                      onTap: () {
+                        Get.bottomSheet(_TermsAndConditions(),
+                            isScrollControlled: true);
+                      },
+                    ),
+                    Divider(),
+                    _MoreTile(
+                      title: "Privacy Policy",
+                      icon: MetaAssets.documentIcon,
+                      onTap: () {},
+                    ),
+                    Divider(),
+                    _MoreTile(
+                      title: "Log Out",
+                      icon: MetaAssets.logout,
+                      onTap: () {
+                        PersonaController.to.updateGlockerMode(false);
+                        AuthController.to.handleLogout();
+                      },
                     ),
                   ],
                 ),
               ),
             ),
           ),
-        ),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20))),
-            width: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: Container(
-                        height: 6,
-                        width: 60,
-                        decoration: BoxDecoration(
-                            color: Get.theme.dividerColor,
-                            borderRadius: BorderRadius.circular(40)),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0).copyWith(bottom: 0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "ACCOUNT",
-                          style: TextStyle(
-                            color: MetaColors.tertiaryText,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  _MoreTile(
-                    title: "My Profile",
-                    icon: MetaAssets.profileIconNew,
-                    onTap: () {
-                      controller.initProfileDetails();
-                      Get.to(_MyProfile());
-                    },
-                  ),
-                  Divider(),
-                  _MoreTile(
-                    title: "Bank Account",
-                    icon: MetaAssets.bankIcon,
-                    onTap: () {
-                      controller.initBankDetails();
-                      Get.bottomSheet(_BankAccountWidget(),
-                          isScrollControlled: true);
-                    },
-                  ),
-                  Divider(),
-                  _MoreTile(
-                    title: "Tax Information",
-                    icon: MetaAssets.taxIcon,
-                    onTap: () {
-                      Get.bottomSheet(_TaxInfoWidget(),
-                          isScrollControlled: true);
-                    },
-                  ),
-                  Divider(),
-                  _MoreTile(
-                    title: "Notification Preference",
-                    icon: MetaAssets.notificationIconNew,
-                    onTap: () {
-                      Get.bottomSheet(_NotificationPreference(),
-                          isScrollControlled: true);
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0).copyWith(bottom: 0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "OTHER",
-                          style: TextStyle(
-                            color: MetaColors.tertiaryText,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  _MoreTile(
-                    title: "Invite to Glockers",
-                    icon: MetaAssets.inviteIcon,
-                    onTap: () {},
-                  ),
-                  Divider(),
-                  _MoreTile(
-                    title: "Terms and Conditions",
-                    icon: MetaAssets.documentIcon,
-                    onTap: () {
-                      Get.bottomSheet(_TermsAndConditions(),
-                          isScrollControlled: true);
-                    },
-                  ),
-                  Divider(),
-                  _MoreTile(
-                    title: "Privacy Policy",
-                    icon: MetaAssets.documentIcon,
-                    onTap: () {},
-                  ),
-                  Divider(),
-                  _MoreTile(
-                    title: "Log Out",
-                    icon: MetaAssets.logout,
-                    onTap: () {
-                      PersonaController.to.updateGlockerMode(false);
-                      AuthController.to.handleLogout();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }
@@ -602,7 +609,9 @@ class _BankAccountWidget extends GetView<GlockerMoreController> {
                                         return null;
                                       },
                                       decoration: formDecoration(
-                                          "Name", "Enter your name"),
+                                        "Name",
+                                        "Enter your name",
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -622,6 +631,8 @@ class _BankAccountWidget extends GetView<GlockerMoreController> {
                                       ),
                                     ),
                                     TextFormField(
+                                      obscureText:
+                                          !controller.showAccountNumber.value!,
                                       controller:
                                           controller.accountNumberController,
                                       validator: (value) {
@@ -639,7 +650,28 @@ class _BankAccountWidget extends GetView<GlockerMoreController> {
                                               signed: true, decimal: true),
                                       decoration: formDecoration(
                                           "Account Number",
-                                          "Enter Account Number"),
+                                          "Enter Account Number",
+                                          suffix: InkWell(
+                                            onTap: () {
+                                              controller
+                                                      .showAccountNumber.value =
+                                                  !controller
+                                                      .showAccountNumber.value!;
+                                            },
+                                            child: !controller
+                                                    .showAccountNumber.value!
+                                                ? SvgPicture.asset(
+                                                    MetaAssets.eyeIcon,
+                                                    colorFilter:
+                                                        ColorFilter.mode(
+                                                            Get.theme
+                                                                .primaryColor,
+                                                            BlendMode.srcIn),
+                                                  )
+                                                : SvgPicture.asset(
+                                                    MetaAssets.eyeIcon,
+                                                  ),
+                                          )),
                                     ),
                                   ],
                                 ),
@@ -875,7 +907,7 @@ class _TaxInfoWidget extends GetView<GlockerMoreController> {
                                   TextFormField(
                                     readOnly: true,
                                     initialValue:
-                                        controller.glocker.value?.panNumber ??
+                                        controller.glocker.value?.gstinNumber ??
                                             '',
                                     decoration: formDecoration(
                                         "GSTIN Number", "Enter GSTIN number"),

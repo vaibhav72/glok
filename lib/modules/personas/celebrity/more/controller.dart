@@ -13,6 +13,7 @@ class GlockerMoreController extends GetxController {
   Rxn<UserModel> get user => AuthController.to.user;
   UserRepository userRepository = UserRepository();
   Rxn<GlockerModel> get glocker => AuthController.to.glocker;
+  Rxn<bool> showAccountNumber = Rxn(false);
 
   /// User Profile
   ///

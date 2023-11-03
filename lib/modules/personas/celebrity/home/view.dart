@@ -126,7 +126,7 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                                     AuthController
                                         .to.glocker.value!.profilePhoto!),
                               )),
-                          label: "Glok"),
+                          label: "Gloker"),
                       BottomNavigationBarItem(
                           icon: SizedBox(
                             height: 24,
@@ -251,11 +251,12 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                                                   children: [
                                                     Expanded(
                                                         child: _EarningsTile(
-                                                      value: controller
-                                                              .glockerStats
-                                                              .value
-                                                              ?.totalAmount ??
-                                                          '0',
+                                                      value: (controller
+                                                                  .glockerStats
+                                                                  .value
+                                                                  ?.totalAmount ??
+                                                              0)
+                                                          .toString(),
                                                       percentage: (controller
                                                                   .glockerStats
                                                                   .value
@@ -269,11 +270,12 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                                                     Expanded(
                                                         child:
                                                             _TotalMinutesTile(
-                                                      value: controller
-                                                              .glockerStats
-                                                              .value
-                                                              ?.totalDuration ??
-                                                          '0',
+                                                      value: (controller
+                                                                  .glockerStats
+                                                                  .value
+                                                                  ?.totalDuration ??
+                                                              0)
+                                                          .toString(),
                                                       percentage: (controller
                                                                   .glockerStats
                                                                   .value
@@ -291,11 +293,12 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                                                   children: [
                                                     Expanded(
                                                         child: _TotalUsersTile(
-                                                      value: controller
-                                                              .glockerStats
-                                                              .value
-                                                              ?.totalUser ??
-                                                          '0',
+                                                      value: (controller
+                                                                  .glockerStats
+                                                                  .value
+                                                                  ?.totalUser ??
+                                                              0)
+                                                          .toString(),
                                                       percentage: (controller
                                                                   .glockerStats
                                                                   .value
@@ -309,11 +312,12 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                                                     Expanded(
                                                         child:
                                                             _TotalMinutesTile(
-                                                      value: controller
-                                                              .glockerStats
-                                                              .value
-                                                              ?.totalDuration ??
-                                                          '0',
+                                                      value: (controller
+                                                                  .glockerStats
+                                                                  .value
+                                                                  ?.totalDuration ??
+                                                              0)
+                                                          .toString(),
                                                       percentage: (controller
                                                                   .glockerStats
                                                                   .value
@@ -363,7 +367,7 @@ class GlockerHomeView extends GetView<GlockerHomeController> {
                                                           child: Padding(
                                                             padding:
                                                                 const EdgeInsets
-                                                                    .all(8.0),
+                                                                    .all(16.0),
                                                             child: Chart(
                                                               stats: controller
                                                                   .glockerStats
@@ -526,140 +530,6 @@ class _TotalMinutesTile extends StatelessWidget {
             ),
             getPercentageDifference(percentage)
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class GlockerTile extends GetView<GlockerListController> {
-  GlockerTile({super.key, required this.data, required this.resfreshEnum})
-      : glockerModel = Rxn(data);
-  GlockerModel data;
-  RefreshEnum resfreshEnum;
-  void Function()? handler;
-  Rxn<GlockerModel> glockerModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: handler ??
-          () {
-            GlockerListController.to.viewGlocker(data);
-          },
-      child: Obx(
-        () => Padding(
-          padding: const EdgeInsets.only(right: 16),
-          child: Container(
-            width: 160,
-            height: 234,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        MetaAssets.dummyCeleb,
-                        fit: BoxFit.fill,
-                        width: double.maxFinite,
-                        height: double.maxFinite,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: InkWell(
-                        onTap: () {
-                          if (glockerModel.value?.isFavourite ?? false) {
-                            glockerModel.value!.isFavourite = false;
-                          } else {
-                            glockerModel.value!.isFavourite = true;
-                          }
-                          glockerModel.refresh();
-                          GlockerListController.to
-                              .handleFavourite(data, resfreshEnum);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CircleAvatar(
-                            radius: 12,
-                            backgroundColor: Colors.black12,
-                            child: (glockerModel.value?.isFavourite ?? false)
-                                ? SvgPicture.asset(
-                                    MetaAssets.likeOutlineIcon,
-                                    colorFilter: const ColorFilter.mode(
-                                        Colors.green, BlendMode.srcIn),
-                                  )
-                                : SvgPicture.asset(MetaAssets.likeOutlineIcon),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(48),
-                              color: Colors.black.withOpacity(0.6)),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 3, horizontal: 8),
-                            child: RichText(
-                              text: TextSpan(
-                                  text: "\u20b9",
-                                  style: GoogleFonts.inter(
-                                      fontSize: 12,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600),
-                                  children: [
-                                    TextSpan(
-                                        text: " ${data.price}/min",
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 12,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500))
-                                  ]),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 6,
-              ),
-              Container(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        "${data.name}",
-                        style: Get.theme.textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: Get.theme.colorScheme.secondary),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  Text("${data.category}",
-                      style: GoogleFonts.newsreader(
-                          color: MetaColors.secondaryText,
-                          fontStyle: FontStyle.italic)),
-                ],
-              ))
-            ]),
-          ),
         ),
       ),
     );

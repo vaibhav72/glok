@@ -7,6 +7,7 @@ import 'package:glok/modules/auth_module/controller.dart';
 import 'package:glok/modules/personas/controller.dart';
 import 'package:glok/modules/personas/end_user/glocker_profile/video_view.dart';
 import 'package:glok/modules/personas/end_user/glocker_list_controller.dart';
+import 'package:glok/modules/personas/end_user/video/view.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
@@ -16,6 +17,7 @@ import '../../../../data/repositories/glocker_repository.dart';
 import '../bid/binding.dart';
 import '../bid/view.dart';
 import 'photo_view.dart';
+import 'video_view_binding.dart';
 
 class GlockerProfileController extends GetxController {
   static GlockerProfileController get to =>
@@ -202,15 +204,17 @@ class GlockerProfileController extends GetxController {
   viewGalleryItem(GalleryItem item) {
     selectedGalleryItem.value = item;
     if (item.category == "video") {
-      Get.to(() => VideoView());
+      initVideo();
+      Get.to(() => VideoView(), binding: UserVideoViewBinding());
     } else {
       Get.to(() => PhotoView());
     }
   }
 
   @override
-  void onClose() {
+  void onClose() async {
     super.onClose();
+
     personaController.disconnect();
   }
 }
