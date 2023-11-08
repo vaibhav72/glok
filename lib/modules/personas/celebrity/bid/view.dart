@@ -129,32 +129,39 @@ class GlockerBiddingView extends GetView<GlockerBiddingController> {
                                   Row(
                                     children: [
                                       Expanded(
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(80),
-                                              color:
-                                                  MetaColors.transactionFailed),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 14),
-                                            child: Center(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                      MetaAssets.endCall),
-                                                  SizedBox(
-                                                    width: 8,
-                                                  ),
-                                                  Text(
-                                                    'Reject',
-                                                    style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white),
-                                                  )
-                                                ],
+                                        child: InkWell(
+                                          onTap: () {
+                                            controller.rejectCall(controller
+                                                .bidList.value!.first.userId!);
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(80),
+                                                color: MetaColors
+                                                    .transactionFailed),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 14),
+                                              child: Center(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                        MetaAssets.endCall),
+                                                    SizedBox(
+                                                      width: 8,
+                                                    ),
+                                                    Text(
+                                                      'Reject',
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Colors.white),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -267,13 +274,18 @@ class _BidWidgetTile extends StatelessWidget {
           ),
           Row(
             children: [
-              CircleAvatar(
-                radius: 16,
-                backgroundColor: MetaColors.transactionFailed,
-                child: SvgPicture.asset(
-                  MetaAssets.endCall,
-                  height: 18,
-                  width: 18,
+              InkWell(
+                onTap: () {
+                  GlockerBiddingController.to.rejectCall(data.userId!);
+                },
+                child: CircleAvatar(
+                  radius: 16,
+                  backgroundColor: MetaColors.transactionFailed,
+                  child: SvgPicture.asset(
+                    MetaAssets.endCall,
+                    height: 18,
+                    width: 18,
+                  ),
                 ),
               ),
               SizedBox(

@@ -23,4 +23,12 @@ class GlockerBiddingController extends GetxController {
       showSnackBar(message: e.toString());
     }
   }
+
+  rejectCall(int userId) async {
+    try {
+      await glockerRepository.cancelBid(userId, glocker.value!.id!);
+    } catch (e) {
+      showSnackBar(message: e.toString());
+    }
+  }
 }

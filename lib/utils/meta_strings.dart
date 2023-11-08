@@ -68,6 +68,7 @@ class MetaStrings {
 
   //video call
   static const String getVideoCall = '/videocall';
+  static const String startCall = '/videocall/connect';
 
   static const String endCall = '/videocall/disconnect';
   static const String getAgoraToken = '/agora/token';

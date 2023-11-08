@@ -12,6 +12,7 @@ import 'package:glok/utils/helpers.dart';
 
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
+import '../../data/models/user_model.dart';
 import 'celebrity/bid/binding.dart';
 import 'celebrity/bid/view.dart';
 import 'celebrity/video/binding.dart';
@@ -27,6 +28,7 @@ class PersonaController extends GetxController {
   IO.Socket? socket;
   Rxn<List<BidListModel>> bidList = Rxn([]);
   Rxn<AgoraResponseModel> agoraResponse = Rxn();
+  UserModel get user => AuthController.to.user.value!;
 
   init() async {
     socket = await userRepository.getSocket();
@@ -38,7 +40,6 @@ class PersonaController extends GetxController {
     socket!.onAny((event, data) => log("onAny $event $data"));
     socket!.onDisconnect((_) {
       log("disconnected");
-      // showSnackBar(message: "disconnected", isError: true);
     });
     socket!.on('agora_token', (data) {
       agoraResponse.value = AgoraResponseModel.fromJson(data);
@@ -79,6 +80,13 @@ class PersonaController extends GetxController {
       if (glockerMode.value! && online.value! && bidList.value!.isNotEmpty) {
         Get.to(() => GlockerBiddingView(), binding: GlockerBiddingBinding());
       } else {
+        if (!glockerMode.value! &&
+            ((bidList.value?.isEmpty ?? true) ||
+                bidList.value?.firstWhereOrNull(
+                        (element) => element.userId == user.id) ==
+                    null)) {
+          Get.back();
+        }
         // Get.to(() => UserBiddingView(), binding: UserBiddingBinding());
       }
     });

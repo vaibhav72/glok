@@ -328,7 +328,7 @@ class GlockerRepository {
     try {
       var headers = await getHeaders();
       final response = await http.post(
-          Uri.parse(MetaStrings.baseUrl + MetaStrings.getVideoCall),
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.startCall),
           body: jsonEncode({"caller_id": callerId}),
           headers: headers);
       if (response.statusCode == 200) {
