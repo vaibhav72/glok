@@ -39,7 +39,7 @@ class MyGlockerProfileView extends GetView<MyGlockerProfileController> {
                               child: CachedNetworkImage(
                                 imageUrl:
                                     controller.glocker?.value?.coverPhoto ?? '',
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                                 width: double.maxFinite,
                               ),
                             ),

@@ -260,7 +260,7 @@ class CreditTile extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 DateFormat('MMM dd,yyyy hh:mm a')
-                                    .format(transaction.createdAt!),
+                                    .format(transaction.createdAt!.toLocal()),
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: MetaColors.subTextColor),
@@ -268,7 +268,7 @@ class CreditTile extends StatelessWidget {
                             ),
                             Text(
                               DateFormat('hh:mm a')
-                                  .format(transaction.createdAt!),
+                                  .format(transaction.createdAt!.toLocal()),
                               style: TextStyle(
                                   fontSize: 12, color: MetaColors.subTextColor),
                             ),
@@ -340,7 +340,7 @@ class DebitTile extends StatelessWidget {
                             Expanded(
                               child: Text(
                                 DateFormat('MMM dd,yyyy hh:mm a')
-                                    .format(transaction.createdAt!),
+                                    .format(transaction.createdAt!.toLocal()),
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: MetaColors.subTextColor),
@@ -348,7 +348,7 @@ class DebitTile extends StatelessWidget {
                             ),
                             Text(
                               DateFormat('hh:mm a')
-                                  .format(transaction.createdAt!),
+                                  .format(transaction.createdAt!.toLocal()),
                               style: TextStyle(
                                   fontSize: 12, color: MetaColors.subTextColor),
                             ),

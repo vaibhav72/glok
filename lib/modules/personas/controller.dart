@@ -65,6 +65,15 @@ class PersonaController extends GetxController {
       }
     });
     socket!.on('bid_list', (data) {
+      if (glockerMode.value! &&
+          online.value! &&
+          (data as List)
+              .map((e) => BidListModel.fromJson(e))
+              .toList()
+              .isEmpty &&
+          (bidList.value?.isNotEmpty ?? false)) {
+        Get.back();
+      }
       bidList.value =
           (data as List).map((e) => BidListModel.fromJson(e)).toList();
       if (glockerMode.value! && online.value! && bidList.value!.isNotEmpty) {

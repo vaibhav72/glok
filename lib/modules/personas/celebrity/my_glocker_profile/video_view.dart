@@ -18,7 +18,7 @@ class VideoView extends GetView<MyVideoViewController> {
       },
       child: Scaffold(
         body: Obx(
-          () => controller.loading.value!
+          () => controller.myGlockerProfileController.loading.value!
               ? Center(
                   child: Loader(),
                 )

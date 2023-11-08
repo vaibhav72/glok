@@ -16,193 +16,204 @@ class GlockerBiddingView extends GetView<GlockerBiddingController> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Obx(
-      () => Stack(
-        children: [
-          CachedNetworkImage(
-              height: double.maxFinite,
-              width: double.maxFinite,
-              fit: BoxFit.cover,
-              imageUrl: controller.bidList.value?.first.profilePhoto ?? ''),
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: Container(
-                child: Column(
-                  children: [
-                    Expanded(
+      () => (controller.bidList.value?.isEmpty ?? false)
+          ? Center(
+              child: Text(""),
+            )
+          : Stack(
+              children: [
+                CachedNetworkImage(
+                    height: double.maxFinite,
+                    width: double.maxFinite,
+                    fit: BoxFit.cover,
+                    imageUrl:
+                        controller.bidList.value?.first.profilePhoto ?? ''),
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                  child: Scaffold(
+                    backgroundColor: Colors.transparent,
+                    body: Container(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            "${controller.bidList.value?.first.userName ?? ''}",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w600),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "${controller.bidList.value?.first.userName ?? ''}",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600),
+                                )
+                              ],
+                            ),
+                          ),
+                          Obx(
+                            () => Visibility(
+                              visible: controller.showQueue.value ?? false,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(16),
+                                        topRight: Radius.circular(16))),
+                                constraints: BoxConstraints(
+                                    maxHeight: Get.size.height * .5),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "${controller.bidList.value?.length} are in queue",
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ),
+                                          InkWell(
+                                              onTap: () {
+                                                controller.showQueue.value =
+                                                    false;
+                                              },
+                                              child: SvgPicture.asset(
+                                                  MetaAssets.closeQueue))
+                                        ],
+                                      ),
+                                      Divider(),
+                                      Expanded(
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            children: controller.bidList.value!
+                                                .map((e) =>
+                                                    _BidWidgetTile(data: e))
+                                                .toList(),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 20),
+                              child: Column(
+                                children: [
+                                  if (controller.bidList.value?.isNotEmpty ??
+                                      false)
+                                    InkWell(
+                                      onTap: () {
+                                        controller.showQueue.value = true;
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                                vertical: 15)
+                                            .copyWith(top: 0),
+                                        child: Text(
+                                          "View Queue (${controller.bidList.value?.length})",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Get.theme.primaryColor),
+                                        ),
+                                      ),
+                                    ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(80),
+                                              color:
+                                                  MetaColors.transactionFailed),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 14),
+                                            child: Center(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                      MetaAssets.endCall),
+                                                  SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Text(
+                                                    'Reject',
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: Colors.white),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () {
+                                            controller.acceptCall(controller
+                                                .bidList.value!.first);
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(80),
+                                                color: MetaColors.primary),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 14),
+                                              child: Center(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                        MetaAssets.acceptCall),
+                                                    SizedBox(
+                                                      width: 8,
+                                                    ),
+                                                    Text(
+                                                      'Accept',
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Colors.white),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           )
                         ],
                       ),
                     ),
-                    Obx(
-                      () => Visibility(
-                        visible: controller.showQueue.value ?? false,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(16),
-                                  topRight: Radius.circular(16))),
-                          constraints:
-                              BoxConstraints(maxHeight: Get.size.height * .5),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        "${controller.bidList.value?.length} are in queue",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                    InkWell(
-                                        onTap: () {
-                                          controller.showQueue.value = false;
-                                        },
-                                        child: SvgPicture.asset(
-                                            MetaAssets.closeQueue))
-                                  ],
-                                ),
-                                Divider(),
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: controller.bidList.value!
-                                          .map((e) => _BidWidgetTile(data: e))
-                                          .toList(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 20),
-                        child: Column(
-                          children: [
-                            if (controller.bidList.value?.isNotEmpty ?? false)
-                              InkWell(
-                                onTap: () {
-                                  controller.showQueue.value = true;
-                                },
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 15)
-                                          .copyWith(top: 0),
-                                  child: Text(
-                                    "View Queue (${controller.bidList.value?.length})",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: Get.theme.primaryColor),
-                                  ),
-                                ),
-                              ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(80),
-                                        color: MetaColors.transactionFailed),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 14),
-                                      child: Center(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SvgPicture.asset(
-                                                MetaAssets.endCall),
-                                            SizedBox(
-                                              width: 8,
-                                            ),
-                                            Text(
-                                              'Reject',
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.white),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      controller.acceptCall(
-                                          controller.bidList.value!.first);
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(80),
-                                          color: MetaColors.primary),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 14),
-                                        child: Center(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SvgPicture.asset(
-                                                  MetaAssets.acceptCall),
-                                              SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text(
-                                                'Accept',
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.white),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

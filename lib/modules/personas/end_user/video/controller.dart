@@ -116,8 +116,8 @@ class UserVideoCallController extends GetxController {
   }
 
   void muteAudio() {
-    engine?.muteLocalAudioStream(isMuted.value!);
     isMuted.value = !isMuted.value!;
+    engine?.muteLocalAudioStream(isMuted.value!);
   }
 
   void endCall() async {
