@@ -7,7 +7,7 @@ import '../glocker_list_controller.dart';
 import '../home/view.dart';
 import 'controller.dart';
 
-class TrendingGlockersView extends GetView<TrendingGlockersController> {
+class FavoriteGlockersView extends GetView<FavoriteGlockersController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +17,7 @@ class TrendingGlockersView extends GetView<TrendingGlockersController> {
         actions: [],
         centerTitle: true,
         title: Text(
-          "Trending Glockers",
+          "Favorite Glockers",
           style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
@@ -39,11 +39,11 @@ class TrendingGlockersView extends GetView<TrendingGlockersController> {
                     )
                   : RefreshIndicator(
                       onRefresh: () async {
-                        await controller.getTrendingGlockers();
+                        await controller.getFavoriteGlockers();
                       },
                       child: GridView.builder(
                           controller: controller.scrollController,
-                          itemCount: controller.trendingGlockers.value!.length,
+                          itemCount: controller.favoriteGlockers.value!.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   mainAxisSpacing: 10,
@@ -52,7 +52,7 @@ class TrendingGlockersView extends GetView<TrendingGlockersController> {
                                   crossAxisCount: 2),
                           itemBuilder: ((context, index) {
                             return GlockerTile(
-                                data: controller.trendingGlockers.value![index],
+                                data: controller.favoriteGlockers.value![index],
                                 resfreshEnum:
                                     RefreshEnum.refreshTrendingGlockers);
                           })),

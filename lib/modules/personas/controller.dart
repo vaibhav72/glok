@@ -59,6 +59,7 @@ class PersonaController extends GetxController {
                 userId: agoraResponse.value!.userId!,
               ));
         } else {
+          bidList.value = [];
           Get.back();
           Get.back();
           showSnackBar(message: "Sorry You bid was not accepted");
@@ -73,18 +74,32 @@ class PersonaController extends GetxController {
               .toList()
               .isEmpty &&
           (bidList.value?.isNotEmpty ?? false)) {
+        bidList.value = [];
         Get.back();
+        return;
       }
+      if (!glockerMode.value! &&
+          ((data as List)
+                  .map((e) => BidListModel.fromJson(e))
+                  .toList()
+                  .isEmpty &&
+              ((bidList.value?.isNotEmpty ?? false)))) {
+        bidList.value = [];
+        Get.back();
+        Get.back();
+        return;
+      }
+
       bidList.value =
           (data as List).map((e) => BidListModel.fromJson(e)).toList();
       if (glockerMode.value! && online.value! && bidList.value!.isNotEmpty) {
         Get.to(() => GlockerBiddingView(), binding: GlockerBiddingBinding());
       } else {
-        if (!glockerMode.value! &&
-            ((bidList.value?.isEmpty ?? true) ||
-                bidList.value?.firstWhereOrNull(
-                        (element) => element.userId == user.id) ==
-                    null)) {
+        if ((bidList.value?.isNotEmpty ?? false) &&
+            bidList.value?.firstWhereOrNull(
+                    (element) => element.userId == user.id) ==
+                null) {
+          bidList.value = [];
           Get.back();
         }
         // Get.to(() => UserBiddingView(), binding: UserBiddingBinding());

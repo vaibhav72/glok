@@ -21,7 +21,7 @@ class GlockerVideoCallController extends GetxController {
   int userId;
   GlockerVideoCallController(
       {required this.channel, required this.token, required this.userId});
-  late RtcEngine engine;
+  RtcEngine? engine;
   Rxn<int> remoteUid = Rxn<int>(null);
   Rxn<bool> loading = Rxn<bool>(false);
   Rxn<bool> isMuted = Rxn<bool>(false);
@@ -46,8 +46,11 @@ class GlockerVideoCallController extends GetxController {
   }
 
   Future<void> _dispose() async {
-    await engine.leaveChannel();
-    await engine.release();
+    if (engine != null) {
+      await engine?.leaveChannel();
+      await engine?.release();
+      engine = null;
+    }
   }
 
   void initAgora() async {
@@ -55,7 +58,7 @@ class GlockerVideoCallController extends GetxController {
     loading.value = true;
     //create the engine
     engine = createAgoraRtcEngine();
-    await engine.initialize(const RtcEngineContext(
+    await engine?.initialize(const RtcEngineContext(
       appId: MetaStrings.agoraAppid,
       channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
     ));
@@ -65,7 +68,7 @@ class GlockerVideoCallController extends GetxController {
   }
 
   registerHandlers() {
-    engine.registerEventHandler(
+    engine?.registerEventHandler(
       RtcEngineEventHandler(
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
           log("joined local");
@@ -80,10 +83,11 @@ class GlockerVideoCallController extends GetxController {
         onUserOffline: (RtcConnection connection, int remoteId,
             UserOfflineReasonType reason) {
           remoteUid.value = null;
+
           endCall();
         },
         onLeaveChannel: (connection, stats) {
-          endCall();
+          // endCall();
         },
         onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
           // _engine.renewToken(token);
@@ -93,12 +97,12 @@ class GlockerVideoCallController extends GetxController {
   }
 
   joinChannel() async {
-    await engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
-    await engine.enableVideo();
-    await engine.enableAudio();
-    await engine.startPreview();
+    await engine?.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
+    await engine?.enableVideo();
+    await engine?.enableAudio();
+    await engine?.startPreview();
     log("$channel $token $userId");
-    await engine.joinChannel(
+    await engine?.joinChannel(
       token: token,
       channelId: channel,
       uid: 0,
@@ -129,8 +133,10 @@ class GlockerVideoCallController extends GetxController {
   void endCall() async {
     try {
       await glockerRepository.endCallTrack();
-
+      _dispose();
       await Get.bottomSheet(_RatingWidget());
+      Get.back(closeOverlays: true);
+      Get.back();
     } catch (e) {
       showSnackBar(message: e.toString());
     }
@@ -146,11 +152,10 @@ class GlockerVideoCallController extends GetxController {
         fanUserId: userId,
       );
       isLoading.value = false;
-
       Get.back();
-      Get.back();
-      showSnackBar(message: "Rating Submitted", isError: false);
+      // showSnackBar(message: "Rating Submitted", isError: false);
     } catch (e) {
+      isLoading.value = false;
       showSnackBar(message: e.toString());
     }
   }
@@ -178,7 +183,6 @@ class _RatingWidget extends GetView<GlockerVideoCallController> {
                         children: [
                           InkWell(
                             onTap: () {
-                              Get.back();
                               Get.back();
                             },
                             child: Padding(
@@ -326,9 +330,6 @@ class _RatingWidget extends GetView<GlockerVideoCallController> {
                                       controller: controller.commentController,
                                       validator: (value) {},
                                       maxLines: 3,
-                                      keyboardType:
-                                          const TextInputType.numberWithOptions(
-                                              signed: true, decimal: true),
                                       decoration: formDecoration(
                                           "Comment", "Enter comment"),
                                     ),
@@ -342,7 +343,6 @@ class _RatingWidget extends GetView<GlockerVideoCallController> {
                                     Expanded(
                                       child: InkWell(
                                         onTap: () {
-                                          Get.back();
                                           Get.back();
                                         },
                                         child: Padding(

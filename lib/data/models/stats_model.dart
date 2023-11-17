@@ -58,12 +58,11 @@ class GlockerStatsModel {
       GlockerStatsModel(
         status: json["status"],
         totalAmount: json["total amount"],
-        percentageAmountChange: double.parse(json["percentage_amount_change"]),
+        percentageAmountChange: json["percentage_amount_change"],
         totalDuration: json["total_duration"],
-        percentageDurationChange:
-            double.parse(json["percentage_duration_change"]),
-        totalUser: json["total_user"],
-        percentageUserChange: double.parse(json["percentage_user_change"]),
+        percentageDurationChange: json["percentage_duration_change"],
+        totalUser: json['total_user'],
+        percentageUserChange: json["percentage_user_change"],
         stat: json["stat"] == null
             ? []
             : List<Stat>.from(json["stat"]!.map((x) => Stat.fromJson(x))),
@@ -102,7 +101,7 @@ class Stat {
       );
 
   factory Stat.fromJson(Map<String, dynamic> json) => Stat(
-        amount: double.parse(json["amount"] ?? '0'),
+        amount: json["amount"],
         date: json["date"] == null ? null : DateTime.parse(json["date"]),
       );
 

@@ -22,6 +22,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../utils/meta_strings.dart';
 import '../browse/celeb_by_category/binding.dart';
 import '../browse/celeb_by_category/view.dart';
+import '../favorite_glockers/binding.dart';
+import '../favorite_glockers/view.dart';
 import '../glocker_profile/view.dart';
 import '../trending_glockers/binding.dart';
 import '../trending_glockers/view.dart';
@@ -381,15 +383,25 @@ class EndUserHomeView extends GetView<EndUserHomeController> {
                                                             FontWeight.w600),
                                                   ),
                                                   Spacer(),
-                                                  Text(
-                                                    "View All",
-                                                    style: Get.theme.textTheme
-                                                        .bodyMedium
-                                                        ?.copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Get.theme
-                                                                .primaryColor),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      Get.to(
+                                                          () =>
+                                                              FavoriteGlockersView(),
+                                                          binding:
+                                                              FavoriteGlockersBinding());
+                                                    },
+                                                    child: Text(
+                                                      "View All",
+                                                      style: Get.theme.textTheme
+                                                          .bodyMedium
+                                                          ?.copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              color: Get.theme
+                                                                  .primaryColor),
+                                                    ),
                                                   )
                                                 ],
                                               ),

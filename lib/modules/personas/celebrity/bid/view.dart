@@ -131,8 +131,7 @@ class GlockerBiddingView extends GetView<GlockerBiddingController> {
                                       Expanded(
                                         child: InkWell(
                                           onTap: () {
-                                            controller.rejectCall(controller
-                                                .bidList.value!.first.userId!);
+                                            controller.rejectAllCall();
                                           },
                                           child: Container(
                                             decoration: BoxDecoration(

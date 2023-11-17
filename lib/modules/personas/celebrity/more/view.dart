@@ -45,17 +45,18 @@ class GlockerMoreView extends GetView<GlockerMoreController> {
                       ),
                       CircleAvatar(
                         radius: 44,
-                        backgroundImage: controller.user.value!.photo != null
-                            ? CachedNetworkImageProvider(
-                                controller.user.value!.photo!)
-                            : AssetImage(MetaAssets.dummyProfile)
-                                as ImageProvider,
+                        backgroundImage:
+                            controller.glocker.value!.profilePhoto != null
+                                ? CachedNetworkImageProvider(
+                                    controller.glocker.value!.profilePhoto!)
+                                : AssetImage(MetaAssets.dummyProfile)
+                                    as ImageProvider,
                       ),
                       SizedBox(
                         height: 12,
                       ),
                       Text(
-                        controller.user.value!.name!,
+                        controller.glocker.value!.name ?? '',
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 18,
@@ -180,15 +181,15 @@ class GlockerMoreView extends GetView<GlockerMoreController> {
                       icon: MetaAssets.documentIcon,
                       onTap: () {},
                     ),
-                    Divider(),
-                    _MoreTile(
-                      title: "Log Out",
-                      icon: MetaAssets.logout,
-                      onTap: () {
-                        PersonaController.to.updateGlockerMode(false);
-                        AuthController.to.handleLogout();
-                      },
-                    ),
+                    // Divider(),
+                    // _MoreTile(
+                    //   title: "Log Out",
+                    //   icon: MetaAssets.logout,
+                    //   onTap: () {
+                    //     PersonaController.to.updateGlockerMode(false);
+                    //     AuthController.to.handleLogout();
+                    //   },
+                    // ),
                   ],
                 ),
               ),

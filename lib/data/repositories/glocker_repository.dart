@@ -267,11 +267,10 @@ class GlockerRepository {
   Future<bool> createBid(int amount, int glockerId) async {
     try {
       var headers = await getHeaders();
-      print(headers);
-      print({"amount": amount, "glocker_id": glockerId});
+
       final response = await http.post(
           Uri.parse(MetaStrings.baseUrl + MetaStrings.bidNew),
-          body: jsonEncode({"amount": 4500, "glocker_id": glockerId}),
+          body: jsonEncode({"amount": amount, "glocker_id": glockerId}),
           headers: headers);
       if (response.statusCode == 200) {
         return true;
@@ -293,6 +292,26 @@ class GlockerRepository {
       final response = await http.patch(
           Uri.parse(MetaStrings.baseUrl + MetaStrings.cancelBid),
           body: jsonEncode({"user_id": userId, "glocker_id": glockerId}),
+          headers: headers);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse['error'] ??
+            parsedResponse['message'] ??
+            "Failed to create bid";
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> cancelAllBid() async {
+    try {
+      var headers = await getHeaders();
+
+      final response = await http.patch(
+          Uri.parse(MetaStrings.baseUrl + MetaStrings.cancelAllBid),
           headers: headers);
       if (response.statusCode == 200) {
         return true;
@@ -334,7 +353,10 @@ class GlockerRepository {
       if (response.statusCode == 200) {
         return true;
       } else {
-        throw Exception('Couldnt start call');
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse['error'] ??
+            parsedResponse['message'] ??
+            "Couldnt start call";
       }
     } catch (e) {
       rethrow;
@@ -350,7 +372,10 @@ class GlockerRepository {
       if (response.statusCode == 200) {
         return true;
       } else {
-        throw Exception('Couldnt end call');
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse['error'] ??
+            parsedResponse['message'] ??
+            "Couldnt end call";
       }
     } catch (e) {
       rethrow;
@@ -366,7 +391,10 @@ class GlockerRepository {
       if (response.statusCode == 200) {
         return glockerStatsModelFromJson(response.body);
       } else {
-        throw Exception('Couldnt end call');
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse['error'] ??
+            parsedResponse['message'] ??
+            "Couldnt get stats";
       }
     } catch (e) {
       rethrow;
@@ -382,7 +410,10 @@ class GlockerRepository {
       if (response.statusCode == 200) {
         return jsonDecode(response.body)['online'];
       } else {
-        throw Exception('Couldnt end call');
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse['error'] ??
+            parsedResponse['message'] ??
+            "Couldnt update status";
       }
     } catch (e) {
       rethrow;
@@ -406,10 +437,13 @@ class GlockerRepository {
           Uri.parse(MetaStrings.baseUrl + MetaStrings.updateGlockerRating),
           body: jsonEncode(params),
           headers: headers);
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         return true;
       } else {
-        throw Exception('Couldnt end call');
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse['error'] ??
+            parsedResponse['message'] ??
+            "Couldnt update rating";
       }
     } catch (e) {
       rethrow;
@@ -433,10 +467,13 @@ class GlockerRepository {
           Uri.parse(MetaStrings.baseUrl + MetaStrings.updateUserRating),
           body: jsonEncode(params),
           headers: headers);
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         return true;
       } else {
-        throw Exception('Couldnt end call');
+        var parsedResponse = jsonDecode(response.body);
+        throw parsedResponse['error'] ??
+            parsedResponse['message'] ??
+            "Couldnt update rating";
       }
     } catch (e) {
       rethrow;

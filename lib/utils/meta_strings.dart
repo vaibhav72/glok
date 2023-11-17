@@ -76,6 +76,7 @@ class MetaStrings {
   //bid
   static const String bidNew = '/bid/new';
   static const String cancelBid = '/bid/cancelbid';
+  static const String cancelAllBid = '/bid/cancelallbid';
   static const String bidList = '/bid/bidlist';
   static const String acceptCall = '/bid/acceptcall';
 }

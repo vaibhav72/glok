@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:glok/data/models/stats_model.dart';
 import 'package:glok/utils/meta_colors.dart';
 import 'package:intl/intl.dart';
@@ -32,11 +33,11 @@ class _ChartState extends State<Chart> {
           .format(DateTime.fromMillisecondsSinceEpoch(value.toInt())),
       style: style,
     );
+    if (widget.stats.stat?.firstWhereOrNull(
+            (element) => element.date?.millisecondsSinceEpoch == value) !=
+        null) return text;
 
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child: text,
-    );
+    return Text('');
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
@@ -47,8 +48,10 @@ class _ChartState extends State<Chart> {
     String text;
 
     text = '${value.toInt()}';
-
-    return Text(text, style: style, textAlign: TextAlign.left);
+    if (widget.stats.stat
+            ?.firstWhereOrNull((element) => element.amount == value) !=
+        null) return Text(text, style: style, textAlign: TextAlign.left);
+    return Text('');
   }
 
   LineChartData mainData() {
@@ -56,8 +59,6 @@ class _ChartState extends State<Chart> {
       gridData: FlGridData(
         show: true,
         drawVerticalLine: false,
-        horizontalInterval: 1,
-        verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
             color: MetaColors.dividerColor.withOpacity(0.4),
@@ -70,7 +71,6 @@ class _ChartState extends State<Chart> {
         rightTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            interval: 1,
             getTitlesWidget: leftTitleWidgets,
             reservedSize: 22,
           ),
@@ -82,7 +82,6 @@ class _ChartState extends State<Chart> {
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 30,
-            interval: 1,
             getTitlesWidget: bottomTitleWidgets,
           ),
         ),
@@ -94,21 +93,14 @@ class _ChartState extends State<Chart> {
         show: true,
         border: Border(bottom: BorderSide(color: MetaColors.dividerColor)),
       ),
-      minX: 0,
-      maxX: widget.stats.stat?.isNotEmpty ?? false
-          ? widget.stats.stat!.last.date!.millisecondsSinceEpoch.toDouble()
-          : 0.0,
+      minX: widget.stats.stat?.isNotEmpty ?? false ? getMinX() : 0.0,
+      maxX: widget.stats.stat?.isNotEmpty ?? false ? getMaxX() : 0.0,
       minY: 0,
-      maxY: widget.stats.stat?.isNotEmpty ?? false
-          ? widget.stats.stat!.last.amount!.toDouble()
-          : 0.0,
+      maxY: widget.stats.stat?.isNotEmpty ?? false ? getMaxY() : 0.0,
       lineBarsData: [
         LineChartBarData(
           color: Colors.orange,
-          spots: (widget.stats.stat ?? [])
-              .map((e) => FlSpot(e.date!.millisecondsSinceEpoch.toDouble(),
-                  e.amount!.toDouble()))
-              .toList(),
+          spots: getPoints(),
           isCurved: true,
           barWidth: 1,
           isStrokeCapRound: true,
@@ -121,5 +113,47 @@ class _ChartState extends State<Chart> {
         ),
       ],
     );
+  }
+
+  List<FlSpot> getPoints() {
+    List<FlSpot> data = (widget.stats.stat ?? [])
+        .map((e) => FlSpot(
+            e.date!.millisecondsSinceEpoch.toDouble(), e.amount!.toDouble()))
+        .toList();
+    return data;
+  }
+
+  double getMaxX() {
+    return widget.stats.stat!.last.date!.millisecondsSinceEpoch.toDouble();
+  }
+
+  double getMinX() {
+    return widget.stats.stat!.first.date!.millisecondsSinceEpoch.toDouble();
+  }
+
+  double getMaxY() {
+    Stat? model;
+    widget.stats.stat!.forEach((element) {
+      if (model == null) {
+        model = element;
+      }
+      if (element.amount! >= (model?.amount ?? 0)) {
+        model = element;
+      }
+    });
+    return model?.amount ?? 0;
+  }
+
+  double getMinY() {
+    Stat? model;
+    widget.stats.stat!.forEach((element) {
+      if (model == null) {
+        model = element;
+      }
+      if (element.amount! <= (model?.amount ?? 0)) {
+        model = element;
+      }
+    });
+    return model?.amount ?? 0;
   }
 }

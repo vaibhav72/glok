@@ -45,8 +45,11 @@ class UserVideoCallController extends GetxController {
   }
 
   Future<void> _dispose() async {
-    await engine?.leaveChannel();
-    await engine?.release();
+    if (engine != null) {
+      await engine?.leaveChannel();
+      await engine?.release();
+      engine = null;
+    }
   }
 
   void initAgora() async {
@@ -79,10 +82,10 @@ class UserVideoCallController extends GetxController {
         onUserOffline: (RtcConnection connection, int remoteId,
             UserOfflineReasonType reason) {
           remoteUid.value = null;
-          // endCall();
+          endCall();
         },
         onLeaveChannel: (connection, stats) {
-          endCall();
+          // endCall();
         },
         onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
           // _engine.renewToken(token);
@@ -123,7 +126,11 @@ class UserVideoCallController extends GetxController {
   void endCall() async {
     try {
       await glockerRepository.endCallTrack();
+      _dispose();
       await Get.bottomSheet(_RatingWidget());
+      Get.back(closeOverlays: true);
+      Get.back();
+      Get.back();
     } catch (e) {
       showSnackBar(message: e.toString());
     }
@@ -139,11 +146,11 @@ class UserVideoCallController extends GetxController {
         glockerId: GlockerListController.to.selectedGlocker.value!.id!,
       );
       isLoading.value = false;
-
+      PersonaController.to.bidList.value = [];
       Get.back();
-      Get.back();
-      showSnackBar(message: "Rating Submitted", isError: false);
+      // showSnackBar(message: "Rating Submitted", isError: false);
     } catch (e) {
+      isLoading.value = false;
       showSnackBar(message: e.toString());
     }
   }
@@ -171,7 +178,6 @@ class _RatingWidget extends GetView<UserVideoCallController> {
                         children: [
                           InkWell(
                             onTap: () {
-                              Get.back();
                               Get.back();
                             },
                             child: Padding(
@@ -319,9 +325,6 @@ class _RatingWidget extends GetView<UserVideoCallController> {
                                       controller: controller.commentController,
                                       validator: (value) {},
                                       maxLines: 3,
-                                      keyboardType:
-                                          const TextInputType.numberWithOptions(
-                                              signed: true, decimal: true),
                                       decoration: formDecoration(
                                           "Comment", "Enter comment"),
                                     ),

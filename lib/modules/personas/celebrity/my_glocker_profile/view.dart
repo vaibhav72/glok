@@ -38,7 +38,7 @@ class MyGlockerProfileView extends GetView<MyGlockerProfileController> {
                               height: Get.height * .35,
                               child: CachedNetworkImage(
                                 imageUrl:
-                                    controller.glocker?.value?.coverPhoto ?? '',
+                                    controller.glocker.value?.coverPhoto ?? '',
                                 fit: BoxFit.cover,
                                 width: double.maxFinite,
                               ),
@@ -110,7 +110,7 @@ class MyGlockerProfileView extends GetView<MyGlockerProfileController> {
                                                         CachedNetworkImageProvider(
                                                             controller
                                                                     .glocker
-                                                                    ?.value
+                                                                    .value
                                                                     ?.profilePhoto ??
                                                                 ''),
                                                   ),
