@@ -62,8 +62,24 @@ class PersonaController extends GetxController {
           bidList.value = [];
           Get.back();
           Get.back();
-          showSnackBar(message: "Sorry You bid was not accepted");
+          showSnackBar(message: "Sorry Your bid was not accepted");
         }
+      }
+    });
+    socket!.on('rejected', (data) {
+      if (!glockerMode.value! && data == AuthController.to.user.value!.id) {
+        bidList.value = [];
+        Get.back();
+        Get.back();
+        showSnackBar(message: "Sorry Your bid was not accepted");
+      }
+    });
+    socket!.on('rejected_all', (data) {
+      if (!glockerMode.value!) {
+        bidList.value = [];
+        Get.back();
+        Get.back();
+        showSnackBar(message: data.toString());
       }
     });
     socket!.on('bid_list', (data) {
