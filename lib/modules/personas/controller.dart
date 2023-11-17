@@ -143,6 +143,11 @@ class PersonaController extends GetxController {
     }
   }
 
+  glockerLogout() async {
+    await updateGlockerMode(false);
+    AuthController.to.handleLogout();
+  }
+
   Rxn<bool> online = Rxn<bool>(false);
   changeStatus() async {
     try {

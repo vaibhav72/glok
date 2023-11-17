@@ -181,15 +181,14 @@ class GlockerMoreView extends GetView<GlockerMoreController> {
                       icon: MetaAssets.documentIcon,
                       onTap: () {},
                     ),
-                    // Divider(),
-                    // _MoreTile(
-                    //   title: "Log Out",
-                    //   icon: MetaAssets.logout,
-                    //   onTap: () {
-                    //     PersonaController.to.updateGlockerMode(false);
-                    //     AuthController.to.handleLogout();
-                    //   },
-                    // ),
+                    Divider(),
+                    _MoreTile(
+                      title: "Log Out",
+                      icon: MetaAssets.logout,
+                      onTap: () {
+                        PersonaController.to.glockerLogout();
+                      },
+                    ),
                   ],
                 ),
               ),
