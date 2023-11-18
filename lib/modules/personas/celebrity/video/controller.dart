@@ -12,6 +12,7 @@ import 'package:glok/utils/meta_strings.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../data/repositories/glocker_repository.dart';
+import '../../../wallet/controller.dart';
 import '../../end_user/apply_glocker/view.dart';
 import '../../end_user/glocker_list_controller.dart';
 
@@ -134,6 +135,8 @@ class GlockerVideoCallController extends GetxController {
     try {
       await glockerRepository.endCallTrack();
       _dispose();
+      WalletController.to.getTransactions();
+      PersonaController.to.getGlockerStats();
       await Get.bottomSheet(_RatingWidget());
       Get.back(closeOverlays: true);
       Get.back();

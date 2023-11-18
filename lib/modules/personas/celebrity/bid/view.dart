@@ -33,19 +33,53 @@ class GlockerBiddingView extends GetView<GlockerBiddingController> {
                   child: Scaffold(
                     backgroundColor: Colors.transparent,
                     body: Container(
+                      width: double.maxFinite,
                       child: Column(
                         children: [
                           Expanded(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
+                                CircleAvatar(
+                                  radius: 90,
+                                  backgroundImage: CachedNetworkImageProvider(
+                                      controller.bidList.value?.first
+                                              .profilePhoto ??
+                                          ''),
+                                ),
+                                SizedBox(
+                                  height: 12,
+                                ),
                                 Text(
                                   "${controller.bidList.value?.first.userName ?? ''}",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 24,
                                       fontWeight: FontWeight.w600),
-                                )
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      MetaAssets.starFilled,
+                                      height: 22,
+                                      width: 22,
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      "${controller.bidList.value?.first.rating ?? ''}",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),

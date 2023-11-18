@@ -136,14 +136,24 @@ class PersonaController extends GetxController {
   updateGlockerMode(bool value) async {
     try {
       await userRepository.updateGlockerMode(value);
-      glockerStats.value = await glockerRepository.getStats();
+      await getGlockerStats();
       glockerMode.value = value;
     } catch (e) {
       showSnackBar(message: e.toString());
     }
   }
 
+  getGlockerStats() async {
+    try {
+      glockerStats.value = await glockerRepository.getStats();
+    } catch (e) {
+      showSnackBar(message: e.toString());
+    }
+  }
+
   glockerLogout() async {
+    disconnect();
+    // changeStatus();
     await updateGlockerMode(false);
     AuthController.to.handleLogout();
   }

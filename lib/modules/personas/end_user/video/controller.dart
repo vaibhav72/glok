@@ -5,8 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:glok/data/repositories/glocker_repository.dart';
+import 'package:glok/modules/auth_module/controller.dart';
 import 'package:glok/modules/personas/controller.dart';
 import 'package:glok/modules/personas/end_user/glocker_list_controller.dart';
+import 'package:glok/modules/wallet/controller.dart';
 import 'package:glok/utils/helpers.dart';
 import 'package:glok/utils/meta_strings.dart';
 
@@ -127,6 +129,8 @@ class UserVideoCallController extends GetxController {
     try {
       await glockerRepository.endCallTrack();
       _dispose();
+      WalletController.to.getTransactions();
+
       await Get.bottomSheet(_RatingWidget());
       Get.back(closeOverlays: true);
       Get.back();

@@ -42,6 +42,7 @@ class WalletController extends GetxController {
 
   getTransactions() async {
     try {
+      AuthController.to.getWalletDetails();
       page.value = 1;
       lastPage.value = false;
       isLoading.value = true;

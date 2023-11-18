@@ -24,7 +24,7 @@ class UserVideoView extends GetView<UserVideoCallController> {
                 )
               : controller.engine == null
                   ? Center(
-                      child: Text("Call has Ended"),
+                      child: Loader(),
                     )
                   : Stack(children: [
                       Center(
@@ -154,10 +154,7 @@ class UserVideoView extends GetView<UserVideoCallController> {
         ),
       );
     } else {
-      return const Text(
-        'Please wait for remote user to join',
-        textAlign: TextAlign.center,
-      );
+      return const Loader();
     }
   }
 }

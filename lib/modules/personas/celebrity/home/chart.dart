@@ -23,21 +23,24 @@ class _ChartState extends State<Chart> {
     );
   }
 
+  List<String> days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       color: MetaColors.tertiaryText,
       fontSize: 12,
     );
-    Widget text = Text(
-      DateFormat('EEE')
-          .format(DateTime.fromMillisecondsSinceEpoch(value.toInt())),
+    String text = '';
+
+    text = days[value.toInt()];
+    // if (widget.stats.stat
+    //         ?.firstWhereOrNull((element) => element.date?.weekday == value) !=
+    //     null)
+    return Text(
+      text,
       style: style,
     );
-    if (widget.stats.stat?.firstWhereOrNull(
-            (element) => element.date?.millisecondsSinceEpoch == value) !=
-        null) return text;
 
-    return Text('');
+    // return Text('');
   }
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
@@ -56,6 +59,30 @@ class _ChartState extends State<Chart> {
 
   LineChartData mainData() {
     return LineChartData(
+      lineTouchData: LineTouchData(
+        touchTooltipData: LineTouchTooltipData(
+          tooltipBorder: BorderSide(color: MetaColors.dividerColor),
+          fitInsideHorizontally: true,
+          tooltipRoundedRadius: 50,
+          fitInsideVertically: true,
+          tooltipBgColor: Colors.white,
+          getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
+            return touchedBarSpots.map((barSpot) {
+              final flSpot = barSpot;
+
+              return LineTooltipItem(
+                '${'\u20b9 ' + flSpot.y.toString()}',
+                TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              );
+            }).toList();
+          },
+        ),
+      ),
       gridData: FlGridData(
         show: true,
         drawVerticalLine: false,
@@ -80,6 +107,7 @@ class _ChartState extends State<Chart> {
         ),
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
+            interval: 1,
             showTitles: true,
             reservedSize: 30,
             getTitlesWidget: bottomTitleWidgets,
@@ -97,6 +125,8 @@ class _ChartState extends State<Chart> {
       maxX: widget.stats.stat?.isNotEmpty ?? false ? getMaxX() : 0.0,
       minY: 0,
       maxY: widget.stats.stat?.isNotEmpty ?? false ? getMaxY() : 0.0,
+      baselineX: 0,
+      baselineY: 0,
       lineBarsData: [
         LineChartBarData(
           color: Colors.orange,
@@ -117,18 +147,17 @@ class _ChartState extends State<Chart> {
 
   List<FlSpot> getPoints() {
     List<FlSpot> data = (widget.stats.stat ?? [])
-        .map((e) => FlSpot(
-            e.date!.millisecondsSinceEpoch.toDouble(), e.amount!.toDouble()))
+        .map((e) => FlSpot(e.date!.weekday.toDouble(), e.amount!.toDouble()))
         .toList();
     return data;
   }
 
   double getMaxX() {
-    return widget.stats.stat!.last.date!.millisecondsSinceEpoch.toDouble();
+    return 6;
   }
 
   double getMinX() {
-    return widget.stats.stat!.first.date!.millisecondsSinceEpoch.toDouble();
+    return 0;
   }
 
   double getMaxY() {

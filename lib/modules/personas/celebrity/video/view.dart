@@ -19,7 +19,7 @@ class GlockerVideoView extends GetView<GlockerVideoCallController> {
               )
             : controller.engine == null
                 ? Center(
-                    child: Text("Call has Ended"),
+                    child: Loader(),
                   )
                 : Stack(children: [
                     Center(
@@ -79,8 +79,6 @@ class GlockerVideoView extends GetView<GlockerVideoCallController> {
                                   },
                                   child: CircleAvatar(
                                     radius: 30,
-                                    backgroundColor:
-                                        MetaColors.transactionFailed,
                                     child: SvgPicture.asset(MetaAssets.endCall),
                                   ),
                                 ),
@@ -146,10 +144,7 @@ class GlockerVideoView extends GetView<GlockerVideoCallController> {
         ),
       );
     } else {
-      return const Text(
-        'Please wait for remote user to join',
-        textAlign: TextAlign.center,
-      );
+      return const Loader();
     }
   }
 }
