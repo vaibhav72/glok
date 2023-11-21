@@ -79,6 +79,8 @@ class GlockerVideoView extends GetView<GlockerVideoCallController> {
                                   },
                                   child: CircleAvatar(
                                     radius: 30,
+                                    backgroundColor:
+                                        MetaColors.transactionFailed,
                                     child: SvgPicture.asset(MetaAssets.endCall),
                                   ),
                                 ),

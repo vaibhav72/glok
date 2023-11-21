@@ -37,7 +37,9 @@ class PersonaController extends GetxController {
       log("Connected");
       showSnackBar(message: "connected", isError: false);
     });
-    socket!.onAny((event, data) => log("onAny $event $data"));
+    socket!.onAny((event, data) {
+      log("onAny $event $data");
+    });
     socket!.onDisconnect((_) {
       log("disconnected");
     });
@@ -136,6 +138,7 @@ class PersonaController extends GetxController {
   updateGlockerMode(bool value) async {
     try {
       await userRepository.updateGlockerMode(value);
+      bidList.value = [];
       await getGlockerStats();
       glockerMode.value = value;
     } catch (e) {

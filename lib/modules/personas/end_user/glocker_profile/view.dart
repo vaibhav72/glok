@@ -27,12 +27,18 @@ class GlockerProfileView extends GetView<GlockerProfileController> {
                 child: Container(
                   child: Stack(
                     children: [
-                      Container(
-                        height: Get.height * .35,
-                        child: CachedNetworkImage(
-                          imageUrl: controller.glocker?.value?.coverPhoto ?? '',
-                          fit: BoxFit.fill,
-                          width: double.maxFinite,
+                      Obx(
+                        () => Container(
+                          height: Get.height * .35,
+                          child: controller.glocker?.value?.coverPhoto != null
+                              ? CachedNetworkImage(
+                                  imageUrl:
+                                      controller.glocker?.value?.coverPhoto ??
+                                          '',
+                                  fit: BoxFit.fill,
+                                  width: double.maxFinite,
+                                )
+                              : SizedBox(),
                         ),
                       ),
                       Padding(

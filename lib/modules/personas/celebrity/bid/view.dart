@@ -35,6 +35,7 @@ class GlockerBiddingView extends GetView<GlockerBiddingController> {
                     body: Container(
                       width: double.maxFinite,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
                             child: Column(
@@ -62,6 +63,7 @@ class GlockerBiddingView extends GetView<GlockerBiddingController> {
                                   height: 4,
                                 ),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SvgPicture.asset(
                                       MetaAssets.starFilled,
