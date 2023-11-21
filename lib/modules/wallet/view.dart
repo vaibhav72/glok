@@ -234,7 +234,7 @@ class CreditTile extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                "${transaction.description}",
+                                "${transaction.name}",
                                 style: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.w500),
                               ),
@@ -267,8 +267,7 @@ class CreditTile extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              DateFormat('hh:mm a')
-                                  .format(transaction.createdAt!.toLocal()),
+                              "${transaction.description}",
                               style: TextStyle(
                                   fontSize: 12, color: MetaColors.subTextColor),
                             ),
@@ -314,7 +313,7 @@ class DebitTile extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                "${transaction.description}",
+                                "${transaction.name}",
                                 style: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.w500),
                               ),
@@ -347,8 +346,7 @@ class DebitTile extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              DateFormat('hh:mm a')
-                                  .format(transaction.createdAt!.toLocal()),
+                              "${transaction.description}",
                               style: TextStyle(
                                   fontSize: 12, color: MetaColors.subTextColor),
                             ),

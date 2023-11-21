@@ -26,20 +26,23 @@ class PhotoView extends GetView<GlockerProfileController> {
                   children: [
                     Column(
                       children: [
-                        Expanded(
-                          child: controller.isUploadPreview.value!
-                              ? Image.file(
-                                  File(
-                                    controller.selectedFile.value!.path,
+                        if (controller.selectedGalleryItem.value != null ||
+                            controller.selectedFile.value != null)
+                          Expanded(
+                            child: controller.isUploadPreview.value!
+                                ? Image.file(
+                                    File(
+                                      controller.selectedFile.value!.path,
+                                    ),
+                                    fit: BoxFit.fill,
+                                  )
+                                : CachedNetworkImage(
+                                    width: double.maxFinite,
+                                    imageUrl: controller
+                                        .selectedGalleryItem.value!.file!,
+                                    fit: BoxFit.cover,
                                   ),
-                                  fit: BoxFit.fill,
-                                )
-                              : CachedNetworkImage(
-                                  imageUrl: controller
-                                      .selectedGalleryItem.value!.file!,
-                                  fit: BoxFit.cover,
-                                ),
-                        ),
+                          ),
                         if (controller.isUploadPreview.value!)
                           Padding(
                             padding: const EdgeInsets.all(8.0),

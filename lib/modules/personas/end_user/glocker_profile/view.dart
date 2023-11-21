@@ -156,21 +156,25 @@ class GlockerProfileView extends GetView<GlockerProfileController> {
                                               children: [
                                                 Row(
                                                   children: [
-                                                    Text(
-                                                      controller.glocker?.value
-                                                              ?.name ??
-                                                          '',
-                                                      style: Get.theme.textTheme
-                                                          .bodyLarge!
-                                                          .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize: 24,
-                                                              color: Get
-                                                                  .theme
-                                                                  .colorScheme
-                                                                  .secondary),
+                                                    Expanded(
+                                                      child: Text(
+                                                        controller.glocker
+                                                                ?.value?.name ??
+                                                            '',
+                                                        style: Get
+                                                            .theme
+                                                            .textTheme
+                                                            .bodyLarge!
+                                                            .copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 24,
+                                                                color: Get
+                                                                    .theme
+                                                                    .colorScheme
+                                                                    .secondary),
+                                                      ),
                                                     ),
                                                   ],
                                                 ),

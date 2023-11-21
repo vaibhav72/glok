@@ -14,34 +14,38 @@ class TransactionModel {
   int? id;
   String? amount;
   String? type;
-  int? walletId;
-  DateTime? createdAt;
   String? description;
+  int? walletId;
+  String? name;
+  DateTime? createdAt;
 
   TransactionModel({
     this.id,
     this.amount,
     this.type,
-    this.walletId,
-    this.createdAt,
     this.description,
+    this.walletId,
+    this.name,
+    this.createdAt,
   });
 
   TransactionModel copyWith({
     int? id,
     String? amount,
     String? type,
-    int? walletId,
-    DateTime? createdAt,
     String? description,
+    int? walletId,
+    String? name,
+    DateTime? createdAt,
   }) =>
       TransactionModel(
         id: id ?? this.id,
         amount: amount ?? this.amount,
         type: type ?? this.type,
-        walletId: walletId ?? this.walletId,
-        createdAt: createdAt ?? this.createdAt,
         description: description ?? this.description,
+        walletId: walletId ?? this.walletId,
+        name: name ?? this.name,
+        createdAt: createdAt ?? this.createdAt,
       );
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>
@@ -49,17 +53,21 @@ class TransactionModel {
         id: json["id"],
         amount: json["amount"].toString(),
         type: json["type"],
-        walletId: json["walletId"],
-        createdAt: DateTime.parse(json["created_at"]),
         description: json["description"],
+        walletId: json["walletId"],
+        name: json["name"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "amount": amount,
         "type": type,
-        "walletId": walletId,
-        "created_at": createdAt!.toIso8601String(),
         "description": description,
+        "walletId": walletId,
+        "name": name,
+        "created_at": createdAt?.toIso8601String(),
       };
 }

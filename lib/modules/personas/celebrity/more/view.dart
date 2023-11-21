@@ -45,18 +45,17 @@ class GlockerMoreView extends GetView<GlockerMoreController> {
                       ),
                       CircleAvatar(
                         radius: 44,
-                        backgroundImage:
-                            controller.glocker.value!.profilePhoto != null
-                                ? CachedNetworkImageProvider(
-                                    controller.glocker.value!.profilePhoto!)
-                                : AssetImage(MetaAssets.dummyProfile)
-                                    as ImageProvider,
+                        backgroundImage: controller.user.value!.photo != null
+                            ? CachedNetworkImageProvider(
+                                controller.user.value!.photo!)
+                            : AssetImage(MetaAssets.dummyProfile)
+                                as ImageProvider,
                       ),
                       SizedBox(
                         height: 12,
                       ),
                       Text(
-                        controller.glocker.value!.name ?? '',
+                        controller.user.value!.name ?? '',
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 18,
@@ -66,7 +65,7 @@ class GlockerMoreView extends GetView<GlockerMoreController> {
                         height: 8,
                       ),
                       Text(
-                        controller.user.value!.mobileNumber!,
+                        "+91 ${controller.user.value!.mobileNumber!}",
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
